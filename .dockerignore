@@ -1,0 +1,57 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv
+venv
+.eggs
+*.egg-info
+.pytest_cache
+.mypy_cache
+.coverage
+htmlcov
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Docker
+docker-compose.override.yml
+
+# Documentation (keep in image for reference)
+# docs/
+
+# Tests (exclude from production)
+# tests/
+
+# Logs
+*.log
+logs/
+
+# Local database files
+*.db
+*.sqlite3
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude Code
+.claude/
+
+# Temporary files
+tmp/
+temp/

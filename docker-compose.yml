@@ -1,0 +1,118 @@
+# =============================================================================
+# WTracker Docker Compose Configuration
+# Development environment with FastAPI, PostgreSQL, and supporting services
+# =============================================================================
+
+services:
+  # ---------------------------------------------------------------------------
+  # FastAPI Application
+  # ---------------------------------------------------------------------------
+  api:
+    build:
+      context: .
+      target: development
+    container_name: wtracker-api
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount source code for hot reload
+      - ./src:/app/src:ro
+      - ./tests:/app/tests:ro
+      - ./alembic:/app/alembic:ro
+      - ./alembic.ini:/app/alembic.ini:ro
+    environment:
+      - APP_ENV=development
+      - DEBUG=true
+      - DATABASE_URL=postgresql://wtracker:wtracker_dev@db:5432/wtracker
+      - SECRET_KEY=dev-secret-key-not-for-production
+      - JWT_SECRET_KEY=dev-jwt-secret-not-for-production
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - wtracker-network
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # PostgreSQL Database
+  # ---------------------------------------------------------------------------
+  db:
+    image: postgres:16-alpine
+    container_name: wtracker-db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=wtracker
+      - POSTGRES_PASSWORD=wtracker_dev
+      - POSTGRES_DB=wtracker
+    volumes:
+      # Persist database data
+      - postgres_data:/var/lib/postgresql/data
+      # Init scripts (optional)
+      - ./scripts/init-db:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U wtracker -d wtracker"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - wtracker-network
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # Database Admin (pgAdmin) - Optional, for development convenience
+  # ---------------------------------------------------------------------------
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: wtracker-pgadmin
+    ports:
+      - "5050:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@wtracker.local
+      - PGADMIN_DEFAULT_PASSWORD=admin
+      - PGADMIN_CONFIG_SERVER_MODE=False
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - db
+    networks:
+      - wtracker-network
+    profiles:
+      - tools
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # Redis - For future caching and background jobs (optional for MVP)
+  # ---------------------------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: wtracker-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - wtracker-network
+    profiles:
+      - full
+    restart: unless-stopped
+
+# -----------------------------------------------------------------------------
+# Networks
+# -----------------------------------------------------------------------------
+networks:
+  wtracker-network:
+    driver: bridge
+
+# -----------------------------------------------------------------------------
+# Volumes
+# -----------------------------------------------------------------------------
+volumes:
+  postgres_data:
+  pgadmin_data:
+  redis_data:
