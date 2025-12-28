@@ -30,8 +30,9 @@ FROM base as builder
 # Install pip and build tools
 RUN pip install --upgrade pip setuptools wheel
 
-# Copy dependency files
-COPY pyproject.toml ./
+# Copy dependency files and source for package discovery
+COPY pyproject.toml README.md ./
+COPY src ./src
 
 # Install dependencies into a virtual environment
 RUN python -m venv /opt/venv
@@ -49,15 +50,14 @@ FROM base as development
 COPY --from=builder /opt/venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
+# Copy application code first (needed for dev dependencies install)
+COPY . .
+
 # Install development dependencies
-COPY pyproject.toml ./
 RUN pip install --no-cache-dir ".[dev]"
 
 # Install Playwright browsers for scraping
 RUN playwright install chromium && playwright install-deps chromium
-
-# Copy application code
-COPY . .
 
 # Expose port
 EXPOSE 8000

@@ -77,7 +77,8 @@ class User(Base):
 
     # Relationships
     submissions: Mapped[list["Submission"]] = relationship(
-        "Submission", back_populates="user", lazy="dynamic"
+        "Submission", back_populates="user", lazy="dynamic",
+        foreign_keys="[Submission.user_id]"
     )
     collections: Mapped[list["Collection"]] = relationship(
         "Collection", back_populates="user", lazy="dynamic"
