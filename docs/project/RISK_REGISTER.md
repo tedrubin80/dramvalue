@@ -1,8 +1,8 @@
 # Risk Register: WTracker
 
 **Created:** 2025-12-27
-**Last Updated:** 2025-12-27
-**Version:** 1.0
+**Last Updated:** 2025-12-28
+**Version:** 1.1
 **Status:** Active
 
 ---
@@ -13,14 +13,14 @@
 |----------|-------|--------|
 | Critical | 1 | Active |
 | High | 4 | Active |
-| Medium | 6 | Active |
+| Medium | 5 | Active |
 | Low | 3 | Active |
-| **Total Active** | **14** | - |
-| Mitigated | 0 | - |
+| **Total Active** | **13** | - |
+| Mitigated | 1 | - |
 | Closed | 0 | - |
 
 **Overall Risk Profile:** Medium-High
-**Last Review:** 2025-12-27
+**Last Review:** 2025-12-28
 **Next Review:** 2026-01-10
 
 ---
@@ -163,17 +163,21 @@ If primary source becomes unavailable:
 **Category:** Technical
 **Identified:** 2025-12-27
 **Owner:** Tech Lead (Jordan)
+**Mitigated:** 2025-12-28
 
 | Attribute | Value |
 |-----------|-------|
 | Probability | Medium (2) |
 | Impact | Medium (2) |
 | Score | **4 (Medium)** |
-| Status | Active |
+| Status | **MITIGATED** |
 | Response | Mitigate |
 
 **Description:**
 Facebook Prophet has complex dependencies (PyStan/CmdStan) that can be difficult to install in containerized environments. Performance may also be slower than expected for real-time predictions.
+
+**Resolution:**
+Prophet was successfully installed and validated in the Docker container during Phase 1 infrastructure setup (2025-12-28). CmdStan compilation completed successfully (~30 seconds build time). The fallback algorithm (simple_average) remains available if performance issues arise in production.
 
 **Triggers:**
 - Docker base image changes
@@ -786,9 +790,7 @@ If extended outage:
 
 | ID | Risk | Resolution | Date Closed |
 |----|------|------------|-------------|
-| - | - | - | - |
-
-*No risks closed yet - project in early phase.*
+| R-003 | Prophet Installation/Performance Issues | Successfully installed in Docker container; CmdStan compilation working | 2025-12-28 |
 
 ---
 
@@ -796,4 +798,5 @@ If extended outage:
 
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
+| 1.1 | 2025-12-28 | Tech Lead (Jordan) | R-003 mitigated (Prophet installation validated) |
 | 1.0 | 2025-12-27 | QA Lead (Riley) | Initial risk register |
