@@ -36,7 +36,14 @@ dependencies = [
 
     # Scraping
     "scrapy>=2.11.0",
+    "scrapy-playwright>=0.0.33",
     "playwright>=1.41.0",
+
+    # Background Tasks
+    "celery[redis]>=5.3.0",
+
+    # Text Matching (for bottle normalization)
+    "rapidfuzz>=3.5.0",
 
     # Anomaly Detection
     "scikit-learn>=1.4.0",

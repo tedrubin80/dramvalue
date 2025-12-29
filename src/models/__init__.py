@@ -9,6 +9,7 @@ from src.models.submission import Submission, SubmissionStatus
 from src.models.collection import Collection, CollectionItem
 from src.models.moderation import ModerationAction, ModerationFlag, ModerationQueue
 from src.models.audit import AuditLog
+from src.models.scrape_run import ScrapeRun, ScrapeStatus
 
 __all__ = [
     "Bottle",
@@ -25,4 +26,6 @@ __all__ = [
     "ModerationFlag",
     "ModerationQueue",
     "AuditLog",
+    "ScrapeRun",
+    "ScrapeStatus",
 ]

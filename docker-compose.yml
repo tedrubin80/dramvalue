@@ -77,13 +77,12 @@ services:
     restart: unless-stopped
 
   # ---------------------------------------------------------------------------
-  # Redis - For future caching and background jobs (optional for MVP)
+  # Redis - Message broker for Celery background tasks
   # ---------------------------------------------------------------------------
   redis:
     image: redis:7-alpine
     container_name: wtracker-redis
-    ports:
-      - "6379:6379"
+    # No external port - internal Docker network only (avoids host port conflicts)
     volumes:
       - redis_data:/data
     healthcheck:
@@ -93,8 +92,54 @@ services:
       retries: 5
     networks:
       - wtracker-network
-    profiles:
-      - full
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # Celery Worker - Processes background tasks (scraping, maintenance)
+  # ---------------------------------------------------------------------------
+  worker:
+    build:
+      context: .
+      target: development
+    container_name: wtracker-worker
+    volumes:
+      - ./src:/app/src
+    env_file:
+      - .env
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: celery -A src.tasks.celery_app worker --loglevel=info --concurrency=2 -Q scraping,maintenance,celery
+    networks:
+      - wtracker-network
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # Celery Beat - Scheduler for periodic tasks
+  # ---------------------------------------------------------------------------
+  beat:
+    build:
+      context: .
+      target: development
+    container_name: wtracker-beat
+    volumes:
+      - ./src:/app/src
+    env_file:
+      - .env
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - worker
+      - redis
+    command: celery -A src.tasks.celery_app beat --loglevel=info
+    networks:
+      - wtracker-network
     restart: unless-stopped
 
 # -----------------------------------------------------------------------------
