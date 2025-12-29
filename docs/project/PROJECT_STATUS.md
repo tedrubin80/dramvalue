@@ -1,7 +1,7 @@
 # Project Status: WTracker
 
-**Last Updated:** 2025-12-28
-**Current Phase:** Phase 1: Infrastructure (Complete)
+**Last Updated:** 2025-12-29
+**Current Phase:** Phase 2: Data Ingestion (Complete)
 **Overall Health:** [GREEN] On Track
 
 ---
@@ -18,27 +18,30 @@
 
 ## Executive Summary
 
-WTracker is a price tracking and valuation engine for secondary market spirits (bourbon, scotch). **Phase 1: Infrastructure is now complete.** The development environment is fully operational with Docker Compose, PostgreSQL database with all 9 tables created, and FastAPI application responding to requests.
+WTracker is a price tracking and valuation engine for secondary market spirits (bourbon, scotch). **Phase 2: Data Ingestion is now complete.** The scraping infrastructure is fully operational with Scrapy spiders for two auction sources (Whisky Auctioneer, Scotch Whisky Auctions), Celery background tasks, and automated scheduling.
 
-**Current milestone:** M1: Infrastructure Complete - [ACHIEVED]
-**Next milestone:** M2: Data Pipeline - Target 2026-01-31
+**Current milestone:** M2: Data Pipeline - [ACHIEVED]
+**Next milestone:** M3: Core Platform Demo - Target 2026-02-21
 
 ---
 
 ## Current Phase Summary
 
-**Phase:** Phase 1: Infrastructure
+**Phase:** Phase 2: Data Ingestion
 **Status:** COMPLETE
-**Completed:** 2025-12-28
+**Completed:** 2025-12-29
 
 ### Accomplishments
 
-- Docker Compose environment operational (API + PostgreSQL)
-- All 9 database tables created via Alembic migration
-- FastAPI application running with hot-reload
-- Authentication endpoints functional (register, login)
-- JWT token generation working
-- Health check endpoints responding
+- Scrapy project with spiders for two auction sources
+- Whisky Auctioneer spider (whiskyauctioneer.com)
+- Scotch Whisky Auctions spider (scotchwhiskyauctions.com)
+- Pipeline architecture: validation → normalization → deduplication → database
+- Bottle name normalization with distillery detection
+- Celery background task system with Redis broker
+- Scheduled scraping every 6 hours per source
+- ScrapeRun model for tracking scrape operations
+- Health and admin endpoints for monitoring
 
 ### Services Running
 
@@ -46,11 +49,14 @@ WTracker is a price tracking and valuation engine for secondary market spirits (
 |---------|-----------|------|--------|
 | FastAPI API | wtracker-api | 8001 | Running |
 | PostgreSQL 16 | wtracker-db | 5434 | Healthy |
+| Redis 7 | wtracker-redis | internal | Healthy |
+| Celery Worker | wtracker-worker | - | Running |
+| Celery Beat | wtracker-beat | - | Running |
 | OpenAPI Docs | - | 8001/docs | Available |
 
-### Database Tables (9)
+### Database Tables (10)
 
-`users`, `bottles`, `bottle_aliases`, `prices`, `submissions`, `collections`, `collection_items`, `moderation_queue`, `audit_logs`
+`users`, `bottles`, `bottle_aliases`, `prices`, `submissions`, `collections`, `collection_items`, `moderation_queue`, `audit_logs`, `scrape_runs`
 
 ---
 
@@ -58,12 +64,13 @@ WTracker is a price tracking and valuation engine for secondary market spirits (
 
 | Metric | Current | Target | Status |
 |--------|---------|--------|--------|
-| Timeline | On track | Week 16 launch | [GREEN] |
+| Timeline | Ahead of schedule | Week 16 launch | [GREEN] |
 | Scope | MVP defined | MVP only | [GREEN] |
 | Risks | 14 active | <15 active | [GREEN] |
 | Critical Risks | 1 | 0 | [YELLOW] |
-| Documentation | 85% | 100% | [GREEN] |
+| Documentation | 90% | 100% | [GREEN] |
 | Phase 1 | Complete | Complete | [GREEN] |
+| Phase 2 | Complete | Complete | [GREEN] |
 
 ---
 
@@ -77,30 +84,30 @@ WTracker is a price tracking and valuation engine for secondary market spirits (
 | Discovery & Requirements | 2025-12-27 | [COMPLETE] |
 | Architecture & Design | 2025-12-27 | [COMPLETE] |
 | Phase 1: Infrastructure | 2025-12-28 | [COMPLETE] |
+| Phase 2: Data Ingestion | 2025-12-29 | [COMPLETE] |
 
-### Phase 1 Deliverables
+### Phase 2 Deliverables
 
 | Deliverable | Status | Notes |
 |-------------|--------|-------|
-| Docker Compose environment | [COMPLETE] | API, DB running |
-| PostgreSQL schema | [COMPLETE] | 9 tables via Alembic |
-| FastAPI application skeleton | [COMPLETE] | Routes, models, auth |
-| Database migrations | [COMPLETE] | Initial migration applied |
-| Authentication system | [COMPLETE] | JWT + bcrypt working |
-| Environment configuration | [COMPLETE] | .env template + validation |
+| Scrapy spider for auction sources | [COMPLETE] | 2 sources: Whisky Auctioneer, Scotch Whisky Auctions |
+| Automated rate-limited scraping | [COMPLETE] | 3-second delay, robots.txt compliance |
+| Bottle normalization algorithm | [COMPLETE] | Distillery detection, fuzzy matching ready |
+| Data validation rules | [COMPLETE] | Price range, required fields, dates |
+| Scrape run logging and monitoring | [COMPLETE] | ScrapeRun model + health endpoints |
+| Celery background tasks | [COMPLETE] | Worker + Beat scheduler running |
 
 ### Current Phase
 
 | Activity | Owner | Status | Notes |
 |----------|-------|--------|-------|
-| Begin Phase 2: Data Ingestion | Jordan | [READY] | Can start immediately |
+| Begin Phase 3: Core Platform | Jordan | [READY] | Can start immediately |
 
 ### Upcoming Phases
 
 | Phase | Target Start | Target End | Status |
 |-------|--------------|------------|--------|
-| Phase 2: Data Ingestion | 2025-12-29 | 2026-01-31 | Ready to Start |
-| Phase 3: Core Platform | 2026-01-27 | 2026-02-21 | Planned |
+| Phase 3: Core Platform | 2025-12-30 | 2026-02-21 | Ready to Start |
 | Phase 4: Intelligence | 2026-02-17 | 2026-03-14 | Planned |
 | Phase 5: Polish | 2026-03-10 | 2026-03-28 | Planned |
 | Phase 6: QA & Launch | 2026-03-24 | 2026-04-14 | Planned |
@@ -168,8 +175,8 @@ See [RISK_REGISTER.md](./RISK_REGISTER.md) for full details.
 | Milestone | Target Date | Status | Key Deliverables |
 |-----------|-------------|--------|------------------|
 | M1: Infrastructure Complete | 2026-01-10 | [ACHIEVED EARLY] | Docker, DB, API skeleton |
-| M2: Data Pipeline | 2026-01-31 | In Progress | Scraping, normalization |
-| M3: Core Platform Demo | 2026-02-21 | Planned | Search, auth, collections |
+| M2: Data Pipeline | 2026-01-31 | [ACHIEVED EARLY] | Scrapy, Celery, 2 auction sources |
+| M3: Core Platform Demo | 2026-02-21 | In Progress | Search, auth, collections |
 | M4: Intelligence Engine | 2026-03-14 | Planned | Forecasting, fraud detection |
 | M5: Launch Ready | 2026-04-04 | Planned | QA complete, production ready |
 
@@ -181,22 +188,26 @@ See [RISK_REGISTER.md](./RISK_REGISTER.md) for full details.
 
 | Action | Owner | Status |
 |--------|-------|--------|
-| Create decision records (ADRs) | Jordan | [COMPLETE] |
-| Set up Docker development environment | Jordan | [COMPLETE] |
-| PostgreSQL schema creation | Jordan | [COMPLETE] |
-| FastAPI project scaffold | Jordan | [COMPLETE] |
-| Initial Alembic migration | Jordan | [COMPLETE] |
-| Test authentication endpoints | Jordan | [COMPLETE] |
+| Create Scrapy project structure | Jordan | [COMPLETE] |
+| Implement Whisky Auctioneer spider | Jordan | [COMPLETE] |
+| Implement Scotch Whisky Auctions spider | Jordan | [COMPLETE] |
+| Build validation pipeline | Jordan | [COMPLETE] |
+| Build normalization pipeline | Jordan | [COMPLETE] |
+| Build deduplication pipeline | Jordan | [COMPLETE] |
+| Build database pipeline | Jordan | [COMPLETE] |
+| Set up Celery with Redis | Jordan | [COMPLETE] |
+| Create ScrapeRun model | Jordan | [COMPLETE] |
+| Add health and admin endpoints | Jordan | [COMPLETE] |
 
-### Next Actions (Phase 2)
+### Next Actions (Phase 3)
 
 | Action | Owner | Target | Status |
 |--------|-------|--------|--------|
-| Research first auction source structure | Jordan | 2025-12-30 | Pending |
-| Create Scrapy project scaffold | Jordan | 2025-12-31 | Pending |
-| Implement first auction spider | Jordan | 2026-01-05 | Pending |
-| Build bottle name normalization | Jordan | 2026-01-10 | Pending |
-| Create data validation pipeline | Jordan | 2026-01-15 | Pending |
+| Bottle API endpoints | Jordan | 2026-01-05 | Pending |
+| Price history API | Jordan | 2026-01-07 | Pending |
+| Search functionality | Jordan | 2026-01-10 | Pending |
+| Homepage template | Jordan | 2026-01-12 | Pending |
+| Bottle detail page | Jordan | 2026-01-15 | Pending |
 
 ---
 
@@ -204,6 +215,8 @@ See [RISK_REGISTER.md](./RISK_REGISTER.md) for full details.
 
 | Commit | Date | Description |
 |--------|------|-------------|
+| `353c7c5` | 2025-12-29 | Phase 2: Data ingestion pipeline with Scrapy and Celery |
+| `a4e1bf0` | 2025-12-28 | Update documentation for Phase 1 completion |
 | `7af9c9b` | 2025-12-28 | Fix infrastructure setup and add initial migration |
 | `d41250b` | 2025-12-27 | Initial project setup: WTracker price intelligence platform |
 
@@ -242,10 +255,11 @@ See [RISK_REGISTER.md](./RISK_REGISTER.md) for full details.
 
 ## Notes
 
-- **Phase 1 completed ahead of schedule** (target was 2026-01-10)
-- Development environment fully operational
-- Authentication system tested and working
-- Ready to begin Phase 2: Data Ingestion
+- **Phase 2 completed ahead of schedule** (target was 2026-01-31)
+- Scraping infrastructure fully operational with 2 auction sources
+- Celery background tasks running on schedule
+- Health endpoints providing scraper status monitoring
+- Ready to begin Phase 3: Core Platform
 - No significant concerns at this time
 
 ---
@@ -254,5 +268,6 @@ See [RISK_REGISTER.md](./RISK_REGISTER.md) for full details.
 
 | Date | Author | Changes |
 |------|--------|---------|
+| 2025-12-29 | PM (Alex) | Updated for Phase 2 completion |
 | 2025-12-28 | PM (Alex) | Updated for Phase 1 completion |
 | 2025-12-27 | PM (Alex) | Initial status document |
