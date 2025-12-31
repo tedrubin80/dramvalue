@@ -1,88 +1,39 @@
 """
 Bottle search and detail endpoints.
+
+Uses BottleService for business logic and standardized response envelope.
 """
 
-from datetime import datetime
 from typing import Literal
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
-from pydantic import BaseModel
-from sqlalchemy import func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
 
+from src.api.response import paginated_response, success_response
 from src.db.session import get_db
-from src.models.bottle import Bottle, BottleAlias, BottleSize, SpiritCategory
+from src.models.bottle import SpiritCategory
+from src.schemas.bottle import (
+    BottleAutocomplete,
+    BottleDetail,
+    BottleListItem,
+    BottleTrending,
+    CategoryStats,
+    DistilleryInfo,
+    HomepageData,
+)
+from src.services import BottleService, NotFoundError
 
 router = APIRouter()
 
 
 # =============================================================================
-# Response Schemas
+# Dependency
 # =============================================================================
 
 
-class BottleListItem(BaseModel):
-    """Bottle in search results."""
-    id: int
-    name: str
-    distillery: str | None
-    category: SpiritCategory
-    age_statement: int | None
-    release_year: int | None
-    avg_price: float | None
-    price_count: int
-    price_trend: float | None
-    confidence_score: float | None
-
-    class Config:
-        from_attributes = True
-
-
-class BottleDetail(BaseModel):
-    """Full bottle details."""
-    id: int
-    name: str
-    normalized_name: str
-    distillery: str | None
-    brand: str | None
-    category: SpiritCategory
-    age_statement: int | None
-    proof: float | None
-    size: BottleSize
-    size_ml: int | None
-    release_year: int | None
-    batch_number: str | None
-    is_limited_release: bool
-    is_allocated: bool
-    msrp: float | None
-    description: str | None
-    tasting_notes: str | None
-
-    # Statistics
-    price_count: int
-    avg_price: float | None
-    min_price: float | None
-    max_price: float | None
-    last_price: float | None
-    last_price_date: datetime | None
-    price_trend: float | None
-    confidence_score: float | None
-
-    # Aliases
-    aliases: list[str]
-
-    class Config:
-        from_attributes = True
-
-
-class PaginatedBottles(BaseModel):
-    """Paginated bottle list."""
-    items: list[BottleListItem]
-    total: int
-    page: int
-    page_size: int
-    pages: int
+def get_bottle_service(db: AsyncSession = Depends(get_db)) -> BottleService:
+    """Dependency to get BottleService instance."""
+    return BottleService(db)
 
 
 # =============================================================================
@@ -90,113 +41,214 @@ class PaginatedBottles(BaseModel):
 # =============================================================================
 
 
-@router.get("", response_model=PaginatedBottles)
+@router.get("")
 async def search_bottles(
     q: str | None = Query(None, description="Search query"),
     category: SpiritCategory | None = Query(None, description="Filter by category"),
     distillery: str | None = Query(None, description="Filter by distillery"),
     min_price: float | None = Query(None, ge=0, description="Minimum average price"),
     max_price: float | None = Query(None, ge=0, description="Maximum average price"),
-    sort: Literal["name", "price", "trend", "recent"] = Query("name", description="Sort by"),
+    min_age: int | None = Query(None, ge=0, description="Minimum age statement"),
+    max_age: int | None = Query(None, description="Maximum age statement"),
+    has_prices: bool | None = Query(None, description="Filter bottles with/without prices"),
+    sort: Literal["name", "price", "trend", "recent", "popularity"] = Query(
+        "name", description="Sort by field"
+    ),
     order: Literal["asc", "desc"] = Query("asc", description="Sort order"),
     page: int = Query(1, ge=1, description="Page number"),
     page_size: int = Query(20, ge=1, le=100, description="Items per page"),
-    db: AsyncSession = Depends(get_db),
+    service: BottleService = Depends(get_bottle_service),
 ):
     """
     Search and browse bottles.
 
-    - Free text search matches name, distillery, and aliases
-    - Filter by category, distillery, price range
-    - Sort by name, price, trend, or recency
+    - Free text search matches name, distillery, brand, and aliases
+    - Filter by category, distillery, price range, age
+    - Sort by name, price, trend, recency, or popularity
+    - Paginated results with metadata
     """
-    # Build base query
-    query = select(Bottle).where(Bottle.is_active == True)
+    bottles, total = await service.search(
+        query=q,
+        category=category,
+        distillery=distillery,
+        min_price=min_price,
+        max_price=max_price,
+        min_age=min_age,
+        max_age=max_age,
+        has_prices=has_prices,
+        sort=sort,
+        order=order,
+        page=page,
+        page_size=page_size,
+    )
 
-    # Text search
-    if q:
-        search_term = f"%{q}%"
-        # Include alias search via subquery
-        alias_bottle_ids = (
-            select(BottleAlias.bottle_id)
-            .where(BottleAlias.alias.ilike(search_term))
-            .scalar_subquery()
-        )
-        query = query.where(
-            or_(
-                Bottle.name.ilike(search_term),
-                Bottle.distillery.ilike(search_term),
-                Bottle.brand.ilike(search_term),
-                Bottle.id.in_(alias_bottle_ids),
-            )
-        )
+    items = [BottleListItem.model_validate(b).model_dump() for b in bottles]
 
-    # Filters
-    if category:
-        query = query.where(Bottle.category == category)
-    if distillery:
-        query = query.where(Bottle.distillery.ilike(f"%{distillery}%"))
-    if min_price is not None:
-        query = query.where(Bottle.avg_price >= min_price)
-    if max_price is not None:
-        query = query.where(Bottle.avg_price <= max_price)
-
-    # Count total
-    count_query = select(func.count()).select_from(query.subquery())
-    total = await db.scalar(count_query) or 0
-
-    # Sorting
-    sort_column = {
-        "name": Bottle.name,
-        "price": Bottle.avg_price,
-        "trend": Bottle.price_trend,
-        "recent": Bottle.last_price_date,
-    }.get(sort, Bottle.name)
-
-    if order == "desc":
-        query = query.order_by(sort_column.desc().nullslast())
-    else:
-        query = query.order_by(sort_column.asc().nullsfirst())
-
-    # Pagination
-    offset = (page - 1) * page_size
-    query = query.offset(offset).limit(page_size)
-
-    result = await db.execute(query)
-    bottles = result.scalars().all()
-
-    return PaginatedBottles(
-        items=[BottleListItem.model_validate(b) for b in bottles],
+    return paginated_response(
+        items=items,
         total=total,
         page=page,
         page_size=page_size,
-        pages=(total + page_size - 1) // page_size,
+        item_key="bottles",
     )
 
 
-@router.get("/{bottle_id}", response_model=BottleDetail)
-async def get_bottle(bottle_id: int, db: AsyncSession = Depends(get_db)):
+@router.get("/autocomplete")
+async def autocomplete_bottles(
+    q: str = Query(..., min_length=2, description="Search query"),
+    limit: int = Query(10, ge=1, le=20, description="Max suggestions"),
+    service: BottleService = Depends(get_bottle_service),
+):
+    """
+    Get autocomplete suggestions for bottle search.
+
+    Returns lightweight results optimized for dropdown display.
+    """
+    suggestions = await service.autocomplete(q, limit=limit)
+
+    return success_response(
+        data={"suggestions": suggestions},
+        meta={"query": q, "count": len(suggestions)},
+    )
+
+
+@router.get("/trending")
+async def get_trending_bottles(
+    days: int = Query(30, ge=7, le=90, description="Days to analyze"),
+    limit: int = Query(10, ge=1, le=50, description="Number of results"),
+    category: SpiritCategory | None = Query(None, description="Filter by category"),
+    service: BottleService = Depends(get_bottle_service),
+):
+    """
+    Get trending bottles based on recent activity and price movement.
+
+    Trending = high recent activity + price momentum.
+    """
+    bottles = await service.get_trending(
+        days=days,
+        limit=limit,
+        category=category,
+    )
+
+    items = [BottleTrending.model_validate(b).model_dump() for b in bottles]
+
+    return success_response(
+        data={"bottles": items},
+        meta={"days": days, "count": len(items)},
+    )
+
+
+@router.get("/homepage")
+async def get_homepage_data(
+    service: BottleService = Depends(get_bottle_service),
+):
+    """
+    Get aggregated data for the homepage.
+
+    Returns:
+    - Recently updated bottles
+    - Trending up/down bottles
+    - Category statistics
+    - Total counts
+    """
+    data = await service.get_homepage_data()
+
+    return success_response(
+        data={
+            "recently_updated": [
+                BottleListItem.model_validate(b).model_dump()
+                for b in data["recently_updated"]
+            ],
+            "trending_up": [
+                BottleTrending.model_validate(b).model_dump()
+                for b in data["trending_up"]
+            ],
+            "trending_down": [
+                BottleTrending.model_validate(b).model_dump()
+                for b in data["trending_down"]
+            ],
+            "category_stats": data["category_stats"],
+            "total_bottles": data["total_bottles"],
+            "total_prices": data["total_prices"],
+        }
+    )
+
+
+@router.get("/categories")
+async def get_categories():
+    """
+    Get all available spirit categories.
+    """
+    categories = [
+        {"value": cat.value, "label": cat.value.replace("_", " ").title()}
+        for cat in SpiritCategory
+    ]
+
+    return success_response(data={"categories": categories})
+
+
+@router.get("/distilleries")
+async def get_distilleries(
+    service: BottleService = Depends(get_bottle_service),
+):
+    """
+    Get list of all distilleries with bottle counts.
+    """
+    distilleries = await service.get_distilleries()
+
+    return success_response(
+        data={"distilleries": distilleries},
+        meta={"count": len(distilleries)},
+    )
+
+
+@router.get("/category/{category}")
+async def get_bottles_by_category(
+    category: SpiritCategory,
+    page: int = Query(1, ge=1, description="Page number"),
+    page_size: int = Query(20, ge=1, le=100, description="Items per page"),
+    service: BottleService = Depends(get_bottle_service),
+):
+    """
+    Get bottles in a specific category.
+    """
+    bottles, total = await service.get_by_category(
+        category=category,
+        page=page,
+        page_size=page_size,
+    )
+
+    items = [BottleListItem.model_validate(b).model_dump() for b in bottles]
+
+    return paginated_response(
+        items=items,
+        total=total,
+        page=page,
+        page_size=page_size,
+        item_key="bottles",
+    )
+
+
+@router.get("/{bottle_id}")
+async def get_bottle(
+    bottle_id: int,
+    service: BottleService = Depends(get_bottle_service),
+):
     """
     Get full details for a specific bottle.
-    """
-    query = (
-        select(Bottle)
-        .options(selectinload(Bottle.aliases))
-        .where(Bottle.id == bottle_id, Bottle.is_active == True)
-    )
-    result = await db.execute(query)
-    bottle = result.scalar_one_or_none()
 
-    if not bottle:
+    Includes aliases and all statistics.
+    """
+    try:
+        bottle = await service.get_by_id_with_aliases(bottle_id)
+    except NotFoundError:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Bottle not found",
         )
 
-    # Convert to response with aliases
-    response_data = {
-        **{k: getattr(bottle, k) for k in BottleDetail.model_fields if k != "aliases"},
-        "aliases": [a.alias for a in bottle.aliases],
-    }
+    # Build response with aliases
+    response_data = BottleDetail.model_validate(bottle).model_dump()
+    response_data["aliases"] = [a.alias for a in bottle.aliases]
 
-    return BottleDetail(**response_data)
+    return success_response(data={"bottle": response_data})
