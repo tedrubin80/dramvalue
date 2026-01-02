@@ -5,11 +5,14 @@ FastAPI application entry point.
 """
 
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from src.api.routes import router as api_router
+from src.api.routes.frontend import router as frontend_router
 from src.core.config import get_settings
 
 
@@ -54,25 +57,22 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
+    # Mount static files
+    static_dir = Path(__file__).parent.parent / "static"
+    if static_dir.exists():
+        app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
+
     # Include API routes
     app.include_router(api_router, prefix="/api/v1")
+
+    # Include frontend template routes
+    app.include_router(frontend_router)
 
     return app
 
 
 # Create application instance
 app = create_app()
-
-
-@app.get("/")
-async def root():
-    """Root endpoint - public landing."""
-    return {
-        "name": "WTracker",
-        "description": "Secondary Market Spirits Price Intelligence",
-        "version": "0.1.0",
-        "docs": "/docs",
-    }
 
 
 @app.get("/health")

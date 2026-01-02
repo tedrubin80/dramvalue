@@ -20,6 +20,7 @@ services:
       - ./tests:/app/tests
       - ./alembic:/app/alembic
       - ./alembic.ini:/app/alembic.ini
+      - ./templates:/app/templates
     env_file:
       - .env
     environment:

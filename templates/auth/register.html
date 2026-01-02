@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up - DramValue{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h2 class="logo-font text-4xl font-bold text-yellow-600 mb-2">Join DramValue</h2>
+            <p class="text-gray-400">Create your account to start tracking whisky prices</p>
+        </div>
+
+        <!-- Registration Form -->
+        <div class="bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700 p-8">
+            <form
+                x-data="{
+                    display_name: '',
+                    email: '',
+                    password: '',
+                    password_confirm: '',
+                    loading: false,
+                    errors: {},
+
+                    async submitForm() {
+                        this.errors = {};
+                        this.loading = true;
+
+                        // Client-side validation
+                        if (!this.display_name) {
+                            this.errors.display_name = 'Display name is required';
+                        } else if (this.display_name.length < 3) {
+                            this.errors.display_name = 'Display name must be at least 3 characters';
+                        } else if (this.display_name.length > 50) {
+                            this.errors.display_name = 'Display name must be less than 50 characters';
+                        }
+
+                        if (!this.email) {
+                            this.errors.email = 'Email is required';
+                        } else if (!this.isValidEmail(this.email)) {
+                            this.errors.email = 'Please enter a valid email';
+                        }
+
+                        if (!this.password) {
+                            this.errors.password = 'Password is required';
+                        } else if (this.password.length < 8) {
+                            this.errors.password = 'Password must be at least 8 characters';
+                        }
+
+                        if (this.password !== this.password_confirm) {
+                            this.errors.password_confirm = 'Passwords do not match';
+                        }
+
+                        if (Object.keys(this.errors).length > 0) {
+                            this.loading = false;
+                            return;
+                        }
+
+                        try {
+                            // Submit to API
+                            const response = await fetch('/api/v1/auth/register', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    display_name: this.display_name,
+                                    email: this.email,
+                                    password: this.password
+                                })
+                            });
+
+                            const data = await response.json();
+
+                            if (response.ok) {
+                                // Registration successful - redirect to login with success message
+                                window.location.href = '/auth/login?registered=true';
+                            } else {
+                                // Handle errors
+                                if (response.status === 400) {
+                                    if (data.detail.includes('email')) {
+                                        this.errors.email = data.detail;
+                                    } else if (data.detail.includes('display')) {
+                                        this.errors.display_name = data.detail;
+                                    } else {
+                                        this.errors.general = data.detail;
+                                    }
+                                } else {
+                                    this.errors.general = data.detail || 'An error occurred. Please try again.';
+                                }
+                                this.loading = false;
+                            }
+                        } catch (error) {
+                            this.errors.general = 'Network error. Please check your connection.';
+                            this.loading = false;
+                        }
+                    },
+
+                    isValidEmail(email) {
+                        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+                    }
+                }"
+                @submit.prevent="submitForm()"
+            >
+                <!-- General error message -->
+                <div x-show="errors.general" x-transition class="mb-4 p-3 bg-red-900/50 border border-red-700 rounded-md">
+                    <p class="text-sm text-red-200" x-text="errors.general"></p>
+                </div>
+
+                <!-- Display Name field -->
+                <div class="mb-4">
+                    <label for="display_name" class="block text-sm font-medium text-gray-300 mb-2">
+                        Display Name
+                        <span class="text-gray-500 font-normal">(public)</span>
+                    </label>
+                    <input
+                        type="text"
+                        id="display_name"
+                        x-model="display_name"
+                        :class="errors.display_name ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-600 focus:border-yellow-500 focus:ring-yellow-500'"
+                        class="w-full px-4 py-2 bg-gray-700/50 border rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 transition"
+                        placeholder="WhiskyLover123"
+                        autocomplete="username"
+                    >
+                    <p x-show="errors.display_name" x-text="errors.display_name" class="mt-1 text-sm text-red-400"></p>
+                    <p class="mt-1 text-xs text-gray-500">This will be visible to other users</p>
+                </div>
+
+                <!-- Email field -->
+                <div class="mb-4">
+                    <label for="email" class="block text-sm font-medium text-gray-300 mb-2">
+                        Email Address
+                        <span class="text-gray-500 font-normal">(private)</span>
+                    </label>
+                    <input
+                        type="email"
+                        id="email"
+                        x-model="email"
+                        :class="errors.email ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-600 focus:border-yellow-500 focus:ring-yellow-500'"
+                        class="w-full px-4 py-2 bg-gray-700/50 border rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 transition"
+                        placeholder="you@example.com"
+                        autocomplete="email"
+                    >
+                    <p x-show="errors.email" x-text="errors.email" class="mt-1 text-sm text-red-400"></p>
+                    <p class="mt-1 text-xs text-gray-500">For verification only - not visible to others</p>
+                </div>
+
+                <!-- Password field -->
+                <div class="mb-4">
+                    <label for="password" class="block text-sm font-medium text-gray-300 mb-2">
+                        Password
+                    </label>
+                    <input
+                        type="password"
+                        id="password"
+                        x-model="password"
+                        :class="errors.password ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-600 focus:border-yellow-500 focus:ring-yellow-500'"
+                        class="w-full px-4 py-2 bg-gray-700/50 border rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 transition"
+                        placeholder="Minimum 8 characters"
+                        autocomplete="new-password"
+                    >
+                    <p x-show="errors.password" x-text="errors.password" class="mt-1 text-sm text-red-400"></p>
+                </div>
+
+                <!-- Confirm Password field -->
+                <div class="mb-6">
+                    <label for="password_confirm" class="block text-sm font-medium text-gray-300 mb-2">
+                        Confirm Password
+                    </label>
+                    <input
+                        type="password"
+                        id="password_confirm"
+                        x-model="password_confirm"
+                        :class="errors.password_confirm ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-600 focus:border-yellow-500 focus:ring-yellow-500'"
+                        class="w-full px-4 py-2 bg-gray-700/50 border rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 transition"
+                        placeholder="Re-enter your password"
+                        autocomplete="new-password"
+                    >
+                    <p x-show="errors.password_confirm" x-text="errors.password_confirm" class="mt-1 text-sm text-red-400"></p>
+                </div>
+
+                <!-- Submit button -->
+                <button
+                    type="submit"
+                    :disabled="loading"
+                    :class="loading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-yellow-500'"
+                    class="w-full bg-yellow-600 text-gray-900 px-4 py-3 rounded-md font-medium transition flex items-center justify-center"
+                >
+                    <svg x-show="loading" class="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-900" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span x-text="loading ? 'Creating account...' : 'Create Account'"></span>
+                </button>
+            </form>
+
+            <!-- Divider -->
+            <div class="mt-6 relative">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-gray-600"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                    <span class="px-2 bg-gray-800 text-gray-400">Already have an account?</span>
+                </div>
+            </div>
+
+            <!-- Sign in link -->
+            <div class="mt-6 text-center">
+                <a href="/auth/login" class="text-yellow-600 hover:text-yellow-500 font-medium">
+                    Sign in instead
+                </a>
+            </div>
+        </div>
+
+        <!-- Terms notice -->
+        <p class="mt-6 text-center text-xs text-gray-500">
+            By creating an account, you agree to our
+            <a href="/terms" class="text-yellow-600 hover:text-yellow-500">Terms of Service</a>
+            and
+            <a href="/privacy" class="text-yellow-600 hover:text-yellow-500">Privacy Policy</a>
+        </p>
+    </div>
+</div>
+{% endblock %}
