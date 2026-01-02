@@ -38,8 +38,8 @@ def scrape_source(
     Returns:
         dict with scrape results
     """
-    from scrapy.crawler import CrawlerProcess
-    from scrapy.utils.project import get_project_settings
+    import subprocess
+    import json
 
     logger.info(f"Starting scrape task for: {source_name}")
 
@@ -53,58 +53,67 @@ def scrape_source(
         # Update status to running
         _update_scrape_run(scrape_run_id, status=ScrapeStatus.RUNNING)
 
-        # Import spider class
-        spider_class = _import_spider(source_name)
+        # Run Scrapy in subprocess to avoid Twisted reactor issues
+        spider_module = SPIDER_REGISTRY[source_name]
 
-        # Configure Scrapy settings
-        settings = get_project_settings()
-        settings.setmodule("src.scrapers.settings")
+        # Create a Python script to run the spider
+        # This avoids needing scrapy.cfg and allows us to run in subprocess
+        script = f"""
+import sys
+sys.path.insert(0, '/app')
 
-        # Create crawler process
-        process = CrawlerProcess(settings)
+from scrapy.crawler import CrawlerProcess
+from scrapy.settings import Settings
+from importlib import import_module
 
-        # Results collector
-        results = {
-            "items_scraped": 0,
-            "items_new": 0,
-            "items_updated": 0,
-            "items_skipped": 0,
-            "items_errored": 0,
-            "errors": [],
-        }
+# Import our custom settings module
+settings_module = import_module('src.scrapers.settings')
+settings = Settings()
+settings.setmodule(settings_module)
+settings.set('LOG_LEVEL', 'INFO')
 
-        def collect_stats(spider, reason):
-            """Collect stats from spider when it closes."""
-            results["items_scraped"] = spider.items_scraped
-            results["items_new"] = spider.items_new
-            results["items_updated"] = spider.items_updated
-            results["items_skipped"] = spider.items_skipped
-            results["items_errored"] = spider.items_errored
-            results["errors"] = spider.errors
+# Import spider class
+module_path, class_name = '{spider_module}'.rsplit('.', 1)
+module = import_module(module_path)
+spider_class = getattr(module, class_name)
 
-        # Connect signal to collect stats
-        from scrapy import signals
-        crawler = process.create_crawler(spider_class)
-        crawler.signals.connect(collect_stats, signal=signals.spider_closed)
+# Run crawler
+process = CrawlerProcess(settings)
+process.crawl(spider_class, scrape_run_id={scrape_run_id})
+process.start()
+"""
 
-        # Run spider
-        process.crawl(crawler, scrape_run_id=scrape_run_id)
-        process.start()  # Blocks until spider finishes
+        logger.info(f"Running spider {source_name} in subprocess")
 
-        # Update scrape run with results
-        _update_scrape_run(
-            scrape_run_id,
-            status=ScrapeStatus.COMPLETED,
-            items_scraped=results["items_scraped"],
-            items_new=results["items_new"],
-            items_updated=results["items_updated"],
-            items_skipped=results["items_skipped"],
-            items_errored=results["items_errored"],
-            errors=results["errors"],
+        result = subprocess.run(
+            ["python3", "-c", script],
+            cwd="/app",
+            capture_output=True,
+            text=True,
+            timeout=3600,  # 1 hour timeout
         )
 
-        logger.info(f"Scrape completed for {source_name}: {results}")
-        return results
+        if result.returncode != 0:
+            error_msg = result.stderr or result.stdout
+            raise RuntimeError(f"Spider exited with code {result.returncode}: {error_msg}")
+
+        # Get updated scrape run from database to see results
+        stats = _get_scrape_run_stats(scrape_run_id)
+
+        # Update status to completed (spider should have updated stats)
+        _update_scrape_run(scrape_run_id, status=ScrapeStatus.COMPLETED)
+
+        logger.info(f"Scrape completed for {source_name}: {stats}")
+        return stats
+
+    except subprocess.TimeoutExpired:
+        logger.error(f"Scrape timed out for {source_name}")
+        _update_scrape_run(
+            scrape_run_id,
+            status=ScrapeStatus.FAILED,
+            errors=[{"error": "Scrape timed out after 1 hour", "timestamp": datetime.utcnow().isoformat()}],
+        )
+        raise self.retry(exc=Exception("Timeout"))
 
     except Exception as e:
         logger.error(f"Scrape failed for {source_name}: {e}")
@@ -221,6 +230,37 @@ def _update_scrape_run(
             if errors:
                 run.errors = errors
             session.commit()
+    finally:
+        session.close()
+        engine.dispose()
+
+
+def _get_scrape_run_stats(run_id: int) -> dict:
+    """Get stats from scrape run record."""
+    from sqlalchemy import create_engine
+    from sqlalchemy.orm import sessionmaker
+    from src.scrapers.settings import DATABASE_URL
+
+    db_url = DATABASE_URL
+    if "asyncpg" in db_url:
+        db_url = db_url.replace("postgresql+asyncpg", "postgresql+psycopg2")
+
+    engine = create_engine(db_url)
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    try:
+        run = session.query(ScrapeRun).get(run_id)
+        if run:
+            return {
+                "items_scraped": run.items_scraped,
+                "items_new": run.items_new,
+                "items_updated": run.items_updated,
+                "items_skipped": run.items_skipped,
+                "items_errored": run.items_errored,
+                "errors": run.errors or [],
+            }
+        return {}
     finally:
         session.close()
         engine.dispose()
