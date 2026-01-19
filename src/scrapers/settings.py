@@ -43,10 +43,16 @@ COOKIES_ENABLED = True
 # Disable Telnet Console (security)
 TELNETCONSOLE_ENABLED = False
 
-# Override default request headers
+# Override default request headers (realistic browser headers)
 DEFAULT_REQUEST_HEADERS = {
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    "Accept-Language": "en-US,en;q=0.5",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
+    "Accept-Language": "en-GB,en-US;q=0.9,en;q=0.8",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Upgrade-Insecure-Requests": "1",
+    "Sec-Fetch-Dest": "document",
+    "Sec-Fetch-Mode": "navigate",
+    "Sec-Fetch-Site": "none",
+    "Sec-Fetch-User": "?1",
 }
 
 # Enable AutoThrottle for adaptive rate limiting
@@ -86,9 +92,39 @@ DOWNLOAD_HANDLERS = {
 }
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 PLAYWRIGHT_BROWSER_TYPE = "chromium"
+
+# Tor SOCKS5 proxy configuration (using yarntrack_tor container)
+TOR_PROXY_HOST = os.getenv("TOR_PROXY_HOST", "yarntrack_tor")
+TOR_PROXY_PORT = os.getenv("TOR_PROXY_PORT", "9050")
+USE_TOR_PROXY = os.getenv("USE_TOR_PROXY", "true").lower() == "true"
+
 PLAYWRIGHT_LAUNCH_OPTIONS = {
     "headless": True,
-    "timeout": 30000,
+    "timeout": 60000,  # Increased timeout for Tor
+    # Proxy configuration for Tor
+    "proxy": {
+        "server": f"socks5://{TOR_PROXY_HOST}:{TOR_PROXY_PORT}"
+    } if USE_TOR_PROXY else None,
+    # Anti-detection settings
+    "args": [
+        "--disable-blink-features=AutomationControlled",
+        "--disable-dev-shm-usage",
+        "--no-sandbox",
+    ],
+}
+
+# Remove None proxy if not using Tor
+if not USE_TOR_PROXY and "proxy" in PLAYWRIGHT_LAUNCH_OPTIONS:
+    del PLAYWRIGHT_LAUNCH_OPTIONS["proxy"]
+
+# Context options for more realistic browser fingerprint
+PLAYWRIGHT_CONTEXTS = {
+    "default": {
+        "viewport": {"width": 1920, "height": 1080},
+        "locale": "en-GB",
+        "timezone_id": "Europe/London",
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    }
 }
 
 # Request fingerprinting (for deduplication)

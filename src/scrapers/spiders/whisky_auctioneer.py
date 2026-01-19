@@ -41,12 +41,12 @@ class WhiskyAuctioneerSpider(BaseAuctionSpider):
     # Start with past auctions page to get auction listings
     start_urls = ["https://www.whiskyauctioneer.com/auctions?status=past"]
 
-    # Spider-specific settings
+    # Spider-specific settings (increased timeouts for Tor proxy)
     custom_settings = {
-        "DOWNLOAD_DELAY": 3.0,
+        "DOWNLOAD_DELAY": 5.0,  # Increased for Tor
         "CONCURRENT_REQUESTS": 1,
         "PLAYWRIGHT_BROWSER_TYPE": "chromium",
-        "PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT": 30000,
+        "PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT": 90000,  # 90s for Tor
     }
 
     # Default buyer's premium for Whisky Auctioneer
@@ -63,7 +63,7 @@ class WhiskyAuctioneerSpider(BaseAuctionSpider):
                     "playwright_include_page": False,
                     "playwright_page_goto_kwargs": {
                         "wait_until": "networkidle",
-                        "timeout": 30000,
+                        "timeout": 90000,  # 90s for Tor
                     },
                 },
                 errback=self.handle_error,
@@ -99,7 +99,7 @@ class WhiskyAuctioneerSpider(BaseAuctionSpider):
                     "playwright_include_page": False,
                     "playwright_page_goto_kwargs": {
                         "wait_until": "networkidle",
-                        "timeout": 30000,
+                        "timeout": 90000,  # Increased for Tor
                     },
                 },
                 errback=self.handle_error,
@@ -122,7 +122,7 @@ class WhiskyAuctioneerSpider(BaseAuctionSpider):
                     "playwright_include_page": False,
                     "playwright_page_goto_kwargs": {
                         "wait_until": "networkidle",
-                        "timeout": 30000,
+                        "timeout": 90000,  # Increased for Tor
                     },
                 },
                 errback=self.handle_error,
@@ -161,7 +161,7 @@ class WhiskyAuctioneerSpider(BaseAuctionSpider):
                     "playwright_include_page": False,
                     "playwright_page_goto_kwargs": {
                         "wait_until": "networkidle",
-                        "timeout": 30000,
+                        "timeout": 90000,  # Increased for Tor
                     },
                     "auction_name": auction_name,
                     "auction_date": auction_date,
@@ -183,7 +183,7 @@ class WhiskyAuctioneerSpider(BaseAuctionSpider):
                     "playwright_include_page": False,
                     "playwright_page_goto_kwargs": {
                         "wait_until": "networkidle",
-                        "timeout": 30000,
+                        "timeout": 90000,  # Increased for Tor
                     },
                 },
                 errback=self.handle_error,

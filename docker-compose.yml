@@ -118,6 +118,7 @@ services:
     command: celery -A src.tasks.celery_app worker --loglevel=info --concurrency=2 -Q scraping,maintenance,celery
     networks:
       - wtracker-network
+      - yarntrack_default  # Access to Tor proxy
     restart: unless-stopped
 
   # ---------------------------------------------------------------------------
@@ -143,12 +144,35 @@ services:
       - wtracker-network
     restart: unless-stopped
 
+  # ---------------------------------------------------------------------------
+  # Tor Proxy (for anti-bot detection)
+  # ---------------------------------------------------------------------------
+  tor:
+    image: dperson/torproxy:latest
+    container_name: wtracker-tor
+    ports:
+      - "9150:9050"  # SOCKS5 proxy (external:internal)
+      - "9151:9051"  # Control port
+    environment:
+      - TOR_NewCircuitPeriod=60  # New circuit every 60 seconds
+      - TOR_MaxCircuitDirtiness=600  # Max circuit age 10 minutes
+    networks:
+      - wtracker-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "--socks5", "localhost:9050", "--head", "https://check.torproject.org"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+
 # -----------------------------------------------------------------------------
 # Networks
 # -----------------------------------------------------------------------------
 networks:
   wtracker-network:
     driver: bridge
+  yarntrack_default:
+    external: true  # Tor proxy is on this network
 
 # -----------------------------------------------------------------------------
 # Volumes
