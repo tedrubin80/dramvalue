@@ -12,6 +12,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from src.db.session import Base
 
 if TYPE_CHECKING:
+    from src.models.alert import PriceAlert
     from src.models.collection import Collection
     from src.models.submission import Submission
 
@@ -82,6 +83,9 @@ class User(Base):
     )
     collections: Mapped[list["Collection"]] = relationship(
         "Collection", back_populates="user", lazy="dynamic"
+    )
+    price_alerts: Mapped[list["PriceAlert"]] = relationship(
+        "PriceAlert", back_populates="user", lazy="dynamic"
     )
 
     def __repr__(self) -> str:

@@ -2,6 +2,7 @@
 SQLAlchemy ORM models for WTracker.
 """
 
+from src.models.alert import AlertStatus, AlertType, PriceAlert
 from src.models.bottle import Bottle, BottleAlias
 from src.models.price import Price, PriceSource
 from src.models.user import User, UserRole
@@ -12,6 +13,9 @@ from src.models.audit import AuditLog
 from src.models.scrape_run import ScrapeRun, ScrapeStatus
 
 __all__ = [
+    "AlertStatus",
+    "AlertType",
+    "PriceAlert",
     "Bottle",
     "BottleAlias",
     "Price",

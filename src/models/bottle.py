@@ -22,6 +22,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from src.db.session import Base
 
 if TYPE_CHECKING:
+    from src.models.alert import PriceAlert
     from src.models.price import Price
 
 
@@ -123,6 +124,9 @@ class Bottle(Base):
     )
     aliases: Mapped[list["BottleAlias"]] = relationship(
         "BottleAlias", back_populates="bottle", lazy="selectin"
+    )
+    price_alerts: Mapped[list["PriceAlert"]] = relationship(
+        "PriceAlert", back_populates="bottle", lazy="dynamic"
     )
 
     def __repr__(self) -> str:
