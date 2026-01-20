@@ -1,0 +1,235 @@
+"""
+Dekanta retail spider.
+
+Scrapes whisky prices from dekanta.com - a Japanese whisky specialist
+retailer based on Shopify.
+
+Uses Shopify's /products.json API for efficient data extraction.
+"""
+
+import json
+import logging
+import re
+from datetime import datetime
+from typing import Any, Generator
+
+import scrapy
+from scrapy.http import Response
+
+from src.scrapers.items import RetailPriceItem
+from src.scrapers.utils.text import (
+    clean_title,
+    extract_age,
+    extract_abv,
+    extract_size_ml,
+    extract_vintage,
+    extract_distillery,
+)
+
+logger = logging.getLogger(__name__)
+
+
+class DekantaSpider(scrapy.Spider):
+    """
+    Spider for dekanta.com retail prices.
+
+    Dekanta is a Shopify store specializing in:
+    - Japanese whisky (Yamazaki, Hakushu, Nikka, etc.)
+    - USD pricing
+    - Ships internationally
+    - Premium and rare Japanese spirits
+    """
+
+    name = "dekanta"
+    allowed_domains = ["dekanta.com"]
+
+    # Shopify JSON API
+    start_urls = ["https://www.dekanta.com/products.json?limit=250&page=1"]
+
+    custom_settings = {
+        "DOWNLOAD_DELAY": 2.5,
+        "CONCURRENT_REQUESTS": 1,
+        "ROBOTSTXT_OBEY": True,
+        "USER_AGENT": "WTracker/1.0 (Educational whisky price tracker)",
+    }
+
+    def __init__(self, *args, max_pages: int = None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.max_pages = int(max_pages) if max_pages else 20
+        self.current_page = 1
+        self.items_scraped = 0
+        self.started_at = datetime.utcnow()
+
+    def parse(self, response: Response) -> Generator[Any, None, None]:
+        """Parse Shopify products.json response."""
+        try:
+            data = json.loads(response.text)
+            products = data.get("products", [])
+
+            logger.info(f"Found {len(products)} products on page {self.current_page}")
+
+            for product in products:
+                # Filter for whisky products
+                product_type = product.get("product_type", "").lower()
+                tags = [t.lower() for t in product.get("tags", [])]
+                title = product.get("title", "").lower()
+
+                # Include whisky-related products
+                whisky_keywords = ["whisky", "whiskey", "bourbon", "scotch", "single malt", "blended"]
+                japanese_keywords = ["yamazaki", "hakushu", "hibiki", "nikka", "yoichi", "miyagikyo", "chichibu", "mars"]
+
+                is_whisky = any(kw in product_type for kw in whisky_keywords) or \
+                           any(kw in title for kw in whisky_keywords + japanese_keywords) or \
+                           any(kw in " ".join(tags) for kw in whisky_keywords)
+
+                if is_whisky:
+                    item = self.parse_product(product)
+                    if item:
+                        self.items_scraped += 1
+                        yield item
+
+            # Paginate if more products
+            if len(products) == 250 and self.current_page < self.max_pages:
+                self.current_page += 1
+                next_url = f"https://www.dekanta.com/products.json?limit=250&page={self.current_page}"
+                yield scrapy.Request(next_url, callback=self.parse)
+
+        except json.JSONDecodeError as e:
+            logger.error(f"Failed to parse JSON: {e}")
+
+    def parse_product(self, product: dict) -> RetailPriceItem | None:
+        """Parse a single product from Shopify JSON."""
+        try:
+            title = product.get("title", "")
+            if not title:
+                return None
+
+            # Get the first variant
+            variants = product.get("variants", [])
+            if not variants:
+                return None
+
+            variant = variants[0]
+            price = float(variant.get("price", 0))
+            compare_price = variant.get("compare_at_price")
+            original_price = float(compare_price) if compare_price else None
+
+            # Check availability
+            in_stock = variant.get("available", False)
+
+            # Get product URL
+            handle = product.get("handle", "")
+            source_url = f"https://www.dekanta.com/store/{handle}"
+
+            # Get image
+            images = product.get("images", [])
+            image_url = images[0].get("src") if images else None
+
+            # Extract metadata
+            tags = product.get("tags", [])
+            vendor = product.get("vendor", "")
+
+            abv = None
+            size_ml = None
+            region = None
+            country = "Japan"  # Default for Dekanta
+
+            for tag in tags:
+                tag_lower = tag.lower()
+
+                # ABV
+                abv_match = re.search(r"(\d+(?:\.\d+)?)\s*%", tag)
+                if abv_match:
+                    abv = float(abv_match.group(1))
+
+                # Size
+                size_match = re.search(r"(\d+)\s*ml", tag_lower)
+                if size_match:
+                    size_ml = int(size_match.group(1))
+
+                # Country override
+                if tag_lower in ["scotland", "scottish", "scotch"]:
+                    country = "Scotland"
+                elif tag_lower in ["usa", "american", "bourbon"]:
+                    country = "USA"
+                elif tag_lower in ["ireland", "irish"]:
+                    country = "Ireland"
+
+            # Extract from title if not in tags
+            if not abv:
+                abv = extract_abv(title)
+            if not size_ml:
+                size_ml = extract_size_ml(title) or 700
+
+            # Detect distillery from title
+            distillery = None
+            distillery_map = {
+                "yamazaki": "Yamazaki",
+                "hakushu": "Hakushu",
+                "hibiki": "Hibiki",
+                "nikka": "Nikka",
+                "yoichi": "Yoichi",
+                "miyagikyo": "Miyagikyo",
+                "chichibu": "Chichibu",
+                "mars": "Mars",
+                "karuizawa": "Karuizawa",
+                "hanyu": "Hanyu",
+                "fuji": "Fuji Gotemba",
+                "akashi": "Akashi",
+                "togouchi": "Togouchi",
+                "ichiro": "Ichiro's Malt",
+            }
+
+            title_lower = title.lower()
+            for key, value in distillery_map.items():
+                if key in title_lower:
+                    distillery = value
+                    break
+
+            if not distillery:
+                distillery, _ = extract_distillery(title)
+
+            # Create item
+            item = RetailPriceItem()
+            item["source_id"] = str(product.get("id", ""))
+            item["source_url"] = source_url
+            item["source_name"] = "Dekanta"
+            item["source_type"] = "retail"
+
+            item["raw_title"] = title
+            item["raw_description"] = product.get("body_html", "")[:500] if product.get("body_html") else ""
+            item["bottle_name"] = clean_title(title)
+
+            item["distillery"] = distillery or vendor
+            item["country"] = country
+            item["region"] = region
+            item["age_statement"] = extract_age(title)
+            item["vintage"] = extract_vintage(title)
+            item["size_ml"] = size_ml
+            item["abv"] = abv
+
+            item["price"] = price
+            item["original_price"] = original_price
+            item["currency"] = "USD"
+            item["price_usd"] = price  # Already in USD
+
+            item["in_stock"] = in_stock
+            item["image_url"] = image_url
+            item["scraped_at"] = datetime.utcnow().isoformat()
+            item["spider_name"] = self.name
+
+            return item
+
+        except Exception as e:
+            logger.error(f"Error parsing product: {e}")
+            return None
+
+    def closed(self, reason: str):
+        """Log statistics when spider closes."""
+        duration = (datetime.utcnow() - self.started_at).total_seconds()
+        logger.info(
+            f"Dekanta spider closed: {reason}\n"
+            f"  Duration: {duration:.1f}s\n"
+            f"  Items scraped: {self.items_scraped}\n"
+            f"  Pages crawled: {self.current_page}"
+        )

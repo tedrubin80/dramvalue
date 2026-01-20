@@ -4,10 +4,18 @@ Frontend template routes.
 Serves HTML templates using Jinja2 for server-side rendering.
 """
 
-from fastapi import APIRouter, Request, Depends
+from datetime import datetime, timedelta
+
+from fastapi import APIRouter, Depends, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from pathlib import Path
+from sqlalchemy import func, select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from src.db.session import get_db
+from src.models.bottle import Bottle
+from src.models.price import Price
 
 # Configure templates
 templates_dir = Path(__file__).parent.parent.parent.parent / "templates"
@@ -37,10 +45,61 @@ async def get_template_context(request: Request) -> dict:
 # =============================================================================
 
 @router.get("/", response_class=HTMLResponse, name="home")
-async def home(request: Request):
+async def home(request: Request, db: AsyncSession = Depends(get_db)):
     """Homepage with search and trending bottles."""
     context = await get_template_context(request)
-    # TODO: Fetch trending bottles and recent updates
+
+    # Get real stats from database
+    stats_result = await db.execute(
+        select(
+            func.count(Bottle.id).label("bottle_count"),
+        )
+    )
+    bottle_count = stats_result.scalar() or 0
+
+    price_stats = await db.execute(
+        select(
+            func.count(Price.id).label("price_count"),
+            func.count(func.distinct(Price.bottle_id)).label("bottles_with_prices"),
+        )
+    )
+    price_row = price_stats.fetchone()
+
+    context["stats"] = {
+        "bottle_count": bottle_count,
+        "price_count": price_row.price_count if price_row else 0,
+        "bottles_with_prices": price_row.bottles_with_prices if price_row else 0,
+    }
+
+    # Get trending bottles (most price data in last 30 days)
+    cutoff = datetime.utcnow() - timedelta(days=30)
+    trending_result = await db.execute(
+        select(
+            Bottle.id,
+            Bottle.name,
+            Bottle.category,
+            func.count(Price.id).label("recent_sales"),
+            func.avg(Price.price_usd).label("avg_price"),
+        )
+        .join(Price, Price.bottle_id == Bottle.id)
+        .where(Price.transaction_date >= cutoff)
+        .group_by(Bottle.id)
+        .order_by(func.count(Price.id).desc())
+        .limit(6)
+    )
+    trending_rows = trending_result.fetchall()
+
+    context["trending_bottles"] = [
+        {
+            "id": row.id,
+            "name": row.name,
+            "category": row.category.value if row.category else "spirits",
+            "recent_sales": row.recent_sales,
+            "avg_price": round(float(row.avg_price), 2) if row.avg_price else None,
+        }
+        for row in trending_rows
+    ]
+
     return templates.TemplateResponse("home.html", context)
 
 

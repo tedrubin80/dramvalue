@@ -92,3 +92,61 @@ class AuctionListingItem(scrapy.Item):
     end_date = scrapy.Field()            # Auction end date
     total_lots = scrapy.Field()          # Total number of lots
     scraped_at = scrapy.Field()
+
+
+class RetailPriceItem(scrapy.Item):
+    """
+    Represents a retail price listing from an online shop.
+
+    Used for tracking retail/secondary market prices.
+    """
+
+    # === Source Identification ===
+    source_id = scrapy.Field()           # Unique product ID from source
+    source_url = scrapy.Field()          # Direct URL to product page
+    source_name = scrapy.Field()         # Retailer name (Fine Drams, Dekanta, etc.)
+    source_type = scrapy.Field()         # "retail" or "secondary"
+
+    # === Raw Content ===
+    raw_title = scrapy.Field()           # Original product title
+    raw_description = scrapy.Field()     # Product description
+
+    # === Extracted Bottle Information ===
+    bottle_name = scrapy.Field()         # Cleaned bottle name
+    distillery = scrapy.Field()          # Extracted distillery name
+    category = scrapy.Field()            # Spirit category
+    age_statement = scrapy.Field()       # Age in years
+    size_ml = scrapy.Field()             # Bottle size in ml
+    abv = scrapy.Field()                 # Alcohol by volume
+    vintage = scrapy.Field()             # Vintage year
+    bottled_year = scrapy.Field()        # Year bottled
+    cask_number = scrapy.Field()         # Cask number if single cask
+    bottler = scrapy.Field()             # Independent bottler name
+    country = scrapy.Field()             # Country of origin
+    region = scrapy.Field()              # Region (Speyside, Islay, Kentucky, etc.)
+
+    # === Price Information ===
+    price = scrapy.Field()               # Current price
+    original_price = scrapy.Field()      # Original price (if on sale)
+    currency = scrapy.Field()            # Currency (EUR, GBP, USD)
+    price_usd = scrapy.Field()           # Converted to USD
+
+    # === Availability ===
+    in_stock = scrapy.Field()            # Boolean: is it available?
+    stock_quantity = scrapy.Field()      # Number in stock (if available)
+
+    # === Media ===
+    image_url = scrapy.Field()           # Primary product image
+
+    # === Metadata ===
+    scraped_at = scrapy.Field()          # When this was scraped
+    spider_name = scrapy.Field()         # Spider that scraped this
+
+    # === Processing State ===
+    matched_bottle_id = scrapy.Field()   # FK to bottles table if matched
+    normalization_confidence = scrapy.Field()
+    requires_review = scrapy.Field()
+    is_duplicate = scrapy.Field()
+
+    def __repr__(self) -> str:
+        return f"<RetailPriceItem {self.get('source_name', '')}: {self.get('raw_title', '')[:50]}>"

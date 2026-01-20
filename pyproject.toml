@@ -57,6 +57,9 @@ dependencies = [
     # HTTP Client (for external APIs)
     "httpx>=0.26.0",
 
+    # AI Services
+    "perplexityai>=0.23.0",
+
     # Utilities
     "python-dateutil>=2.8.2",
 ]
