@@ -93,12 +93,24 @@ server {
         proxy_set_header Host $host;
     }
 
-    # Static landing page
+    # Homepage - proxy to FastAPI app
     location = / {
-        root /var/www/wtracker/static;
-        try_files /index.html =404;
-        expires 1h;
-        add_header Cache-Control "public";
+        proxy_pass http://127.0.0.1:8001;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # Frontend routes - proxy to FastAPI app
+    location ~ ^/(bottles|trending|auth|search|collection) {
+        proxy_pass http://127.0.0.1:8001;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
     }
 
     # Static assets
