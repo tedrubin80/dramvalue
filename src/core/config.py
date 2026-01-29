@@ -27,6 +27,7 @@ class Settings(BaseSettings):
     app_env: Literal["development", "staging", "production"] = "development"
     debug: bool = False
     secret_key: str = Field(..., min_length=32)
+    cors_origins: str = "https://dramvalue.com,https://www.dramvalue.com"
 
     # -------------------------------------------------------------------------
     # Database
