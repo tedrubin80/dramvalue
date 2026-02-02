@@ -346,6 +346,47 @@ async def bottle_detail(request: Request, bottle_id: int, db: AsyncSession = Dep
 # Collection Routes (Protected)
 # =============================================================================
 
+@router.get("/alerts", response_class=HTMLResponse, name="alerts_list")
+async def alerts_list(request: Request, db: AsyncSession = Depends(get_db)):
+    """User's price alerts page."""
+    from fastapi.responses import RedirectResponse
+    from src.models.alert import PriceAlert, AlertStatus
+
+    context = await get_template_context(request, db)
+
+    # Require login
+    if not context.get("current_user"):
+        return RedirectResponse(url="/auth/login?redirect=/alerts", status_code=302)
+
+    user = context["current_user"]
+
+    # Get user's alerts
+    result = await db.execute(
+        select(PriceAlert, Bottle)
+        .join(Bottle, PriceAlert.bottle_id == Bottle.id)
+        .where(PriceAlert.user_id == user.id)
+        .order_by(PriceAlert.created_at.desc())
+    )
+
+    alerts = []
+    for alert, bottle in result:
+        alerts.append({
+            "id": alert.id,
+            "bottle": bottle,
+            "alert_type": alert.alert_type.value,
+            "target_price": float(alert.target_price) if alert.target_price else None,
+            "status": alert.status.value,
+            "times_triggered": alert.times_triggered,
+            "last_triggered_at": alert.last_triggered_at,
+            "created_at": alert.created_at,
+        })
+
+    context["alerts"] = alerts
+    context["alert_count"] = len(alerts)
+
+    return templates.TemplateResponse("alerts/list.html", context)
+
+
 @router.get("/collections", response_class=HTMLResponse, name="collections_list")
 async def collections_list(request: Request):
     """User's collections page."""

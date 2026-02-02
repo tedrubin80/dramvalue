@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block title %}My Price Alerts - DramValue{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-white mb-2">Price Alerts</h1>
+            <p class="text-gray-400">Get notified when bottles hit your target price</p>
+        </div>
+        <a href="/bottles" class="px-4 py-2 bg-yellow-600 hover:bg-yellow-500 text-gray-900 font-medium rounded-md transition">
+            Browse Bottles
+        </a>
+    </div>
+
+    {% if alerts %}
+    <!-- Alerts List -->
+    <div class="space-y-4">
+        {% for alert in alerts %}
+        <div class="bg-gray-800/50 border border-gray-700 rounded-lg p-5 hover:border-gray-600 transition">
+            <div class="flex justify-between items-start">
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="px-2 py-0.5 text-xs rounded
+                            {% if alert.status == 'active' %}bg-green-900/50 text-green-400
+                            {% elif alert.status == 'paused' %}bg-yellow-900/50 text-yellow-400
+                            {% elif alert.status == 'triggered' %}bg-blue-900/50 text-blue-400
+                            {% else %}bg-gray-700 text-gray-400{% endif %}">
+                            {{ alert.status | title }}
+                        </span>
+                        <span class="text-xs text-gray-500">
+                            Created {{ alert.created_at.strftime('%b %d, %Y') }}
+                        </span>
+                    </div>
+
+                    <a href="/bottles/{{ alert.bottle.id }}" class="text-lg font-semibold text-white hover:text-yellow-500 transition">
+                        {{ alert.bottle.name }}
+                    </a>
+
+                    <div class="flex items-center gap-4 mt-2 text-sm">
+                        <span class="text-gray-400">
+                            {% if alert.alert_type == 'price_below' %}
+                            Alert when below
+                            {% elif alert.alert_type == 'price_above' %}
+                            Alert when above
+                            {% else %}
+                            Price change alert
+                            {% endif %}
+                        </span>
+                        {% if alert.target_price %}
+                        <span class="text-green-400 font-semibold">${{ "{:,.0f}".format(alert.target_price) }}</span>
+                        {% endif %}
+                    </div>
+
+                    {% if alert.times_triggered > 0 %}
+                    <p class="text-xs text-gray-500 mt-2">
+                        Triggered {{ alert.times_triggered }} time{% if alert.times_triggered != 1 %}s{% endif %}
+                        {% if alert.last_triggered_at %}
+                        - Last: {{ alert.last_triggered_at.strftime('%b %d, %Y') }}
+                        {% endif %}
+                    </p>
+                    {% endif %}
+                </div>
+
+                <div class="flex items-center gap-2 ml-4"
+                     x-data="{
+                        async toggleAlert(alertId, action) {
+                            try {
+                                const token = localStorage.getItem('access_token');
+                                const response = await fetch(`/api/v1/alerts/${alertId}/${action}`, {
+                                    method: 'POST',
+                                    headers: {
+                                        'Authorization': `Bearer ${token}`
+                                    }
+                                });
+                                if (response.ok) {
+                                    window.location.reload();
+                                }
+                            } catch (e) {
+                                console.error(e);
+                            }
+                        },
+                        async deleteAlert(alertId) {
+                            if (!confirm('Delete this alert?')) return;
+                            try {
+                                const token = localStorage.getItem('access_token');
+                                const response = await fetch(`/api/v1/alerts/${alertId}`, {
+                                    method: 'DELETE',
+                                    headers: {
+                                        'Authorization': `Bearer ${token}`
+                                    }
+                                });
+                                if (response.ok) {
+                                    window.location.reload();
+                                }
+                            } catch (e) {
+                                console.error(e);
+                            }
+                        }
+                     }">
+                    {% if alert.status == 'active' %}
+                    <button
+                        @click="toggleAlert({{ alert.id }}, 'pause')"
+                        class="px-3 py-1 text-sm bg-gray-700 hover:bg-gray-600 text-white rounded transition"
+                    >
+                        Pause
+                    </button>
+                    {% elif alert.status == 'paused' %}
+                    <button
+                        @click="toggleAlert({{ alert.id }}, 'resume')"
+                        class="px-3 py-1 text-sm bg-green-700 hover:bg-green-600 text-white rounded transition"
+                    >
+                        Resume
+                    </button>
+                    {% endif %}
+                    <button
+                        @click="deleteAlert({{ alert.id }})"
+                        class="px-3 py-1 text-sm bg-red-900/50 hover:bg-red-800 text-red-300 rounded transition"
+                    >
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% else %}
+    <!-- Empty State -->
+    <div class="text-center py-16 bg-gray-800/30 rounded-lg border border-gray-700">
+        <div class="text-6xl mb-4">&#128276;</div>
+        <h2 class="text-2xl font-semibold text-white mb-2">No alerts yet</h2>
+        <p class="text-gray-400 mb-6">
+            Set up price alerts to get notified when bottles hit your target price
+        </p>
+        <a href="/bottles" class="inline-block px-6 py-3 bg-yellow-600 hover:bg-yellow-500 text-gray-900 font-medium rounded-md transition">
+            Browse Bottles
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
