@@ -174,19 +174,116 @@ async def register_page(request: Request, db: AsyncSession = Depends(get_db)):
 # =============================================================================
 
 @router.get("/bottles", response_class=HTMLResponse, name="bottles_list")
-async def bottles_list(request: Request):
+async def bottles_list(
+    request: Request,
+    db: AsyncSession = Depends(get_db),
+    q: str = None,
+    category: str = None,
+    page: int = 1,
+):
     """Bottle search and browse page."""
-    context = await get_template_context(request)
-    # TODO: Implement bottle list template
+    context = await get_template_context(request, db)
+
+    # Build query
+    query = select(Bottle).where(Bottle.is_active == True)
+
+    # Search filter
+    if q:
+        query = query.where(Bottle.name.ilike(f"%{q}%"))
+        context["search_query"] = q
+
+    # Category filter
+    if category:
+        from src.models.bottle import SpiritCategory
+        try:
+            cat = SpiritCategory(category)
+            query = query.where(Bottle.category == cat)
+            context["selected_category"] = category
+        except ValueError:
+            pass
+
+    # Pagination
+    per_page = 24
+    offset = (page - 1) * per_page
+
+    # Get total count
+    count_query = select(func.count()).select_from(query.subquery())
+    total = await db.scalar(count_query) or 0
+
+    # Get bottles with price stats
+    query = query.order_by(Bottle.name).offset(offset).limit(per_page)
+    result = await db.execute(query)
+    bottles = result.scalars().all()
+
+    # Get categories for filter
+    from src.models.bottle import SpiritCategory
+    context["categories"] = [c.value for c in SpiritCategory]
+
+    context["bottles"] = bottles
+    context["page"] = page
+    context["per_page"] = per_page
+    context["total"] = total
+    context["total_pages"] = (total + per_page - 1) // per_page
+
     return templates.TemplateResponse("bottles/list.html", context)
 
 
 @router.get("/bottles/{bottle_id}", response_class=HTMLResponse, name="bottle_detail")
-async def bottle_detail(request: Request, bottle_id: int):
+async def bottle_detail(request: Request, bottle_id: int, db: AsyncSession = Depends(get_db)):
     """Bottle detail page with price chart."""
-    context = await get_template_context(request)
-    context["bottle_id"] = bottle_id
-    # TODO: Implement bottle detail template
+    from fastapi import HTTPException
+
+    context = await get_template_context(request, db)
+
+    # Fetch bottle
+    result = await db.execute(select(Bottle).where(Bottle.id == bottle_id))
+    bottle = result.scalar_one_or_none()
+
+    if not bottle:
+        raise HTTPException(status_code=404, detail="Bottle not found")
+
+    # Get price history (last 50 prices)
+    prices_result = await db.execute(
+        select(Price)
+        .where(Price.bottle_id == bottle_id)
+        .order_by(Price.transaction_date.desc())
+        .limit(50)
+    )
+    prices = prices_result.scalars().all()
+
+    # Calculate stats
+    if prices:
+        price_values = [p.price_usd for p in prices if p.price_usd]
+        context["stats"] = {
+            "count": len(price_values),
+            "avg": round(sum(price_values) / len(price_values), 2) if price_values else 0,
+            "min": round(min(price_values), 2) if price_values else 0,
+            "max": round(max(price_values), 2) if price_values else 0,
+            "latest": round(price_values[0], 2) if price_values else 0,
+        }
+    else:
+        context["stats"] = {"count": 0, "avg": 0, "min": 0, "max": 0, "latest": 0}
+
+    # Get similar bottles (same category, similar name)
+    similar_result = await db.execute(
+        select(Bottle)
+        .where(Bottle.category == bottle.category)
+        .where(Bottle.id != bottle_id)
+        .limit(6)
+    )
+    similar_bottles = similar_result.scalars().all()
+
+    # Prepare chart data (JSON-safe)
+    chart_data = {
+        "prices": [float(p.price_usd) if p.price_usd else 0 for p in reversed(prices)],
+        "dates": [p.transaction_date.strftime('%b %d') if p.transaction_date else '' for p in reversed(prices)],
+    }
+
+    context["bottle"] = bottle
+    context["prices"] = prices
+    context["similar_bottles"] = similar_bottles
+    context["chart_data"] = chart_data
+
     return templates.TemplateResponse("bottles/detail.html", context)
 
 
