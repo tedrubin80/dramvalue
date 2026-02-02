@@ -173,6 +173,61 @@ async def register_page(request: Request, db: AsyncSession = Depends(get_db)):
 # Bottle Routes
 # =============================================================================
 
+@router.get("/search", response_class=HTMLResponse, name="search_results")
+async def search_results(
+    request: Request,
+    db: AsyncSession = Depends(get_db),
+    q: str = "",
+):
+    """Search results page."""
+    context = await get_template_context(request, db)
+    context["search_query"] = q
+
+    if not q or len(q) < 2:
+        context["bottles"] = []
+        context["error"] = "Please enter at least 2 characters to search"
+        return templates.TemplateResponse("search.html", context)
+
+    # Search bottles
+    search_term = f"%{q.lower()}%"
+    result = await db.execute(
+        select(
+            Bottle.id,
+            Bottle.name,
+            Bottle.category,
+            Bottle.distillery,
+            Bottle.age_statement,
+            func.count(Price.id).label("price_count"),
+            func.avg(Price.price_usd).label("avg_price"),
+        )
+        .join(Price, Price.bottle_id == Bottle.id, isouter=True)
+        .where(
+            func.lower(Bottle.name).like(search_term)
+            | func.lower(Bottle.distillery).like(search_term)
+        )
+        .group_by(Bottle.id)
+        .order_by(func.count(Price.id).desc(), Bottle.name)
+        .limit(50)
+    )
+
+    bottles = []
+    for row in result:
+        bottles.append({
+            "id": row.id,
+            "name": row.name,
+            "category": row.category.value if row.category else "other",
+            "distillery": row.distillery,
+            "age_statement": row.age_statement,
+            "price_count": row.price_count or 0,
+            "avg_price": round(float(row.avg_price), 2) if row.avg_price else None,
+        })
+
+    context["bottles"] = bottles
+    context["result_count"] = len(bottles)
+
+    return templates.TemplateResponse("search.html", context)
+
+
 @router.get("/bottles", response_class=HTMLResponse, name="bottles_list")
 async def bottles_list(
     request: Request,
