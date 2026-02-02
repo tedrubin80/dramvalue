@@ -13,9 +13,11 @@ from pathlib import Path
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from src.core.security import decode_token
 from src.db.session import get_db
 from src.models.bottle import Bottle
 from src.models.price import Price
+from src.models.user import User
 
 # Configure templates
 templates_dir = Path(__file__).parent.parent.parent.parent / "templates"
@@ -28,15 +30,45 @@ router = APIRouter()
 # Template Context Helpers
 # =============================================================================
 
-async def get_template_context(request: Request) -> dict:
+async def get_current_user_from_cookie(request: Request, db: AsyncSession) -> User | None:
+    """
+    Get current user from JWT cookie if present and valid.
+    """
+    token = request.cookies.get("access_token")
+    if not token:
+        return None
+
+    payload = decode_token(token)
+    if not payload or payload.get("type") != "access":
+        return None
+
+    user_id = payload.get("sub")
+    if not user_id:
+        return None
+
+    try:
+        result = await db.execute(select(User).where(User.id == int(user_id)))
+        user = result.scalar_one_or_none()
+        if user and user.is_active and not user.is_banned:
+            return user
+    except Exception:
+        pass
+
+    return None
+
+
+async def get_template_context(request: Request, db: AsyncSession = None) -> dict:
     """
     Get common context for all templates.
-
-    TODO: Add current_user from JWT token when authentication middleware is added.
+    Includes current_user from JWT cookie if authenticated.
     """
+    current_user = None
+    if db:
+        current_user = await get_current_user_from_cookie(request, db)
+
     return {
         "request": request,
-        "current_user": None,  # Will be populated by auth middleware
+        "current_user": current_user,
     }
 
 
@@ -47,7 +79,7 @@ async def get_template_context(request: Request) -> dict:
 @router.get("/", response_class=HTMLResponse, name="home")
 async def home(request: Request, db: AsyncSession = Depends(get_db)):
     """Homepage with search and trending bottles."""
-    context = await get_template_context(request)
+    context = await get_template_context(request, db)
 
     # Get real stats from database
     stats_result = await db.execute(
@@ -108,9 +140,14 @@ async def home(request: Request, db: AsyncSession = Depends(get_db)):
 # =============================================================================
 
 @router.get("/auth/login", response_class=HTMLResponse, name="login")
-async def login_page(request: Request):
+async def login_page(request: Request, db: AsyncSession = Depends(get_db)):
     """Login page."""
-    context = await get_template_context(request)
+    context = await get_template_context(request, db)
+
+    # Redirect if already logged in
+    if context.get("current_user"):
+        from fastapi.responses import RedirectResponse
+        return RedirectResponse(url="/", status_code=302)
 
     # Check for registration success message
     if request.query_params.get("registered"):
@@ -120,9 +157,15 @@ async def login_page(request: Request):
 
 
 @router.get("/auth/register", response_class=HTMLResponse, name="register")
-async def register_page(request: Request):
+async def register_page(request: Request, db: AsyncSession = Depends(get_db)):
     """Registration page."""
-    context = await get_template_context(request)
+    context = await get_template_context(request, db)
+
+    # Redirect if already logged in
+    if context.get("current_user"):
+        from fastapi.responses import RedirectResponse
+        return RedirectResponse(url="/", status_code=302)
+
     return templates.TemplateResponse("auth/register.html", context)
 
 

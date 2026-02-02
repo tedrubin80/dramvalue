@@ -2,11 +2,13 @@
 Authentication endpoints.
 """
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Response, status
+from fastapi.responses import RedirectResponse
 from pydantic import BaseModel, EmailStr, Field
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from src.core.config import get_settings
 from src.core.security import (
     create_access_token,
     create_email_verification_token,
@@ -109,10 +111,13 @@ async def register(data: UserRegister, db: AsyncSession = Depends(get_db)):
 
 
 @router.post("/login", response_model=TokenResponse)
-async def login(data: UserLogin, db: AsyncSession = Depends(get_db)):
+async def login(data: UserLogin, response: Response, db: AsyncSession = Depends(get_db)):
     """
     Authenticate and receive tokens.
+    Also sets HTTP-only cookie for server-side auth.
     """
+    settings = get_settings()
+
     # Find user
     result = await db.execute(select(User).where(User.email == data.email))
     user = result.scalar_one_or_none()
@@ -139,10 +144,39 @@ async def login(data: UserLogin, db: AsyncSession = Depends(get_db)):
     access_token = create_access_token(subject=user.id)
     refresh_token = create_refresh_token(subject=user.id)
 
+    # Set HTTP-only cookie for server-side auth
+    response.set_cookie(
+        key="access_token",
+        value=access_token,
+        httponly=True,
+        secure=not settings.is_development,  # Secure in production
+        samesite="lax",
+        max_age=settings.jwt_access_token_expire_minutes * 60,
+    )
+
     return TokenResponse(
         access_token=access_token,
         refresh_token=refresh_token,
     )
+
+
+@router.post("/logout")
+async def logout(response: Response):
+    """
+    Logout by clearing the auth cookie.
+    """
+    response.delete_cookie(key="access_token")
+    return {"message": "Logged out successfully"}
+
+
+@router.get("/logout")
+async def logout_redirect():
+    """
+    Logout and redirect to home (for form/link logout).
+    """
+    response = RedirectResponse(url="/", status_code=302)
+    response.delete_cookie(key="access_token")
+    return response
 
 
 @router.post("/verify-email", response_model=MessageResponse)
