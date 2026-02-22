@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block title %}About - DramValue{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Hero Section -->
+    <div class="text-center mb-16">
+        <h1 class="logo-font text-4xl md:text-5xl font-bold text-yellow-600 mb-4">
+            About DramValue
+        </h1>
+        <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+            Your trusted source for whisky secondary market price intelligence
+        </p>
+    </div>
+
+    <!-- What We Do -->
+    <section class="mb-16">
+        <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
+            <svg class="w-6 h-6 mr-3 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+            What We Do
+        </h2>
+        <div class="bg-gray-800/50 rounded-lg p-6 border border-gray-700">
+            <p class="text-gray-300 mb-4">
+                DramValue tracks whisky prices across the secondary market, including major auction houses and retail platforms.
+                We aggregate data from multiple sources to give you accurate, up-to-date pricing intelligence for bourbon, scotch,
+                Japanese whisky, and other premium spirits.
+            </p>
+            <p class="text-gray-300">
+                Whether you're a collector looking to value your collection, an investor tracking market trends, or an enthusiast
+                researching fair prices, DramValue provides the data you need to make informed decisions.
+            </p>
+        </div>
+    </section>
+
+    <!-- Data Sources -->
+    <section class="mb-16">
+        <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
+            <svg class="w-6 h-6 mr-3 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"></path>
+            </svg>
+            Our Data Sources
+        </h2>
+        <div class="grid md:grid-cols-2 gap-4">
+            <div class="bg-gray-800/50 rounded-lg p-4 border border-gray-700">
+                <h3 class="font-semibold text-yellow-500 mb-2">Auction Houses</h3>
+                <ul class="text-gray-400 text-sm space-y-1">
+                    <li>Scotch Whisky Auctions</li>
+                    <li>Whisky Auctioneer</li>
+                    <li>Whisky.Auction (UK)</li>
+                    <li>WhiskyAuction.com</li>
+                    <li>Whisky Hunter (API)</li>
+                </ul>
+            </div>
+            <div class="bg-gray-800/50 rounded-lg p-4 border border-gray-700">
+                <h3 class="font-semibold text-yellow-500 mb-2">Retail & Valuation</h3>
+                <ul class="text-gray-400 text-sm space-y-1">
+                    <li>Dekanta</li>
+                    <li>The Whisky Barrel</li>
+                    <li>Whiskybase Market</li>
+                    <li>Bottle Blue Book</li>
+                    <li>Wine-Searcher</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="mb-16">
+        <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
+            <svg class="w-6 h-6 mr-3 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+            </svg>
+            Features
+        </h2>
+        <div class="grid md:grid-cols-3 gap-4">
+            <div class="bg-gray-800/50 rounded-lg p-4 border border-gray-700 text-center">
+                <div class="text-3xl mb-2">📊</div>
+                <h3 class="font-semibold text-white mb-2">Price Tracking</h3>
+                <p class="text-gray-400 text-sm">Historical price data and trends for thousands of bottles</p>
+            </div>
+            <div class="bg-gray-800/50 rounded-lg p-4 border border-gray-700 text-center">
+                <div class="text-3xl mb-2">🔔</div>
+                <h3 class="font-semibold text-white mb-2">Price Alerts</h3>
+                <p class="text-gray-400 text-sm">Get notified when bottles hit your target price</p>
+            </div>
+            <div class="bg-gray-800/50 rounded-lg p-4 border border-gray-700 text-center">
+                <div class="text-3xl mb-2">📁</div>
+                <h3 class="font-semibold text-white mb-2">Collections</h3>
+                <p class="text-gray-400 text-sm">Track your collection value over time</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology -->
+    <section class="mb-16">
+        <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
+            <svg class="w-6 h-6 mr-3 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+            </svg>
+            Technology
+        </h2>
+        <div class="bg-gray-800/50 rounded-lg p-6 border border-gray-700">
+            <p class="text-gray-300 mb-4">
+                DramValue is built with modern technologies for reliability and performance:
+            </p>
+            <div class="grid md:grid-cols-2 gap-4 text-sm">
+                <div>
+                    <h4 class="text-yellow-500 font-semibold mb-2">Backend</h4>
+                    <ul class="text-gray-400 space-y-1">
+                        <li>Python / FastAPI</li>
+                        <li>PostgreSQL Database</li>
+                        <li>Redis Caching</li>
+                        <li>Celery Task Queue</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-yellow-500 font-semibold mb-2">Data Collection</h4>
+                    <ul class="text-gray-400 space-y-1">
+                        <li>Scrapy Web Scraping</li>
+                        <li>Playwright Browser Automation</li>
+                        <li>API Integrations</li>
+                        <li>Reddit Sentiment Analysis</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="mb-16">
+        <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
+            <svg class="w-6 h-6 mr-3 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+            </svg>
+            Current Database
+        </h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-gray-800/50 rounded-lg p-4 border border-gray-700 text-center">
+                <div class="text-3xl font-bold text-yellow-600">{{ stats.bottle_count|default('3,500+') }}</div>
+                <div class="text-gray-400 text-sm">Bottles</div>
+            </div>
+            <div class="bg-gray-800/50 rounded-lg p-4 border border-gray-700 text-center">
+                <div class="text-3xl font-bold text-yellow-600">{{ stats.price_count|default('5,300+') }}</div>
+                <div class="text-gray-400 text-sm">Price Records</div>
+            </div>
+            <div class="bg-gray-800/50 rounded-lg p-4 border border-gray-700 text-center">
+                <div class="text-3xl font-bold text-yellow-600">{{ stats.source_count|default('10+') }}</div>
+                <div class="text-gray-400 text-sm">Data Sources</div>
+            </div>
+            <div class="bg-gray-800/50 rounded-lg p-4 border border-gray-700 text-center">
+                <div class="text-3xl font-bold text-yellow-600">Daily</div>
+                <div class="text-gray-400 text-sm">Updates</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section>
+        <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
+            <svg class="w-6 h-6 mr-3 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+            </svg>
+            Contact
+        </h2>
+        <div class="bg-gray-800/50 rounded-lg p-6 border border-gray-700">
+            <p class="text-gray-300">
+                DramValue is an educational project focused on whisky market data analysis.
+                For questions, feedback, or data inquiries, please visit our API documentation or check the project repository.
+            </p>
+            <div class="mt-4 flex space-x-4">
+                <a href="/docs" class="inline-flex items-center px-4 py-2 bg-yellow-600 hover:bg-yellow-500 text-gray-900 rounded-md text-sm font-medium transition">
+                    API Documentation
+                </a>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

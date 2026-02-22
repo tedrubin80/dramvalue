@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block title %}My Collections - DramValue{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
+     x-data="{
+        showCreateModal: false,
+        newCollectionName: '',
+        newCollectionDesc: '',
+        loading: false,
+        error: '',
+
+        async createCollection() {
+            if (!this.newCollectionName.trim()) {
+                this.error = 'Please enter a collection name';
+                return;
+            }
+            this.loading = true;
+            this.error = '';
+            try {
+                const token = localStorage.getItem('access_token');
+                const response = await fetch('/api/v1/collections', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        name: this.newCollectionName,
+                        description: this.newCollectionDesc || null
+                    })
+                });
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    const data = await response.json();
+                    this.error = data.detail || 'Failed to create collection';
+                }
+            } catch (e) {
+                this.error = 'Network error';
+            }
+            this.loading = false;
+        }
+     }">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-white mb-2">My Collections</h1>
+            <p class="text-gray-400">Track and organize your whisky bottles</p>
+        </div>
+        <button
+            @click="showCreateModal = true"
+            class="px-4 py-2 bg-yellow-600 hover:bg-yellow-500 text-gray-900 font-medium rounded-md transition"
+        >
+            New Collection
+        </button>
+    </div>
+
+    {% if collections %}
+    <!-- Collections Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {% for collection in collections %}
+        <a
+            href="/collections/{{ collection.id }}"
+            class="bg-gray-800/50 border border-gray-700 rounded-lg p-5 hover:border-yellow-600/50 transition block group"
+        >
+            <h3 class="text-lg font-semibold text-white group-hover:text-yellow-500 transition mb-2">
+                {{ collection.name }}
+            </h3>
+            {% if collection.description %}
+            <p class="text-sm text-gray-400 mb-3 line-clamp-2">{{ collection.description }}</p>
+            {% endif %}
+            <div class="flex justify-between items-center text-sm pt-3 border-t border-gray-700/50">
+                <span class="text-gray-400">{{ collection.total_bottles }} bottle{% if collection.total_bottles != 1 %}s{% endif %}</span>
+                {% if collection.total_value %}
+                <span class="text-green-400 font-semibold">${{ "{:,.0f}".format(collection.total_value) }}</span>
+                {% endif %}
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+
+    {% else %}
+    <!-- Empty State -->
+    <div class="text-center py-16 bg-gray-800/30 rounded-lg border border-gray-700">
+        <div class="text-6xl mb-4">&#127870;</div>
+        <h2 class="text-2xl font-semibold text-white mb-2">No collections yet</h2>
+        <p class="text-gray-400 mb-6">
+            Create a collection to start tracking your whisky bottles
+        </p>
+        <button
+            @click="showCreateModal = true"
+            class="px-6 py-3 bg-yellow-600 hover:bg-yellow-500 text-gray-900 font-medium rounded-md transition"
+        >
+            Create Your First Collection
+        </button>
+    </div>
+    {% endif %}
+
+    <!-- Create Collection Modal -->
+    <div x-show="showCreateModal" x-transition class="fixed inset-0 z-50 flex items-center justify-center p-4" style="display: none;">
+        <div class="fixed inset-0 bg-black/70" @click="showCreateModal = false"></div>
+        <div class="relative bg-gray-800 rounded-lg border border-gray-700 p-6 w-full max-w-md">
+            <h3 class="text-xl font-semibold text-white mb-4">Create New Collection</h3>
+
+            <div x-show="error" class="mb-4 p-3 bg-red-900/50 border border-red-700 rounded-md">
+                <p class="text-red-200" x-text="error"></p>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm text-gray-300 mb-2">Collection Name *</label>
+                    <input
+                        type="text"
+                        x-model="newCollectionName"
+                        placeholder="e.g., My Cellar, Daily Drinkers"
+                        class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:border-yellow-500"
+                    >
+                </div>
+
+                <div>
+                    <label class="block text-sm text-gray-300 mb-2">Description (optional)</label>
+                    <textarea
+                        x-model="newCollectionDesc"
+                        rows="2"
+                        placeholder="Notes about this collection..."
+                        class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:border-yellow-500"
+                    ></textarea>
+                </div>
+
+                <div class="flex gap-3 pt-4">
+                    <button
+                        @click="showCreateModal = false"
+                        class="flex-1 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-md transition"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        @click="createCollection()"
+                        :disabled="loading"
+                        class="flex-1 px-4 py-2 bg-yellow-600 hover:bg-yellow-500 text-gray-900 rounded-md font-medium transition disabled:opacity-50"
+                    >
+                        <span x-text="loading ? 'Creating...' : 'Create'"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

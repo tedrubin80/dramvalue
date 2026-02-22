@@ -15,8 +15,23 @@ logger = logging.getLogger(__name__)
 
 # Spider registry - maps source names to spider classes
 SPIDER_REGISTRY = {
+    # Auction scrapers (hammer prices)
     "whisky_auctioneer": "src.scrapers.spiders.whisky_auctioneer.WhiskyAuctioneerSpider",
     "scotch_whisky_auctions": "src.scrapers.spiders.scotch_whisky_auctions.ScotchWhiskyAuctionsSpider",
+    "whisky_hunter": "src.scrapers.spiders.whisky_hunter.WhiskyHunterSpider",
+    "whisky_auction_uk": "src.scrapers.spiders.whisky_auction_uk.WhiskyAuctionUKSpider",
+    "whiskyauction_com": "src.scrapers.spiders.whiskyauction_com.WhiskyAuctionComSpider",
+    "whiskystats": "src.scrapers.spiders.whiskystats.WhiskyStatsSpider",
+    "rare_whisky_101": "src.scrapers.spiders.rare_whisky_101.RareWhisky101Spider",
+
+    # Retail/marketplace scrapers (listing prices)
+    "dekanta": "src.scrapers.spiders.dekanta.DekantaSpider",
+    "whisky_barrel": "src.scrapers.spiders.whisky_barrel.WhiskyBarrelSpider",
+    "whiskybase": "src.scrapers.spiders.whiskybase.WhiskybaseSpider",
+    "wine_searcher": "src.scrapers.spiders.wine_searcher.WineSearcherSpider",
+    "boozapp": "src.scrapers.spiders.boozapp.BoozAppSpider",
+    "whiskyfindr": "src.scrapers.spiders.whiskyfindr.WhiskyFindrSpider",
+    "bottle_blue_book": "src.scrapers.spiders.bottle_blue_book.BottleBlueBookSpider",
 }
 
 

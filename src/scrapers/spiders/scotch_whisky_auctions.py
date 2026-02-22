@@ -36,8 +36,8 @@ class ScotchWhiskyAuctionsSpider(BaseAuctionSpider):
     auction_house = "SCOTCH_WHISKY_AUCTIONS"
     allowed_domains = ["scotchwhiskyauctions.com", "www.scotchwhiskyauctions.com"]
 
-    # Start with past auctions page
-    start_urls = ["https://www.scotchwhiskyauctions.com/auctions/past"]
+    # Start with auctions listing page (shows all auctions, past and current)
+    start_urls = ["https://www.scotchwhiskyauctions.com/auctions/"]
 
     # Spider-specific settings
     custom_settings = {
@@ -69,22 +69,31 @@ class ScotchWhiskyAuctionsSpider(BaseAuctionSpider):
 
     def parse(self, response: Response) -> Generator[Any, None, None]:
         """
-        Parse past auctions listing page.
+        Parse auctions listing page.
 
         Extracts links to individual completed auctions.
+        Site shows all auctions (past and current) on one page.
         """
-        logger.info(f"Parsing past auctions page: {response.url}")
+        logger.info(f"Parsing auctions page: {response.url}")
 
-        # Extract auction links - site uses pattern: auctions/{id}-{slug}/
-        auction_links = response.css("a[href*='auctions/']::attr(href)").getall()
+        # Extract auction links - pattern: /auctions/{id}-the-{nth}-auction/
+        # Example: /auctions/224-the-175th-auction/
+        auction_links = response.css("a[href*='/auctions/']::attr(href)").getall()
 
-        # Filter to actual auction links (not pagination or self-references)
-        # Pattern: auctions/{number}-{slug}/ but NOT lot pages (which have more path segments)
-        auction_links = [
-            link for link in set(auction_links)
-            if re.match(r"^/?auctions/\d+-[^/]+/?$", link)
-        ]
+        # Filter to actual auction links (not lot pages which have additional path segments)
+        # Auction: /auctions/224-the-175th-auction/
+        # Lot: /auctions/224-the-175th-auction/855445-bottle-name/
+        filtered_links = []
+        for link in set(auction_links):
+            # Skip if it's the main auctions page
+            if link.rstrip('/') == '/auctions' or link.rstrip('/') == 'auctions':
+                continue
+            # Match auction pattern: /auctions/{id}-{slug}/ with exactly 2 path segments
+            parts = link.strip('/').split('/')
+            if len(parts) == 2 and parts[0] == 'auctions' and re.match(r'\d+-', parts[1]):
+                filtered_links.append(link)
 
+        auction_links = filtered_links
         logger.info(f"Found {len(auction_links)} auction links")
 
         # Follow each auction
@@ -125,27 +134,31 @@ class ScotchWhiskyAuctionsSpider(BaseAuctionSpider):
     def parse_auction(self, response: Response) -> Generator[Any, None, None]:
         """
         Parse individual auction page to get lot listings.
+
+        Lot URLs: /auctions/{auction-id}-{auction-slug}/{lot-id}-{lot-slug}/
+        Example: /auctions/224-the-175th-auction/855445-1800-reposado-tequila/
         """
         logger.info(f"Parsing auction: {response.url}")
 
         # Extract auction metadata
         auction_name = response.css("h1::text").get("").strip()
         if not auction_name:
-            auction_name = response.css(".auction-title::text").get("").strip()
+            auction_name = response.css(".auction-title::text, title::text").get("").strip()
 
         auction_date = self._extract_auction_date(response)
 
-        # Extract lot links - site uses class="lot" on anchor tags
-        # Pattern: auctions/{auction}/{lot_id}-{slug}/
-        lot_links = response.css("a.lot::attr(href)").getall()
+        # Extract lot links
+        # Pattern: /auctions/{auction}/{lot_id}-{slug}/
+        all_links = response.css("a[href*='/auctions/']::attr(href)").getall()
 
-        if not lot_links:
-            # Try finding links with lot pattern (3+ path segments under auctions/)
-            all_auction_links = response.css("a[href*='auctions/']::attr(href)").getall()
-            lot_links = [
-                link for link in all_auction_links
-                if re.match(r"^/?auctions/\d+-[^/]+/\d+-[^/]+/?$", link)
-            ]
+        lot_links = []
+        for link in set(all_links):
+            parts = link.strip('/').split('/')
+            # Lot pages have 3 parts: auctions/{auction-slug}/{lot-slug}
+            if len(parts) == 3 and parts[0] == 'auctions':
+                # Check that lot segment starts with a number
+                if re.match(r'\d+-', parts[2]):
+                    lot_links.append(link)
 
         logger.info(f"Found {len(lot_links)} lot links in: {auction_name}")
 
@@ -303,8 +316,11 @@ class ScotchWhiskyAuctionsSpider(BaseAuctionSpider):
         return None
 
     def _extract_hammer_price(self, response: Response) -> float | None:
-        """Extract hammer price from lot page."""
-        # This site uses class="bidinfo won" with pattern "Winning bid: &pound;X"
+        """Extract hammer price from lot page.
+
+        Site displays prices as "Sold for £XX in Month Year"
+        """
+        # Try CSS selectors first
         selectors = [
             ".bidinfo.won::text",
             ".winning-bid::text",
@@ -313,6 +329,7 @@ class ScotchWhiskyAuctionsSpider(BaseAuctionSpider):
             ".result-price::text",
             ".final-price::text",
             ".price::text",
+            ".lot-result::text",
         ]
 
         for selector in selectors:
@@ -322,21 +339,28 @@ class ScotchWhiskyAuctionsSpider(BaseAuctionSpider):
                 if price and price > 0:
                     return price
 
-        # Get raw HTML to handle &pound; entities
+        # Get page text to find price patterns
+        page_text = " ".join(response.css("*::text").getall())
         page_html = response.text
 
-        # This site uses &pound; entity - search in raw HTML
+        # Site uses "Sold for £XX" format
         price_patterns = [
-            r"[Ww]inning\s+bid[:\s]*&pound;([\d,]+)",
-            r"[Ww]inning\s+bid[:\s]*£([\d,]+)",
-            r"[Ss]old\s*(?:for)?[:\s]*&pound;([\d,]+)",
-            r"[Ss]old\s*(?:for)?[:\s]*£([\d,]+)",
-            r"[Hh]ammer[:\s]*&pound;([\d,]+)",
-            r"[Hh]ammer[:\s]*£([\d,]+)",
-            r"[Rr]esult[:\s]*&pound;([\d,]+)",
-            r"[Rr]esult[:\s]*£([\d,]+)",
+            r"[Ss]old\s+for\s+£([\d,]+(?:\.\d{2})?)",
+            r"[Ss]old\s+for\s+&pound;([\d,]+(?:\.\d{2})?)",
+            r"[Ww]inning\s+bid[:\s]*£([\d,]+(?:\.\d{2})?)",
+            r"[Ww]inning\s+bid[:\s]*&pound;([\d,]+(?:\.\d{2})?)",
+            r"[Hh]ammer[:\s]*£([\d,]+(?:\.\d{2})?)",
+            r"[Hh]ammer[:\s]*&pound;([\d,]+(?:\.\d{2})?)",
+            r"£([\d,]+(?:\.\d{2})?)\s+(?:hammer|won|sold)",
         ]
 
+        # Try in page text first
+        for pattern in price_patterns:
+            match = re.search(pattern, page_text)
+            if match:
+                return parse_price(match.group(1))
+
+        # Try in raw HTML for &pound; entities
         for pattern in price_patterns:
             match = re.search(pattern, page_html)
             if match:

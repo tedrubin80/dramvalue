@@ -12,7 +12,7 @@ from typing import Optional
 
 from scrapy.exceptions import DropItem
 
-from src.scrapers.items import AuctionLotItem
+from src.scrapers.items import AuctionLotItem, RetailPriceItem
 from src.scrapers.utils.currency import convert_to_usd
 
 logger = logging.getLogger(__name__)
@@ -91,7 +91,7 @@ class DatabasePipeline:
         # Update spider stats
         spider.items_new = self._stats["new_prices"]
 
-    def process_item(self, item: AuctionLotItem, spider) -> AuctionLotItem:
+    def process_item(self, item, spider):
         """
         Persist item to database.
 
@@ -150,32 +150,27 @@ class DatabasePipeline:
         finally:
             session.close()
 
-    def _price_exists(self, session, item: AuctionLotItem) -> bool:
+    def _price_exists(self, session, item) -> bool:
         """Check if price already exists in database."""
         from sqlalchemy import select
         from src.models.price import Price
 
-        auction_house = item.get("auction_house")
-        source_id = item.get("source_id")
+        source_id = str(item.get("source_id", ""))
+        source_name = item.get("source_name") or item.get("auction_house")
 
-        # Query for existing price with same auction house and source ID
+        # Query for existing price with same source ID and source name
         query = select(Price.id).where(
             Price.source_id == source_id,
         )
 
-        # Filter by auction house if available
-        if auction_house:
-            from src.models.price import AuctionHouse
-            try:
-                ah_enum = AuctionHouse(auction_house)
-                query = query.where(Price.auction_house == ah_enum)
-            except ValueError:
-                pass
+        # Filter by source name if available
+        if source_name:
+            query = query.where(Price.source_name == source_name)
 
         result = session.execute(query)
         return result.scalar_one_or_none() is not None
 
-    def _get_or_create_bottle(self, session, item: AuctionLotItem) -> Optional[int]:
+    def _get_or_create_bottle(self, session, item) -> Optional[int]:
         """
         Get existing bottle or create new one.
 
@@ -250,39 +245,52 @@ class DatabasePipeline:
         logger.info(f"Created new bottle: {bottle.name} (ID: {bottle.id})")
         return bottle.id
 
-    def _create_price(self, session, item: AuctionLotItem, bottle_id: int) -> int:
+    def _create_price(self, session, item, bottle_id: int) -> int:
         """Create price record in database."""
         from src.models.price import Price, PriceSource, AuctionHouse
 
-        # Get price values
-        hammer_price = item.get("hammer_price") or item.get("total_price")
-        total_price = item.get("total_price") or hammer_price
+        is_retail = isinstance(item, RetailPriceItem)
 
-        if not hammer_price:
+        # Get price values - different fields for retail vs auction
+        if is_retail:
+            price_value = item.get("price")
+            total_price = price_value
+            currency = item.get("currency", "USD")
+            source = PriceSource.RETAIL
+            source_name = item.get("source_name", "Unknown Retailer")
+            auction_house = None
+        else:
+            hammer_price = item.get("hammer_price") or item.get("total_price")
+            total_price = item.get("total_price") or hammer_price
+            price_value = hammer_price
+            currency = item.get("currency", "GBP")
+            source = PriceSource.AUCTION
+            # Determine auction house enum
+            auction_house_str = item.get("auction_house", "OTHER")
+            try:
+                auction_house = AuctionHouse(auction_house_str)
+                source_name = auction_house.value.replace("_", " ").title()
+            except ValueError:
+                auction_house = AuctionHouse.OTHER
+                source_name = "Other Auction"
+
+        if not price_value:
             raise ValueError("No price available")
 
         # Convert to USD
-        currency = item.get("currency", "GBP")
         price_usd = convert_to_usd(total_price, currency)
-
-        # Determine auction house enum
-        auction_house_str = item.get("auction_house", "OTHER")
-        try:
-            auction_house = AuctionHouse(auction_house_str)
-        except ValueError:
-            auction_house = AuctionHouse.OTHER
 
         # Parse transaction date
         transaction_date = None
-        auction_date = item.get("auction_date")
-        if auction_date:
-            if isinstance(auction_date, str):
+        date_field = item.get("auction_date") or item.get("scraped_at")
+        if date_field:
+            if isinstance(date_field, str):
                 try:
-                    transaction_date = datetime.fromisoformat(auction_date.split("T")[0])
+                    transaction_date = datetime.fromisoformat(date_field.split("T")[0])
                 except ValueError:
                     pass
-            elif isinstance(auction_date, datetime):
-                transaction_date = auction_date
+            elif isinstance(date_field, datetime):
+                transaction_date = date_field
 
         if not transaction_date:
             transaction_date = datetime.utcnow()
@@ -292,18 +300,18 @@ class DatabasePipeline:
             price=Decimal(str(total_price)),
             currency=currency,
             price_usd=price_usd,
-            source=PriceSource.AUCTION,
-            source_name=auction_house.value.replace("_", " ").title(),
+            source=source,
+            source_name=source_name,
             auction_house=auction_house,
             source_url=item.get("source_url", "")[:500],
-            source_id=item.get("source_id", "")[:100],
+            source_id=str(item.get("source_id", ""))[:100],
             transaction_date=transaction_date,
-            is_sold=item.get("sold", True),
-            includes_fees=True,  # Our prices include buyer's premium
+            is_sold=item.get("sold", True) if not is_retail else item.get("in_stock", True),
+            includes_fees=not is_retail,  # Auction prices include buyer's premium
             confidence_weight=item.get("normalization_confidence", 1.0),
-            is_verified=True,  # Auction data is verified
+            is_verified=not is_retail,  # Auction data is verified, retail is current listing
             is_outlier=False,
-            notes=f"Scraped from {auction_house.value}. Original: {item.get('raw_title', '')[:200]}",
+            notes=f"Scraped from {source_name}. Original: {item.get('raw_title', '')[:200]}",
         )
 
         session.add(price)
@@ -314,25 +322,29 @@ class DatabasePipeline:
     def _create_audit_log(
         self,
         session,
-        item: AuctionLotItem,
+        item,
         price_id: int,
         bottle_id: int,
     ):
         """Create audit log entry for the import."""
         from src.models.audit import AuditLog, AuditAction
 
+        is_retail = isinstance(item, RetailPriceItem)
+        source = item.get("source_name") if is_retail else item.get("auction_house")
+
         log = AuditLog(
             user_id=None,  # System action
             action=AuditAction.SYSTEM_PRICE_IMPORT,
             target_type="price",
             target_id=price_id,
-            description=f"Imported price from {item.get('auction_house')}",
+            description=f"Imported price from {source}",
             details=json.dumps({
                 "source_url": item.get("source_url"),
-                "source_id": item.get("source_id"),
-                "auction_house": item.get("auction_house"),
+                "source_id": str(item.get("source_id", "")),
+                "source": source,
+                "source_type": "retail" if is_retail else "auction",
                 "bottle_id": bottle_id,
-                "price_usd": float(item.get("price_usd", 0)),
+                "price_usd": float(item.get("price_usd") or item.get("price") or 0),
                 "raw_title": item.get("raw_title", "")[:200],
             }),
         )

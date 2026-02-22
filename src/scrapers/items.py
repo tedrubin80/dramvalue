@@ -72,6 +72,7 @@ class AuctionLotItem(scrapy.Item):
     requires_review = scrapy.Field()           # Flag for manual review queue
     validation_errors = scrapy.Field()         # List of validation issues
     is_duplicate = scrapy.Field()              # Set by deduplication pipeline
+    _dedup_key = scrapy.Field()                # Internal: deduplication key
 
     def __repr__(self) -> str:
         return f"<AuctionLotItem {self.get('source_id', 'unknown')}: {self.get('raw_title', '')[:50]}>"
@@ -147,6 +148,8 @@ class RetailPriceItem(scrapy.Item):
     normalization_confidence = scrapy.Field()
     requires_review = scrapy.Field()
     is_duplicate = scrapy.Field()
+    validation_errors = scrapy.Field()   # List of validation issues
+    _dedup_key = scrapy.Field()          # Internal: deduplication key
 
     def __repr__(self) -> str:
         return f"<RetailPriceItem {self.get('source_name', '')}: {self.get('raw_title', '')[:50]}>"

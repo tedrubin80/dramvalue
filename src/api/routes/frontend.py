@@ -173,6 +173,77 @@ async def register_page(request: Request, db: AsyncSession = Depends(get_db)):
 # Bottle Routes
 # =============================================================================
 
+@router.get("/trending", response_class=HTMLResponse, name="trending")
+async def trending_page(request: Request, db: AsyncSession = Depends(get_db)):
+    """Trending bottles page."""
+    context = await get_template_context(request, db)
+
+    # Get trending bottles (most activity in last 30 days)
+    cutoff = datetime.utcnow() - timedelta(days=30)
+    result = await db.execute(
+        select(
+            Bottle.id,
+            Bottle.name,
+            Bottle.category,
+            Bottle.distillery,
+            func.count(Price.id).label("recent_sales"),
+            func.avg(Price.price_usd).label("avg_price"),
+            func.min(Price.price_usd).label("min_price"),
+            func.max(Price.price_usd).label("max_price"),
+        )
+        .join(Price, Price.bottle_id == Bottle.id)
+        .where(Price.transaction_date >= cutoff)
+        .group_by(Bottle.id)
+        .order_by(func.count(Price.id).desc())
+        .limit(50)
+    )
+
+    trending = []
+    for row in result:
+        trending.append({
+            "id": row.id,
+            "name": row.name,
+            "category": row.category.value if row.category else "other",
+            "distillery": row.distillery,
+            "recent_sales": row.recent_sales,
+            "avg_price": round(float(row.avg_price), 2) if row.avg_price else None,
+            "min_price": round(float(row.min_price), 2) if row.min_price else None,
+            "max_price": round(float(row.max_price), 2) if row.max_price else None,
+        })
+
+    context["trending_bottles"] = trending
+
+    return templates.TemplateResponse("trending.html", context)
+
+
+@router.get("/profile", response_class=HTMLResponse, name="profile")
+async def profile_page(request: Request, db: AsyncSession = Depends(get_db)):
+    """User profile page."""
+    from fastapi.responses import RedirectResponse
+    from src.models.collection import Collection
+    from src.models.alert import PriceAlert
+
+    context = await get_template_context(request, db)
+
+    if not context.get("current_user"):
+        return RedirectResponse(url="/auth/login?redirect=/profile", status_code=302)
+
+    user = context["current_user"]
+
+    # Get counts
+    collections_count = await db.scalar(
+        select(func.count(Collection.id)).where(Collection.user_id == user.id)
+    )
+    alerts_count = await db.scalar(
+        select(func.count(PriceAlert.id)).where(PriceAlert.user_id == user.id)
+    )
+
+    context["collections_count"] = collections_count or 0
+    context["alerts_count"] = alerts_count or 0
+
+    return templates.TemplateResponse("profile.html", context)
+
+
 @router.get("/search", response_class=HTMLResponse, name="search_results")
 async def search_results(
     request: Request,
@@ -388,35 +459,91 @@ async def alerts_list(request: Request, db: AsyncSession = Depends(get_db)):
 
 
 @router.get("/collections", response_class=HTMLResponse, name="collections_list")
-async def collections_list(request: Request):
+async def collections_list(request: Request, db: AsyncSession = Depends(get_db)):
     """User's collections page."""
-    context = await get_template_context(request)
-    # TODO: Add authentication check
-    # TODO: Implement collections list template
+    from fastapi.responses import RedirectResponse
+    from src.models.collection import Collection, CollectionItem
+
+    context = await get_template_context(request, db)
+
+    # Require login
+    if not context.get("current_user"):
+        return RedirectResponse(url="/auth/login?redirect=/collections", status_code=302)
+
+    user = context["current_user"]
+
+    # Get user's collections with item counts
+    result = await db.execute(
+        select(Collection)
+        .where(Collection.user_id == user.id)
+        .order_by(Collection.created_at.desc())
+    )
+    collections = result.scalars().all()
+
+    context["collections"] = collections
+
     return templates.TemplateResponse("collections/list.html", context)
 
 
 @router.get("/collections/{collection_id}", response_class=HTMLResponse, name="collection_detail")
-async def collection_detail(request: Request, collection_id: int):
+async def collection_detail(request: Request, collection_id: int, db: AsyncSession = Depends(get_db)):
     """Collection detail page."""
-    context = await get_template_context(request)
-    context["collection_id"] = collection_id
-    # TODO: Add authentication check
-    # TODO: Implement collection detail template
+    from fastapi.responses import RedirectResponse
+    from fastapi import HTTPException
+    from src.models.collection import Collection, CollectionItem
+
+    context = await get_template_context(request, db)
+
+    # Require login
+    if not context.get("current_user"):
+        return RedirectResponse(url=f"/auth/login?redirect=/collections/{collection_id}", status_code=302)
+
+    user = context["current_user"]
+
+    # Get collection and verify ownership
+    result = await db.execute(
+        select(Collection)
+        .where(Collection.id == collection_id)
+        .where(Collection.user_id == user.id)
+    )
+    collection = result.scalar_one_or_none()
+
+    if not collection:
+        raise HTTPException(status_code=404, detail="Collection not found")
+
+    # Get collection items with bottle info
+    items_result = await db.execute(
+        select(CollectionItem, Bottle)
+        .join(Bottle, CollectionItem.bottle_id == Bottle.id)
+        .where(CollectionItem.collection_id == collection_id)
+        .order_by(CollectionItem.created_at.desc())
+    )
+
+    items = []
+    total_purchase = 0
+    total_current = 0
+    for item, bottle in items_result:
+        items.append({
+            "id": item.id,
+            "bottle": bottle,
+            "quantity": item.quantity,
+            "purchase_price": float(item.purchase_price) if item.purchase_price else None,
+            "current_value": float(item.current_value) if item.current_value else None,
+            "purchase_date": item.purchase_date,
+            "notes": item.notes,
+        })
+        if item.purchase_price:
+            total_purchase += float(item.purchase_price) * item.quantity
+        if item.current_value:
+            total_current += float(item.current_value) * item.quantity
+
+    context["collection"] = collection
+    context["items"] = items
+    context["total_purchase"] = total_purchase
+    context["total_current"] = total_current
+    context["gain_loss"] = total_current - total_purchase if total_purchase > 0 else 0
+
     return templates.TemplateResponse("collections/detail.html", context)
-
-
-# =============================================================================
-# User Profile Routes (Protected)
-# =============================================================================
-
-@router.get("/profile", response_class=HTMLResponse, name="profile")
-async def profile_page(request: Request):
-    """User profile page."""
-    context = await get_template_context(request)
-    # TODO: Add authentication check
-    # TODO: Implement profile template
-    return templates.TemplateResponse("profile.html", context)
 
 
 # =============================================================================
@@ -424,11 +551,97 @@ async def profile_page(request: Request):
 # =============================================================================
 
 @router.get("/about", response_class=HTMLResponse, name="about")
-async def about_page(request: Request):
+async def about_page(request: Request, db: AsyncSession = Depends(get_db)):
     """About page."""
+    context = await get_template_context(request, db)
+
+    # Get stats for the about page
+    stats_result = await db.execute(
+        select(func.count(Bottle.id).label("bottle_count"))
+    )
+    bottle_count = stats_result.scalar() or 0
+
+    price_stats = await db.execute(
+        select(func.count(Price.id).label("price_count"))
+    )
+    price_count = price_stats.scalar() or 0
+
+    context["stats"] = {
+        "bottle_count": f"{bottle_count:,}",
+        "price_count": f"{price_count:,}",
+        "source_count": "14",
+    }
+
+    return templates.TemplateResponse("about.html", context)
+
+
+@router.get("/auth/reddit/callback", response_class=HTMLResponse, name="reddit_callback")
+async def reddit_callback(
+    request: Request,
+    code: str = None,
+    state: str = None,
+    error: str = None,
+):
+    """
+    Reddit OAuth callback endpoint.
+
+    This is the redirect URL for Reddit app authorization.
+    Reddit will redirect here after the user authorizes the app.
+    """
     context = await get_template_context(request)
-    # TODO: Implement about template
-    return {"message": "About page - coming soon"}
+
+    if error:
+        context["error"] = f"Reddit authorization failed: {error}"
+        context["success"] = False
+    elif code:
+        # Store the authorization code for token exchange
+        # In production, exchange this for access/refresh tokens
+        context["success"] = True
+        context["message"] = "Reddit authorization successful! You can close this window."
+        context["code"] = code[:10] + "..."  # Show partial code for debugging
+    else:
+        context["error"] = "No authorization code received"
+        context["success"] = False
+
+    # Simple HTML response for the callback
+    html_content = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Reddit Authorization - DramValue</title>
+        <style>
+            body {{
+                font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+                color: #fff;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+            }}
+            .container {{
+                text-align: center;
+                padding: 2rem;
+                background: rgba(255,255,255,0.1);
+                border-radius: 12px;
+                max-width: 400px;
+            }}
+            .success {{ color: #4ade80; }}
+            .error {{ color: #f87171; }}
+            h1 {{ color: #d4a574; margin-bottom: 1rem; }}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>DramValue</h1>
+            {"<p class='success'>Authorization successful!</p>" if context.get("success") else f"<p class='error'>{context.get('error', 'Unknown error')}</p>"}
+            <p style="color: #9ca3af; margin-top: 1rem;">You can close this window.</p>
+        </div>
+    </body>
+    </html>
+    """
+    return HTMLResponse(content=html_content)
 
 
 @router.get("/terms", response_class=HTMLResponse, name="terms")

@@ -10,14 +10,14 @@ from typing import List
 
 from scrapy.exceptions import DropItem
 
-from src.scrapers.items import AuctionLotItem
+from src.scrapers.items import AuctionLotItem, RetailPriceItem
 
 logger = logging.getLogger(__name__)
 
 
 class ValidationPipeline:
     """
-    Validates scraped auction lot data.
+    Validates scraped auction and retail data.
 
     Validation rules:
     1. Required fields must be present and non-empty
@@ -29,11 +29,19 @@ class ValidationPipeline:
     Items failing validation are dropped and logged.
     """
 
-    # Required fields that must be present
-    REQUIRED_FIELDS = [
+    # Required fields for auction items
+    REQUIRED_FIELDS_AUCTION = [
         "source_id",
         "source_url",
         "auction_house",
+        "raw_title",
+    ]
+
+    # Required fields for retail items
+    REQUIRED_FIELDS_RETAIL = [
+        "source_id",
+        "source_url",
+        "source_name",
         "raw_title",
     ]
 
@@ -50,12 +58,12 @@ class ValidationPipeline:
     MIN_AGE = 0  # NAS or very young
     MAX_AGE = 100  # Very old whisky
 
-    def process_item(self, item: AuctionLotItem, spider) -> AuctionLotItem:
+    def process_item(self, item, spider):
         """
         Validate item data.
 
         Args:
-            item: The scraped item to validate
+            item: The scraped item to validate (AuctionLotItem or RetailPriceItem)
             spider: The spider that scraped the item
 
         Returns:
@@ -66,24 +74,37 @@ class ValidationPipeline:
         """
         errors: List[str] = []
 
+        # Determine required fields based on item type
+        if isinstance(item, RetailPriceItem):
+            required_fields = self.REQUIRED_FIELDS_RETAIL
+        else:
+            required_fields = self.REQUIRED_FIELDS_AUCTION
+
         # Check required fields
-        for field in self.REQUIRED_FIELDS:
+        for field in required_fields:
             value = item.get(field)
             if not value or (isinstance(value, str) and not value.strip()):
                 errors.append(f"Missing required field: {field}")
 
-        # Validate price
-        if item.get("sold") and item.get("hammer_price"):
-            price = item["hammer_price"]
-            if not isinstance(price, (int, float)):
-                errors.append(f"Invalid price type: {type(price)}")
-            elif price < self.MIN_PRICE:
-                errors.append(f"Price too low: {price}")
-            elif price > self.MAX_PRICE:
-                errors.append(f"Price suspiciously high: {price}")
+        # Validate price - handle both auction and retail items
+        price_field = "price" if isinstance(item, RetailPriceItem) else "hammer_price"
+        price_value = item.get(price_field)
+
+        # For auction items, only validate if sold
+        should_validate_price = True
+        if not isinstance(item, RetailPriceItem):
+            should_validate_price = item.get("sold", True)
+
+        if should_validate_price and price_value:
+            if not isinstance(price_value, (int, float)):
+                errors.append(f"Invalid price type: {type(price_value)}")
+            elif price_value < self.MIN_PRICE:
+                errors.append(f"Price too low: {price_value}")
+            elif price_value > self.MAX_PRICE:
+                errors.append(f"Price suspiciously high: {price_value}")
                 item["requires_review"] = True  # Flag but don't drop
 
-        # Validate total price consistency
+        # Validate total price consistency (auction items only)
         if item.get("total_price") and item.get("hammer_price"):
             if item["total_price"] < item["hammer_price"]:
                 errors.append("Total price less than hammer price")
