@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% block title %}Market Overview - DramValue{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Header -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-white mb-2">Market Overview</h1>
+        <p class="text-gray-400">Whisky auction market trends across {{ auction_count }} auction houses ({{ date_range }})</p>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div class="bg-gray-800/50 border border-gray-700 rounded-lg p-5 text-center">
+            <div class="text-3xl font-bold text-white">{{ total_volume }}</div>
+            <div class="text-sm text-gray-400 mt-1">Total Trading Volume</div>
+        </div>
+        <div class="bg-gray-800/50 border border-gray-700 rounded-lg p-5 text-center">
+            <div class="text-3xl font-bold text-green-400">{{ total_lots }}</div>
+            <div class="text-sm text-gray-400 mt-1">Total Lots Sold</div>
+        </div>
+        <div class="bg-gray-800/50 border border-gray-700 rounded-lg p-5 text-center">
+            <div class="text-3xl font-bold text-yellow-400">{{ auction_count }}</div>
+            <div class="text-sm text-gray-400 mt-1">Auction Houses</div>
+        </div>
+        <div class="bg-gray-800/50 border border-gray-700 rounded-lg p-5 text-center">
+            <div class="text-3xl font-bold text-blue-400">{{ months_tracked }}</div>
+            <div class="text-sm text-gray-400 mt-1">Months of Data</div>
+        </div>
+    </div>
+
+    <!-- Market Volume Chart -->
+    <div class="bg-gray-800/50 border border-gray-700 rounded-lg p-6 mb-8">
+        <h2 class="text-xl font-semibold text-white mb-4">Monthly Trading Volume</h2>
+        <canvas id="volumeChart" height="100"></canvas>
+    </div>
+
+    <!-- Average Price Chart -->
+    <div class="bg-gray-800/50 border border-gray-700 rounded-lg p-6 mb-8">
+        <h2 class="text-xl font-semibold text-white mb-4">Average Winning Bid Over Time</h2>
+        <canvas id="priceChart" height="100"></canvas>
+    </div>
+
+    <!-- Top Auction Houses Table -->
+    <div class="bg-gray-800/50 border border-gray-700 rounded-lg p-6 mb-8">
+        <h2 class="text-xl font-semibold text-white mb-4">Auction Houses by Trading Volume</h2>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left">
+                <thead class="text-xs text-gray-400 uppercase border-b border-gray-700">
+                    <tr>
+                        <th class="px-4 py-3">#</th>
+                        <th class="px-4 py-3">Auction House</th>
+                        <th class="px-4 py-3 text-right">Total Volume</th>
+                        <th class="px-4 py-3 text-right">Total Lots</th>
+                        <th class="px-4 py-3 text-right">Avg Winning Bid</th>
+                        <th class="px-4 py-3 text-right">Max Bid</th>
+                        <th class="px-4 py-3 text-right">Months Active</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for house in auction_houses %}
+                    <tr class="border-b border-gray-700/50 hover:bg-gray-700/20 transition">
+                        <td class="px-4 py-3 text-gray-400">{{ loop.index }}</td>
+                        <td class="px-4 py-3 text-white font-medium">{{ house.name }}</td>
+                        <td class="px-4 py-3 text-right text-green-400 font-mono">${{ house.total_volume }}</td>
+                        <td class="px-4 py-3 text-right text-gray-300 font-mono">{{ house.total_lots }}</td>
+                        <td class="px-4 py-3 text-right text-yellow-400 font-mono">${{ house.avg_bid }}</td>
+                        <td class="px-4 py-3 text-right text-gray-300 font-mono">${{ house.max_bid }}</td>
+                        <td class="px-4 py-3 text-right text-gray-400">{{ house.months }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Lots Count Chart -->
+    <div class="bg-gray-800/50 border border-gray-700 rounded-lg p-6">
+        <h2 class="text-xl font-semibold text-white mb-4">Monthly Lots Count</h2>
+        <canvas id="lotsChart" height="100"></canvas>
+    </div>
+</div>
+
+<script>
+    // Chart.js defaults for dark theme
+    Chart.defaults.color = '#9ca3af';
+    Chart.defaults.borderColor = 'rgba(75, 85, 99, 0.3)';
+
+    const chartLabels = {{ chart_labels | tojson }};
+    const volumeData = {{ chart_volume | tojson }};
+    const priceData = {{ chart_price | tojson }};
+    const lotsData = {{ chart_lots | tojson }};
+
+    // Volume Chart
+    new Chart(document.getElementById('volumeChart'), {
+        type: 'bar',
+        data: {
+            labels: chartLabels,
+            datasets: [{
+                label: 'Trading Volume',
+                data: volumeData,
+                backgroundColor: 'rgba(74, 222, 128, 0.4)',
+                borderColor: 'rgba(74, 222, 128, 0.8)',
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => '$' + ctx.parsed.y.toLocaleString(undefined, {maximumFractionDigits: 0})
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    ticks: {
+                        callback: v => '$' + (v / 1000000).toFixed(1) + 'M'
+                    }
+                }
+            }
+        }
+    });
+
+    // Price Chart
+    new Chart(document.getElementById('priceChart'), {
+        type: 'line',
+        data: {
+            labels: chartLabels,
+            datasets: [{
+                label: 'Avg Winning Bid',
+                data: priceData,
+                borderColor: '#eab308',
+                backgroundColor: 'rgba(234, 179, 8, 0.1)',
+                fill: true,
+                tension: 0.3,
+                pointRadius: 1,
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => '$' + ctx.parsed.y.toLocaleString(undefined, {maximumFractionDigits: 0})
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    ticks: {
+                        callback: v => '$' + v.toLocaleString()
+                    }
+                }
+            }
+        }
+    });
+
+    // Lots Chart
+    new Chart(document.getElementById('lotsChart'), {
+        type: 'bar',
+        data: {
+            labels: chartLabels,
+            datasets: [{
+                label: 'Lots Count',
+                data: lotsData,
+                backgroundColor: 'rgba(96, 165, 250, 0.4)',
+                borderColor: 'rgba(96, 165, 250, 0.8)',
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => ctx.parsed.y.toLocaleString() + ' lots'
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    ticks: {
+                        callback: v => (v / 1000).toFixed(0) + 'k'
+                    }
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

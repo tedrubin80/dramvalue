@@ -170,6 +170,200 @@ async def register_page(request: Request, db: AsyncSession = Depends(get_db)):
 
 
 # =============================================================================
+# Market Routes
+# =============================================================================
+
+@router.get("/market", response_class=HTMLResponse, name="market")
+async def market_page(request: Request, db: AsyncSession = Depends(get_db)):
+    """Market overview page with auction trends."""
+    from src.models.market_stat import MarketStat
+
+    context = await get_template_context(request, db)
+
+    # Summary stats
+    total_volume_result = await db.execute(
+        select(func.sum(MarketStat.trading_volume))
+    )
+    total_volume_raw = total_volume_result.scalar() or 0
+
+    total_lots_result = await db.execute(
+        select(func.sum(MarketStat.lots_count))
+    )
+    total_lots_raw = total_lots_result.scalar() or 0
+
+    auction_count_result = await db.execute(
+        select(func.count(func.distinct(MarketStat.auction_slug)))
+    )
+    auction_count = auction_count_result.scalar() or 0
+
+    date_range_result = await db.execute(
+        select(
+            func.min(MarketStat.period_date),
+            func.max(MarketStat.period_date),
+        )
+    )
+    date_row = date_range_result.fetchone()
+    min_date = date_row[0] if date_row else None
+    max_date = date_row[1] if date_row else None
+
+    months_result = await db.execute(
+        select(func.count(func.distinct(MarketStat.period_date)))
+    )
+    months_tracked = months_result.scalar() or 0
+
+    # Format summary
+    if total_volume_raw >= 1_000_000_000:
+        total_volume_str = f"${total_volume_raw / 1_000_000_000:.1f}B"
+    elif total_volume_raw >= 1_000_000:
+        total_volume_str = f"${total_volume_raw / 1_000_000:.0f}M"
+    else:
+        total_volume_str = f"${total_volume_raw:,.0f}"
+
+    date_range_str = ""
+    if min_date and max_date:
+        date_range_str = f"{min_date.strftime('%b %Y')} - {max_date.strftime('%b %Y')}"
+
+    context["total_volume"] = total_volume_str
+    context["total_lots"] = f"{total_lots_raw:,}"
+    context["auction_count"] = auction_count
+    context["months_tracked"] = months_tracked
+    context["date_range"] = date_range_str
+
+    # Monthly aggregates for charts (sum across all auction houses per month)
+    monthly_result = await db.execute(
+        select(
+            MarketStat.period_date,
+            func.sum(MarketStat.trading_volume).label("volume"),
+            func.avg(MarketStat.winning_bid_mean).label("avg_price"),
+            func.sum(MarketStat.lots_count).label("lots"),
+        )
+        .group_by(MarketStat.period_date)
+        .order_by(MarketStat.period_date)
+    )
+    monthly_rows = monthly_result.fetchall()
+
+    context["chart_labels"] = [r.period_date.strftime("%b %Y") for r in monthly_rows]
+    context["chart_volume"] = [round(float(r.volume), 2) for r in monthly_rows]
+    context["chart_price"] = [round(float(r.avg_price), 2) for r in monthly_rows]
+    context["chart_lots"] = [int(r.lots) for r in monthly_rows]
+
+    # Auction houses ranked by volume
+    houses_result = await db.execute(
+        select(
+            MarketStat.auction_name,
+            func.sum(MarketStat.trading_volume).label("total_volume"),
+            func.sum(MarketStat.lots_count).label("total_lots"),
+            func.avg(MarketStat.winning_bid_mean).label("avg_bid"),
+            func.max(MarketStat.winning_bid_max).label("max_bid"),
+            func.count(MarketStat.id).label("months"),
+        )
+        .group_by(MarketStat.auction_name)
+        .order_by(func.sum(MarketStat.trading_volume).desc())
+    )
+
+    context["auction_houses"] = [
+        {
+            "name": r.auction_name,
+            "total_volume": f"{float(r.total_volume):,.0f}",
+            "total_lots": f"{int(r.total_lots):,}",
+            "avg_bid": f"{float(r.avg_bid):,.0f}",
+            "max_bid": f"{float(r.max_bid):,.0f}",
+            "months": r.months,
+        }
+        for r in houses_result
+    ]
+
+    return templates.TemplateResponse("market.html", context)
+
+
+@router.get("/brands", response_class=HTMLResponse, name="brands")
+async def brands_page(
+    request: Request,
+    db: AsyncSession = Depends(get_db),
+    category: str = None,
+    q: str = None,
+    page: int = 1,
+):
+    """Browse whisky brands."""
+    from src.models.bottle import SpiritCategory
+
+    context = await get_template_context(request, db)
+    per_page = 48
+
+    # Base query - brands are bottles with brand field set
+    query = select(Bottle).where(Bottle.brand.isnot(None)).where(Bottle.is_active == True)
+
+    # Category filter
+    if category:
+        try:
+            cat = SpiritCategory(category)
+            query = query.where(Bottle.category == cat)
+        except ValueError:
+            pass
+    context["selected_category"] = category
+
+    # Search filter
+    if q:
+        query = query.where(Bottle.name.ilike(f"%{q}%"))
+    context["search_query"] = q
+
+    # Total count
+    count_query = select(func.count()).select_from(query.subquery())
+    total = await db.scalar(count_query) or 0
+
+    # Get category counts for filter buttons
+    cat_counts_result = await db.execute(
+        select(Bottle.category, func.count(Bottle.id))
+        .where(Bottle.brand.isnot(None))
+        .where(Bottle.is_active == True)
+        .group_by(Bottle.category)
+        .order_by(func.count(Bottle.id).desc())
+    )
+
+    category_labels = {
+        "scotch_single_malt": "Scotch",
+        "bourbon": "Bourbon",
+        "irish": "Irish",
+        "japanese": "Japanese",
+        "rye": "Rye",
+        "scotch_blended": "Blended Scotch",
+        "american_single_malt": "American Single Malt",
+        "other": "Other",
+    }
+
+    context["categories"] = [
+        {
+            "value": row[0].value,
+            "label": category_labels.get(row[0].value, row[0].value.replace("_", " ").title()),
+            "count": row[1],
+        }
+        for row in cat_counts_result
+    ]
+
+    # Paginated results
+    offset = (page - 1) * per_page
+    query = query.order_by(Bottle.name).offset(offset).limit(per_page)
+    result = await db.execute(query)
+    bottles = result.scalars().all()
+
+    context["brands"] = [
+        {
+            "id": b.id,
+            "name": b.name,
+            "category": b.category.value if b.category else "other",
+            "price_count": b.price_count or 0,
+        }
+        for b in bottles
+    ]
+    context["total"] = total
+    context["page"] = page
+    context["per_page"] = per_page
+    context["total_pages"] = (total + per_page - 1) // per_page
+
+    return templates.TemplateResponse("brands.html", context)
+
+
+# =============================================================================
 # Bottle Routes
 # =============================================================================
 
