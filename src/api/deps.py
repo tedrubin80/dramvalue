@@ -63,7 +63,7 @@ async def get_current_user(
     if user.is_banned:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail=f"User account is banned: {user.ban_reason or 'No reason provided'}",
+            detail="Account has been suspended. Contact support for details.",
         )
 
     return user

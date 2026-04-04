@@ -170,10 +170,8 @@
 
                     async loadCollections() {
                         try {
-                            const token = localStorage.getItem('access_token');
-                            if (!token) return;
                             const response = await fetch('/api/v1/collections', {
-                                headers: { 'Authorization': `Bearer ${token}` }
+                                credentials: 'include'
                             });
                             if (response.ok) {
                                 this.collections = await response.json();
@@ -185,28 +183,24 @@
                         this.loading = true;
                         this.error = '';
                         try {
-                            const token = localStorage.getItem('access_token');
-                            if (!token) {
-                                window.location.href = '/auth/login?redirect=/bottles/{{ bottle.id }}';
-                                return;
-                            }
-
                             let collectionId = this.selectedCollection;
 
                             // Create new collection if needed
                             if (this.selectedCollection === 'new' && this.newCollectionName) {
                                 const createResp = await fetch('/api/v1/collections', {
                                     method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'Authorization': `Bearer ${token}`
-                                    },
+                                    credentials: 'include',
+                                    headers: { 'Content-Type': 'application/json' },
                                     body: JSON.stringify({ name: this.newCollectionName })
                                 });
                                 if (createResp.ok) {
                                     const newColl = await createResp.json();
                                     collectionId = newColl.id;
                                 } else {
+                                    if (createResp.status === 401) {
+                                        window.location.href = '/auth/login?redirect=/bottles/{{ bottle.id }}';
+                                        return;
+                                    }
                                     this.error = 'Failed to create collection';
                                     this.loading = false;
                                     return;
@@ -216,10 +210,8 @@
                             // Add bottle to collection
                             const response = await fetch(`/api/v1/collections/${collectionId}/items`, {
                                 method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'Authorization': `Bearer ${token}`
-                                },
+                                credentials: 'include',
+                                headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({ bottle_id: {{ bottle.id }} })
                             });
 
@@ -230,6 +222,10 @@
                                     this.success = false;
                                 }, 2000);
                             } else {
+                                if (response.status === 401) {
+                                    window.location.href = '/auth/login?redirect=/bottles/{{ bottle.id }}';
+                                    return;
+                                }
                                 const data = await response.json();
                                 this.error = data.detail || 'Failed to add bottle';
                             }
@@ -243,18 +239,10 @@
                         this.loading = true;
                         this.error = '';
                         try {
-                            const token = localStorage.getItem('access_token');
-                            if (!token) {
-                                window.location.href = '/auth/login?redirect=/bottles/{{ bottle.id }}';
-                                return;
-                            }
-
                             const response = await fetch('/api/v1/alerts', {
                                 method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'Authorization': `Bearer ${token}`
-                                },
+                                credentials: 'include',
+                                headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({
                                     bottle_id: {{ bottle.id }},
                                     alert_type: this.alertType,

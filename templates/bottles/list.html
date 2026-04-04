@@ -96,7 +96,7 @@
     <div class="flex justify-center items-center space-x-2 mt-8">
         {% if page > 1 %}
         <a
-            href="/bottles?{% if search_query %}q={{ search_query }}&{% endif %}{% if selected_category %}category={{ selected_category }}&{% endif %}page={{ page - 1 }}"
+            href="/bottles?{% if search_query %}q={{ search_query | urlencode }}&{% endif %}{% if selected_category %}category={{ selected_category }}&{% endif %}page={{ page - 1 }}"
             class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-md transition"
         >
             Previous
@@ -109,7 +109,7 @@
 
         {% if page < total_pages %}
         <a
-            href="/bottles?{% if search_query %}q={{ search_query }}&{% endif %}{% if selected_category %}category={{ selected_category }}&{% endif %}page={{ page + 1 }}"
+            href="/bottles?{% if search_query %}q={{ search_query | urlencode }}&{% endif %}{% if selected_category %}category={{ selected_category }}&{% endif %}page={{ page + 1 }}"
             class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-md transition"
         >
             Next

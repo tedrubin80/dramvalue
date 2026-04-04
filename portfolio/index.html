@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DramValue — Whisky Price Intelligence Platform</title>
+    <meta name="description" content="Full-stack whisky price intelligence platform with automated scraping, real-time market analytics, and ML-powered forecasting.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* ================================================================
+           DESIGN TOKENS
+           ================================================================ */
+        :root {
+            --amber: #d4a574;
+            --amber-light: #e8c9a0;
+            --amber-dark: #b8864e;
+            --amber-glow: rgba(212, 165, 116, 0.15);
+            --amber-glow-strong: rgba(212, 165, 116, 0.3);
+            --peat: #1a1a1a;
+            --peat-light: #242424;
+            --peat-lighter: #2e2e2e;
+            --oak: #3a2f25;
+            --smoke: #8a8a8a;
+            --smoke-light: #b0b0b0;
+            --cream: #f5f0e8;
+            --green: #4ade80;
+            --red: #f87171;
+            --blue: #60a5fa;
+
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'DM Sans', -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* ================================================================
+           RESET & BASE
+           ================================================================ */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--peat);
+            color: var(--smoke-light);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background: var(--amber);
+            color: var(--peat);
+        }
+
+        a { color: var(--amber); text-decoration: none; }
+        a:hover { color: var(--amber-light); }
+
+        /* ================================================================
+           NOISE OVERLAY & BACKGROUND
+           ================================================================ */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* ================================================================
+           SCROLL ANIMATIONS
+           ================================================================ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+
+        /* ================================================================
+           LAYOUT
+           ================================================================ */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            padding: 8rem 0;
+            position: relative;
+        }
+
+        .section-label {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--amber);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .section-label::before {
+            content: '';
+            width: 2rem;
+            height: 1px;
+            background: var(--amber);
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 600;
+            color: var(--cream);
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        /* ================================================================
+           HERO
+           ================================================================ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding: 4rem 0;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 80%;
+            height: 200%;
+            background: radial-gradient(ellipse at center, var(--amber-glow) 0%, transparent 70%);
+            animation: hero-glow 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes hero-glow {
+            0% { opacity: 0.4; transform: translate(0, 0) scale(1); }
+            100% { opacity: 0.7; transform: translate(-5%, 5%) scale(1.1); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+        }
+
+        .hero-eyebrow {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--amber);
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeUp 1s var(--ease-out-expo) 0.2s forwards;
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 7vw, 6rem);
+            font-weight: 700;
+            color: var(--cream);
+            line-height: 1.05;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeUp 1s var(--ease-out-expo) 0.4s forwards;
+        }
+
+        .hero-title em {
+            font-style: italic;
+            color: var(--amber);
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--smoke-light);
+            max-width: 600px;
+            line-height: 1.8;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeUp 1s var(--ease-out-expo) 0.6s forwards;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeUp 1s var(--ease-out-expo) 0.8s forwards;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.875rem 2rem;
+            border-radius: 4px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            transition: all 0.3s var(--ease-out-quart);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--amber);
+            color: var(--peat);
+        }
+        .btn-primary:hover {
+            background: var(--amber-light);
+            color: var(--peat);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(212, 165, 116, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--cream);
+            border: 1px solid var(--peat-lighter);
+        }
+        .btn-outline:hover {
+            border-color: var(--amber);
+            color: var(--amber);
+            transform: translateY(-2px);
+        }
+
+        /* ================================================================
+           STATS BANNER
+           ================================================================ */
+        .stats-banner {
+            border-top: 1px solid var(--peat-lighter);
+            border-bottom: 1px solid var(--peat-lighter);
+            padding: 4rem 0;
+            background: linear-gradient(135deg, var(--peat) 0%, var(--peat-light) 100%);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 1rem;
+        }
+
+        .stat-number {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--cream);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+        .stat-number .accent { color: var(--amber); }
+
+        .stat-label {
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--smoke);
+        }
+
+        /* ================================================================
+           ARCHITECTURE
+           ================================================================ */
+        .arch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .arch-card {
+            background: var(--peat-light);
+            border: 1px solid var(--peat-lighter);
+            border-radius: 8px;
+            padding: 2rem;
+            transition: all 0.4s var(--ease-out-quart);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .arch-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--amber), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .arch-card:hover {
+            border-color: rgba(212, 165, 116, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .arch-card:hover::before {
+            opacity: 1;
+        }
+
+        .arch-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--amber-glow);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.25rem;
+            font-size: 1.4rem;
+        }
+
+        .arch-card h3 {
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--cream);
+            margin-bottom: 0.75rem;
+        }
+
+        .arch-card p {
+            font-size: 0.9rem;
+            color: var(--smoke);
+            line-height: 1.6;
+        }
+
+        .arch-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1.25rem;
+        }
+
+        .arch-tag {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            padding: 0.25rem 0.625rem;
+            background: rgba(212, 165, 116, 0.08);
+            border: 1px solid rgba(212, 165, 116, 0.15);
+            border-radius: 3px;
+            color: var(--amber);
+        }
+
+        /* ================================================================
+           CODE SHOWCASE
+           ================================================================ */
+        .code-section {
+            background: var(--peat-light);
+            border-top: 1px solid var(--peat-lighter);
+            border-bottom: 1px solid var(--peat-lighter);
+        }
+
+        .code-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 0;
+            border-bottom: 1px solid var(--peat-lighter);
+            overflow-x: auto;
+        }
+
+        .code-tab {
+            padding: 1rem 1.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--smoke);
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .code-tab:hover { color: var(--cream); }
+
+        .code-tab.active {
+            color: var(--amber);
+        }
+        .code-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--amber);
+        }
+
+        .code-panel {
+            display: none;
+            animation: codeFade 0.3s ease;
+        }
+        .code-panel.active { display: block; }
+
+        @keyframes codeFade {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .code-block {
+            padding: 2rem;
+            overflow-x: auto;
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            line-height: 1.8;
+            color: var(--smoke-light);
+        }
+
+        .code-block .comment { color: #5a6a5a; font-style: italic; }
+        .code-block .keyword { color: #c586c0; }
+        .code-block .function { color: #dcdcaa; }
+        .code-block .string { color: #ce9178; }
+        .code-block .decorator { color: #d4a574; }
+        .code-block .type { color: #4ec9b0; }
+        .code-block .number { color: #b5cea8; }
+        .code-block .param { color: #9cdcfe; }
+
+        /* ================================================================
+           PIPELINE FLOW
+           ================================================================ */
+        .pipeline {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin-top: 3rem;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+        }
+
+        .pipeline-step {
+            flex-shrink: 0;
+            text-align: center;
+            padding: 1.5rem 1.5rem;
+            background: var(--peat-light);
+            border: 1px solid var(--peat-lighter);
+            border-radius: 8px;
+            min-width: 160px;
+            transition: all 0.3s;
+        }
+
+        .pipeline-step:hover {
+            border-color: var(--amber-dark);
+            box-shadow: 0 0 30px var(--amber-glow);
+        }
+
+        .pipeline-step-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .pipeline-step-name {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--cream);
+            margin-bottom: 0.25rem;
+        }
+
+        .pipeline-step-detail {
+            font-size: 0.75rem;
+            color: var(--smoke);
+        }
+
+        .pipeline-arrow {
+            flex-shrink: 0;
+            color: var(--amber-dark);
+            font-size: 1.2rem;
+            padding: 0 0.5rem;
+        }
+
+        /* ================================================================
+           FEATURES GRID
+           ================================================================ */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1px;
+            background: var(--peat-lighter);
+            border: 1px solid var(--peat-lighter);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 3rem;
+        }
+
+        .feature-cell {
+            background: var(--peat);
+            padding: 2.5rem 2rem;
+            transition: background 0.3s;
+        }
+
+        .feature-cell:hover {
+            background: var(--peat-light);
+        }
+
+        .feature-cell h3 {
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--cream);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .feature-cell h3 span {
+            font-size: 1.2rem;
+        }
+
+        .feature-cell p {
+            font-size: 0.875rem;
+            color: var(--smoke);
+            line-height: 1.6;
+        }
+
+        /* ================================================================
+           SECURITY
+           ================================================================ */
+        .security-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+
+        .security-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.25rem;
+            background: var(--peat-light);
+            border-radius: 6px;
+            border-left: 3px solid var(--green);
+        }
+
+        .security-check {
+            color: var(--green);
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+
+        .security-item h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--cream);
+            margin-bottom: 0.25rem;
+        }
+
+        .security-item p {
+            font-size: 0.8rem;
+            color: var(--smoke);
+        }
+
+        /* ================================================================
+           DATASET
+           ================================================================ */
+        .dataset-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .dataset-card {
+            background: var(--peat-light);
+            border: 1px solid var(--peat-lighter);
+            border-radius: 8px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+
+        .dataset-card:hover {
+            border-color: var(--amber-dark);
+        }
+
+        .dataset-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--cream);
+            margin-bottom: 0.5rem;
+        }
+
+        .dataset-meta {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--amber);
+            margin-bottom: 1rem;
+        }
+
+        .dataset-fields {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.375rem;
+        }
+
+        .dataset-field {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            background: rgba(255,255,255,0.04);
+            border-radius: 3px;
+            color: var(--smoke);
+        }
+
+        /* ================================================================
+           TECH STACK
+           ================================================================ */
+        .stack-flow {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 2rem;
+        }
+
+        .stack-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: var(--peat-light);
+            border: 1px solid var(--peat-lighter);
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--cream);
+            transition: all 0.3s;
+        }
+
+        .stack-chip:hover {
+            border-color: var(--amber-dark);
+            background: var(--amber-glow);
+        }
+
+        .stack-chip .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* ================================================================
+           FOOTER
+           ================================================================ */
+        footer {
+            border-top: 1px solid var(--peat-lighter);
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            font-size: 0.9rem;
+            color: var(--smoke);
+            transition: color 0.2s;
+        }
+        .footer-links a:hover { color: var(--amber); }
+
+        .footer-copy {
+            font-size: 0.8rem;
+            color: var(--smoke);
+        }
+
+        /* ================================================================
+           RESPONSIVE
+           ================================================================ */
+        @media (max-width: 768px) {
+            section { padding: 5rem 0; }
+            .container { padding: 0 1.25rem; }
+            .hero { min-height: auto; padding: 6rem 0 4rem; }
+            .hero-title { font-size: 2.5rem; }
+            .pipeline { flex-direction: column; align-items: stretch; }
+            .pipeline-arrow { transform: rotate(90deg); text-align: center; }
+            .stat-number { font-size: 2.25rem; }
+            .code-block { font-size: 0.75rem; padding: 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ================================================================
+     HERO
+     ================================================================ -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-eyebrow">Full-Stack Data Engineering Project</div>
+            <h1 class="hero-title">
+                <em>DramValue</em><br>
+                Whisky Price<br>
+                Intelligence
+            </h1>
+            <p class="hero-subtitle">
+                A production-grade platform that scrapes 14 auction houses and retail sites,
+                normalizes whisky data across 9,600+ bottles, and serves real-time market analytics
+                through a FastAPI backend with async PostgreSQL.
+            </p>
+            <div class="hero-actions">
+                <a href="https://github.com/tedrubin80/tracker" class="btn btn-primary" target="_blank">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    View Source Code
+                </a>
+                <a href="#architecture" class="btn btn-outline">Explore Architecture</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================================================================
+     STATS BANNER
+     ================================================================ -->
+<div class="stats-banner">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-item reveal">
+                <div class="stat-number">9,642</div>
+                <div class="stat-label">Bottles Tracked</div>
+            </div>
+            <div class="stat-item reveal reveal-delay-1">
+                <div class="stat-number">16,994</div>
+                <div class="stat-label">Price Records</div>
+            </div>
+            <div class="stat-item reveal reveal-delay-2">
+                <div class="stat-number">14</div>
+                <div class="stat-label">Data Sources</div>
+            </div>
+            <div class="stat-item reveal reveal-delay-3">
+                <div class="stat-number"><span class="accent">$</span>1.7K</div>
+                <div class="stat-label">Avg Price USD</div>
+            </div>
+            <div class="stat-item reveal reveal-delay-4">
+                <div class="stat-number">82</div>
+                <div class="stat-label">Python Modules</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================
+     ARCHITECTURE
+     ================================================================ -->
+<section id="architecture">
+    <div class="container">
+        <div class="section-label reveal">System Design</div>
+        <h2 class="section-title reveal">Six-Container Architecture</h2>
+        <p class="reveal" style="max-width: 700px; color: var(--smoke);">
+            Docker Compose orchestrates the full stack: an async FastAPI application,
+            Celery workers for distributed scraping, a beat scheduler for cron-like task management,
+            PostgreSQL for persistence, Redis as a message broker, and a Tor proxy for anonymized scraping.
+        </p>
+
+        <div class="arch-grid">
+            <div class="arch-card reveal">
+                <div class="arch-icon">&#9881;</div>
+                <h3>FastAPI Application</h3>
+                <p>Async request handling with Jinja2 SSR templates. Serves the web frontend and REST API on a single uvicorn process with 4 workers.</p>
+                <div class="arch-tags">
+                    <span class="arch-tag">FastAPI</span>
+                    <span class="arch-tag">SQLAlchemy 2.0</span>
+                    <span class="arch-tag">Jinja2</span>
+                    <span class="arch-tag">Pydantic v2</span>
+                </div>
+            </div>
+            <div class="arch-card reveal reveal-delay-1">
+                <div class="arch-icon">&#128375;</div>
+                <h3>Celery Workers</h3>
+                <p>Distributed task queue running 14 Scrapy spiders on staggered schedules. Handles scraping, normalization, and maintenance jobs across 3 queues.</p>
+                <div class="arch-tags">
+                    <span class="arch-tag">Celery</span>
+                    <span class="arch-tag">Scrapy</span>
+                    <span class="arch-tag">Playwright</span>
+                    <span class="arch-tag">Beat Scheduler</span>
+                </div>
+            </div>
+            <div class="arch-card reveal reveal-delay-2">
+                <div class="arch-icon">&#128450;</div>
+                <h3>PostgreSQL 16</h3>
+                <p>Async connection pooling via asyncpg. 12 ORM models with composite indexes, unique constraints, and full-text search support.</p>
+                <div class="arch-tags">
+                    <span class="arch-tag">asyncpg</span>
+                    <span class="arch-tag">Alembic</span>
+                    <span class="arch-tag">12 Models</span>
+                </div>
+            </div>
+            <div class="arch-card reveal reveal-delay-3">
+                <div class="arch-icon">&#128274;</div>
+                <h3>Security Layer</h3>
+                <p>JWT auth with httpOnly cookies, rate limiting via slowapi, 6 security headers, CORS lockdown, and admin-gated health endpoints.</p>
+                <div class="arch-tags">
+                    <span class="arch-tag">JWT + bcrypt</span>
+                    <span class="arch-tag">slowapi</span>
+                    <span class="arch-tag">HSTS</span>
+                    <span class="arch-tag">CSP</span>
+                </div>
+            </div>
+            <div class="arch-card reveal">
+                <div class="arch-icon">&#128752;</div>
+                <h3>Redis Broker</h3>
+                <p>Message broker for Celery task distribution. Handles task serialization, result backend, and rate limiting state.</p>
+                <div class="arch-tags">
+                    <span class="arch-tag">Redis 7</span>
+                    <span class="arch-tag">Celery Broker</span>
+                </div>
+            </div>
+            <div class="arch-card reveal reveal-delay-1">
+                <div class="arch-icon">&#127760;</div>
+                <h3>Tor Proxy</h3>
+                <p>SOCKS5 proxy for anonymized scraping with automatic circuit rotation every 60 seconds. Network-isolated from the host.</p>
+                <div class="arch-tags">
+                    <span class="arch-tag">SOCKS5</span>
+                    <span class="arch-tag">Circuit Rotation</span>
+                    <span class="arch-tag">Docker Network</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================================================================
+     DATA PIPELINE
+     ================================================================ -->
+<section style="background: var(--peat-light); border-top: 1px solid var(--peat-lighter); border-bottom: 1px solid var(--peat-lighter);">
+    <div class="container">
+        <div class="section-label reveal">Data Engineering</div>
+        <h2 class="section-title reveal">Scraper Pipeline</h2>
+        <p class="reveal" style="max-width: 700px; color: var(--smoke);">
+            Each scraped item passes through a 4-stage pipeline that validates fields, normalizes bottle
+            names using fuzzy matching (RapidFuzz), deduplicates within and across runs, and persists
+            to PostgreSQL with proper foreign key relationships.
+        </p>
+
+        <div class="pipeline reveal">
+            <div class="pipeline-step">
+                <div class="pipeline-step-icon">&#128375;</div>
+                <div class="pipeline-step-name">Scrapy Spiders</div>
+                <div class="pipeline-step-detail">14 sources, 6-12h cycles</div>
+            </div>
+            <div class="pipeline-arrow">&#10141;</div>
+            <div class="pipeline-step">
+                <div class="pipeline-step-icon">&#9989;</div>
+                <div class="pipeline-step-name">Validation</div>
+                <div class="pipeline-step-detail">Required fields, types</div>
+            </div>
+            <div class="pipeline-arrow">&#10141;</div>
+            <div class="pipeline-step">
+                <div class="pipeline-step-icon">&#128260;</div>
+                <div class="pipeline-step-name">Normalization</div>
+                <div class="pipeline-step-detail">RapidFuzz matching</div>
+            </div>
+            <div class="pipeline-arrow">&#10141;</div>
+            <div class="pipeline-step">
+                <div class="pipeline-step-icon">&#128279;</div>
+                <div class="pipeline-step-name">Deduplication</div>
+                <div class="pipeline-step-detail">In-memory + DB check</div>
+            </div>
+            <div class="pipeline-arrow">&#10141;</div>
+            <div class="pipeline-step">
+                <div class="pipeline-step-icon">&#128450;</div>
+                <div class="pipeline-step-name">PostgreSQL</div>
+                <div class="pipeline-step-detail">Async batch insert</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================================================================
+     CODE SHOWCASE
+     ================================================================ -->
+<section class="code-section">
+    <div class="container">
+        <div class="section-label reveal">Code Examples</div>
+        <h2 class="section-title reveal">Under the Hood</h2>
+        <p class="reveal" style="max-width: 700px; color: var(--smoke); margin-bottom: 3rem;">
+            A look at the patterns and abstractions used throughout the codebase.
+        </p>
+
+        <div class="reveal" style="background: var(--peat); border: 1px solid var(--peat-lighter); border-radius: 8px; overflow: hidden;">
+            <div class="code-tabs">
+                <button class="code-tab active" onclick="showTab('scraper')">scraper_spider.py</button>
+                <button class="code-tab" onclick="showTab('pipeline')">pipeline.py</button>
+                <button class="code-tab" onclick="showTab('api')">api_route.py</button>
+                <button class="code-tab" onclick="showTab('security')">security.py</button>
+            </div>
+
+            <div id="tab-scraper" class="code-panel active">
+                <pre class="code-block"><span class="comment"># Shopify-based retail scraper with anti-bot evasion</span>
+
+<span class="keyword">class</span> <span class="type">DekantaSpider</span>(<span class="type">Spider</span>):
+    name = <span class="string">"dekanta"</span>
+    custom_settings = {<span class="string">"CONCURRENT_REQUESTS"</span>: <span class="number">2</span>}
+
+    <span class="keyword">def</span> <span class="function">start_requests</span>(<span class="param">self</span>):
+        <span class="comment"># Paginate through Shopify's products.json API</span>
+        <span class="keyword">for</span> page <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">50</span>):
+            <span class="keyword">yield</span> Request(
+                url=<span class="string">f"https://dekanta.com/products.json?page={page}"</span>,
+                callback=<span class="param">self</span>.parse_products,
+                meta={<span class="string">"page"</span>: page},
+            )
+
+    <span class="keyword">def</span> <span class="function">parse_products</span>(<span class="param">self</span>, <span class="param">response</span>):
+        data = response.json()
+        <span class="keyword">for</span> product <span class="keyword">in</span> data[<span class="string">"products"</span>]:
+            <span class="keyword">yield</span> RetailPriceItem(
+                source_name=<span class="string">"Dekanta"</span>,
+                bottle_name=product[<span class="string">"title"</span>],
+                price=product[<span class="string">"variants"</span>][<span class="number">0</span>][<span class="string">"price"</span>],
+                currency=<span class="string">"JPY"</span>,
+                source_url=<span class="string">f"https://dekanta.com/products/{product['handle']}"</span>,
+            )</pre>
+            </div>
+
+            <div id="tab-pipeline" class="code-panel">
+                <pre class="code-block"><span class="comment"># 4-stage Scrapy pipeline with fuzzy bottle matching</span>
+
+<span class="keyword">class</span> <span class="type">NormalizationPipeline</span>:
+    <span class="string">"""Matches scraped items to existing bottles using RapidFuzz."""</span>
+
+    <span class="keyword">def</span> <span class="function">process_item</span>(<span class="param">self</span>, <span class="param">item</span>, <span class="param">spider</span>):
+        normalized = normalize_bottle_name(item[<span class="string">"bottle_name"</span>])
+
+        <span class="comment"># Try exact match first, then fuzzy</span>
+        match = <span class="param">self</span>.exact_matches.get(normalized)
+        <span class="keyword">if not</span> match:
+            result = process.extractOne(
+                normalized,
+                <span class="param">self</span>.bottle_names,
+                scorer=fuzz.token_sort_ratio,
+                score_cutoff=<span class="number">85</span>,
+            )
+            <span class="keyword">if</span> result:
+                match = <span class="param">self</span>.name_to_bottle[result[<span class="number">0</span>]]
+
+        <span class="keyword">if</span> match:
+            item[<span class="string">"bottle_id"</span>] = match.id
+        <span class="keyword">else</span>:
+            <span class="comment"># Auto-create new bottle record</span>
+            bottle = <span class="keyword">await</span> create_bottle(normalized, item)
+            item[<span class="string">"bottle_id"</span>] = bottle.id
+
+        <span class="keyword">return</span> item</pre>
+            </div>
+
+            <div id="tab-api" class="code-panel">
+                <pre class="code-block"><span class="comment"># Async FastAPI route with SQLAlchemy + Jinja2 SSR</span>
+
+<span class="decorator">@router.get</span>(<span class="string">"/market"</span>, response_class=<span class="type">HTMLResponse</span>)
+<span class="keyword">async def</span> <span class="function">market_page</span>(
+    <span class="param">request</span>: <span class="type">Request</span>,
+    <span class="param">db</span>: <span class="type">AsyncSession</span> = Depends(get_db),
+):
+    <span class="comment"># Aggregate monthly trading volume across all houses</span>
+    monthly = <span class="keyword">await</span> db.execute(
+        select(
+            MarketStat.period_date,
+            func.sum(MarketStat.trading_volume).label(<span class="string">"volume"</span>),
+            func.avg(MarketStat.winning_bid_mean).label(<span class="string">"avg_bid"</span>),
+            func.sum(MarketStat.lots_count).label(<span class="string">"lots"</span>),
+        )
+        .group_by(MarketStat.period_date)
+        .order_by(MarketStat.period_date)
+    )
+
+    <span class="comment"># Auction house leaderboard by total volume</span>
+    leaderboard = <span class="keyword">await</span> db.execute(
+        select(
+            MarketStat.auction_name,
+            func.sum(MarketStat.trading_volume).label(<span class="string">"total"</span>),
+        )
+        .group_by(MarketStat.auction_name)
+        .order_by(func.sum(MarketStat.trading_volume).desc())
+    )
+
+    <span class="keyword">return</span> templates.TemplateResponse(<span class="string">"market.html"</span>, context)</pre>
+            </div>
+
+            <div id="tab-security" class="code-panel">
+                <pre class="code-block"><span class="comment"># Security middleware: headers, rate limiting, CORS lockdown</span>
+
+<span class="keyword">class</span> <span class="type">SecurityHeadersMiddleware</span>:
+    <span class="keyword">async def</span> <span class="function">__call__</span>(<span class="param">self</span>, <span class="param">scope</span>, <span class="param">receive</span>, <span class="param">send</span>):
+        <span class="keyword">async def</span> <span class="function">send_with_headers</span>(message):
+            <span class="keyword">if</span> message[<span class="string">"type"</span>] == <span class="string">"http.response.start"</span>:
+                message[<span class="string">"headers"</span>] += [
+                    (b<span class="string">"x-content-type-options"</span>, b<span class="string">"nosniff"</span>),
+                    (b<span class="string">"x-frame-options"</span>, b<span class="string">"DENY"</span>),
+                    (b<span class="string">"strict-transport-security"</span>,
+                     b<span class="string">"max-age=31536000; includeSubDomains"</span>),
+                    (b<span class="string">"referrer-policy"</span>,
+                     b<span class="string">"strict-origin-when-cross-origin"</span>),
+                ]
+            <span class="keyword">await</span> send(message)
+        <span class="keyword">await</span> <span class="param">self</span>.app(scope, receive, send_with_headers)
+
+<span class="comment"># Rate limiter configuration</span>
+limiter = <span class="type">Limiter</span>(key_func=get_remote_address)
+<span class="comment"># Login:     5/minute     Register:  3/hour</span>
+<span class="comment"># Export:    5/hour       AI:        10/hour</span>
+<span class="comment"># Global:    120/minute</span></pre>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================================================================
+     FEATURES
+     ================================================================ -->
+<section>
+    <div class="container">
+        <div class="section-label reveal">Platform Features</div>
+        <h2 class="section-title reveal">What It Does</h2>
+
+        <div class="features-grid reveal">
+            <div class="feature-cell">
+                <h3><span>&#128269;</span> Full-Text Search</h3>
+                <p>Search 9,600+ bottles by name, distillery, or category with ILIKE queries and input sanitization against LIKE injection.</p>
+            </div>
+            <div class="feature-cell">
+                <h3><span>&#128200;</span> Price History Charts</h3>
+                <p>Chart.js visualizations showing auction trends, price movements, and monthly trading volumes across all houses.</p>
+            </div>
+            <div class="feature-cell">
+                <h3><span>&#128202;</span> Market Analytics</h3>
+                <p>Aggregate market stats from 27 auction houses: $892M total volume, 3M+ lots tracked from 2005-2023.</p>
+            </div>
+            <div class="feature-cell">
+                <h3><span>&#128230;</span> Data Export</h3>
+                <p>CSV and JSON export endpoints with rate limiting. Filter by category, date range, and price bounds.</p>
+            </div>
+            <div class="feature-cell">
+                <h3><span>&#128100;</span> User Accounts</h3>
+                <p>JWT authentication with bcrypt hashing, httpOnly cookies, user collections, and price alert subscriptions.</p>
+            </div>
+            <div class="feature-cell">
+                <h3><span>&#129302;</span> AI Research</h3>
+                <p>Perplexity-powered endpoints for bottle research, market analysis, value estimation, and side-by-side comparison.</p>
+            </div>
+            <div class="feature-cell">
+                <h3><span>&#128214;</span> Brand Catalog</h3>
+                <p>Browse 4,800+ whisky brands by category (Scotch, Bourbon, Irish, Japanese) with pagination and search.</p>
+            </div>
+            <div class="feature-cell">
+                <h3><span>&#128293;</span> Trending Dashboard</h3>
+                <p>Real-time trending bottles based on recent auction activity, price velocity, and submission frequency.</p>
+            </div>
+            <div class="feature-cell">
+                <h3><span>&#128736;</span> Admin Panel</h3>
+                <p>Scraper management, moderation queue, manual spider triggering, and data quality monitoring.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================================================================
+     SECURITY
+     ================================================================ -->
+<section style="background: var(--peat-light); border-top: 1px solid var(--peat-lighter); border-bottom: 1px solid var(--peat-lighter);">
+    <div class="container">
+        <div class="section-label reveal">Hardened</div>
+        <h2 class="section-title reveal">Security Posture</h2>
+        <p class="reveal" style="max-width: 700px; color: var(--smoke);">
+            Comprehensive security audit identified and fixed 30+ vulnerabilities across
+            authentication, infrastructure, input validation, and API abuse surfaces.
+        </p>
+
+        <div class="security-grid">
+            <div class="security-item reveal">
+                <div class="security-check">&#10003;</div>
+                <div>
+                    <h4>Rate Limiting</h4>
+                    <p>slowapi with per-endpoint limits (5/min login, 3/hr register, 5/hr export)</p>
+                </div>
+            </div>
+            <div class="security-item reveal reveal-delay-1">
+                <div class="security-check">&#10003;</div>
+                <div>
+                    <h4>Security Headers</h4>
+                    <p>HSTS, X-Frame-Options, CSP, X-Content-Type-Options, Referrer-Policy</p>
+                </div>
+            </div>
+            <div class="security-item reveal reveal-delay-2">
+                <div class="security-check">&#10003;</div>
+                <div>
+                    <h4>IDOR Prevention</h4>
+                    <p>Collection export requires authentication + ownership verification</p>
+                </div>
+            </div>
+            <div class="security-item reveal reveal-delay-1">
+                <div class="security-check">&#10003;</div>
+                <div>
+                    <h4>XSS Mitigation</h4>
+                    <p>html.escape() on all user input in f-strings, Jinja2 auto-escaping</p>
+                </div>
+            </div>
+            <div class="security-item reveal reveal-delay-2">
+                <div class="security-check">&#10003;</div>
+                <div>
+                    <h4>Network Isolation</h4>
+                    <p>DB bound to 127.0.0.1, Tor ports removed from host, Redis internal-only</p>
+                </div>
+            </div>
+            <div class="security-item reveal reveal-delay-3">
+                <div class="security-check">&#10003;</div>
+                <div>
+                    <h4>Cookie-Only Auth</h4>
+                    <p>httpOnly + secure + SameSite=Lax cookies, no localStorage token storage</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================================================================
+     DATASET
+     ================================================================ -->
+<section>
+    <div class="container">
+        <div class="section-label reveal">Open Data</div>
+        <h2 class="section-title reveal">Published Datasets</h2>
+        <p class="reveal" style="max-width: 700px; color: var(--smoke);">
+            The complete whisky price dataset is published on Kaggle and Hugging Face
+            for research and analysis.
+        </p>
+
+        <div class="dataset-cards">
+            <div class="dataset-card reveal">
+                <h3>whisky_bottles.csv</h3>
+                <div class="dataset-meta">9,642 rows &middot; 14 columns</div>
+                <p style="font-size: 0.875rem; color: var(--smoke); margin-bottom: 1rem;">
+                    Complete whisky bottle catalog with distillery, category, region, age statement,
+                    and aggregate price statistics.
+                </p>
+                <div class="dataset-fields">
+                    <span class="dataset-field">name</span>
+                    <span class="dataset-field">distillery</span>
+                    <span class="dataset-field">category</span>
+                    <span class="dataset-field">age_statement</span>
+                    <span class="dataset-field">avg_price</span>
+                    <span class="dataset-field">min_price</span>
+                    <span class="dataset-field">max_price</span>
+                    <span class="dataset-field">price_count</span>
+                </div>
+            </div>
+            <div class="dataset-card reveal reveal-delay-1">
+                <h3>whisky_prices.csv</h3>
+                <div class="dataset-meta">16,994 rows &middot; 12 columns</div>
+                <p style="font-size: 0.875rem; color: var(--smoke); margin-bottom: 1rem;">
+                    Individual price records from auctions and retail with source attribution,
+                    USD conversion, and sale status.
+                </p>
+                <div class="dataset-fields">
+                    <span class="dataset-field">bottle_name</span>
+                    <span class="dataset-field">price_usd</span>
+                    <span class="dataset-field">source</span>
+                    <span class="dataset-field">source_name</span>
+                    <span class="dataset-field">auction_house</span>
+                    <span class="dataset-field">transaction_date</span>
+                    <span class="dataset-field">is_sold</span>
+                </div>
+            </div>
+            <div class="dataset-card reveal reveal-delay-2">
+                <h3>whisky_market_stats.csv</h3>
+                <div class="dataset-meta">1,719 rows &middot; 9 columns</div>
+                <p style="font-size: 0.875rem; color: var(--smoke); margin-bottom: 1rem;">
+                    Monthly aggregate auction statistics from 27 houses spanning 2005-2023
+                    with bid ranges and trading volumes.
+                </p>
+                <div class="dataset-fields">
+                    <span class="dataset-field">auction_name</span>
+                    <span class="dataset-field">period_date</span>
+                    <span class="dataset-field">winning_bid_mean</span>
+                    <span class="dataset-field">trading_volume</span>
+                    <span class="dataset-field">lots_count</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================================================================
+     TECH STACK
+     ================================================================ -->
+<section style="background: var(--peat-light); border-top: 1px solid var(--peat-lighter); border-bottom: 1px solid var(--peat-lighter);">
+    <div class="container">
+        <div class="section-label reveal">Stack</div>
+        <h2 class="section-title reveal">Built With</h2>
+
+        <div class="stack-flow reveal">
+            <div class="stack-chip"><span class="dot" style="background: #3776ab;"></span>Python 3.11</div>
+            <div class="stack-chip"><span class="dot" style="background: #009688;"></span>FastAPI</div>
+            <div class="stack-chip"><span class="dot" style="background: #d44a27;"></span>SQLAlchemy 2.0</div>
+            <div class="stack-chip"><span class="dot" style="background: #336791;"></span>PostgreSQL 16</div>
+            <div class="stack-chip"><span class="dot" style="background: #dc382d;"></span>Redis 7</div>
+            <div class="stack-chip"><span class="dot" style="background: #37b24d;"></span>Celery</div>
+            <div class="stack-chip"><span class="dot" style="background: #5fa839;"></span>Scrapy</div>
+            <div class="stack-chip"><span class="dot" style="background: #2496ed;"></span>Docker</div>
+            <div class="stack-chip"><span class="dot" style="background: #06b6d4;"></span>Tailwind CSS</div>
+            <div class="stack-chip"><span class="dot" style="background: #8bc0d0;"></span>Alpine.js</div>
+            <div class="stack-chip"><span class="dot" style="background: #ff6384;"></span>Chart.js</div>
+            <div class="stack-chip"><span class="dot" style="background: #9333ea;"></span>Playwright</div>
+            <div class="stack-chip"><span class="dot" style="background: #ff5a1f;"></span>Pydantic v2</div>
+            <div class="stack-chip"><span class="dot" style="background: #a855f7;"></span>Alembic</div>
+            <div class="stack-chip"><span class="dot" style="background: #f59e0b;"></span>RapidFuzz</div>
+            <div class="stack-chip"><span class="dot" style="background: #7c5aed;"></span>Tor Proxy</div>
+        </div>
+    </div>
+</section>
+
+<!-- ================================================================
+     FOOTER
+     ================================================================ -->
+<footer>
+    <div class="container">
+        <div class="footer-links">
+            <a href="https://github.com/tedrubin80/tracker" target="_blank">GitHub</a>
+            <a href="#architecture">Architecture</a>
+            <a href="#" onclick="return false;">Kaggle Dataset</a>
+            <a href="#" onclick="return false;">Hugging Face</a>
+        </div>
+        <p class="footer-copy">
+            DramValue &mdash; Built by Ted Rubin &middot; 2026
+        </p>
+    </div>
+</footer>
+
+<!-- ================================================================
+     SCRIPTS
+     ================================================================ -->
+<script>
+    // Code tabs
+    function showTab(name) {
+        document.querySelectorAll('.code-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.code-tab').forEach(t => t.classList.remove('active'));
+        document.getElementById('tab-' + name).classList.add('active');
+        event.target.classList.add('active');
+    }
+
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

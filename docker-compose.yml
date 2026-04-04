@@ -42,7 +42,7 @@ services:
     image: postgres:16-alpine
     container_name: wtracker-db
     ports:
-      - "5434:5432"
+      - "127.0.0.1:5434:5432"
     env_file:
       - .env
     volumes:
@@ -64,10 +64,10 @@ services:
     image: dpage/pgadmin4:latest
     container_name: wtracker-pgadmin
     ports:
-      - "5050:80"
+      - "127.0.0.1:5050:80"
     environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@wtracker.local
-      - PGADMIN_DEFAULT_PASSWORD=admin
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL:-admin@wtracker.local}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD:-changeme_not_admin}
       - PGADMIN_CONFIG_SERVER_MODE=False
     volumes:
       - pgadmin_data:/var/lib/pgadmin
@@ -152,9 +152,10 @@ services:
   tor:
     image: dperson/torproxy:latest
     container_name: wtracker-tor
-    ports:
-      - "9150:9050"  # SOCKS5 proxy (external:internal)
-      - "9151:9051"  # Control port
+    # No external ports - accessed via Docker network only
+    # ports:
+    #   - "127.0.0.1:9150:9050"
+    #   - "127.0.0.1:9151:9051"
     environment:
       - TOR_NewCircuitPeriod=60  # New circuit every 60 seconds
       - TOR_MaxCircuitDirtiness=600  # Max circuit age 10 minutes

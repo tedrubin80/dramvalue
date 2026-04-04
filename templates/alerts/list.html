@@ -68,12 +68,9 @@
                      x-data="{
                         async toggleAlert(alertId, action) {
                             try {
-                                const token = localStorage.getItem('access_token');
                                 const response = await fetch(`/api/v1/alerts/${alertId}/${action}`, {
                                     method: 'POST',
-                                    headers: {
-                                        'Authorization': `Bearer ${token}`
-                                    }
+                                    credentials: 'include'
                                 });
                                 if (response.ok) {
                                     window.location.reload();
@@ -85,12 +82,9 @@
                         async deleteAlert(alertId) {
                             if (!confirm('Delete this alert?')) return;
                             try {
-                                const token = localStorage.getItem('access_token');
                                 const response = await fetch(`/api/v1/alerts/${alertId}`, {
                                     method: 'DELETE',
-                                    headers: {
-                                        'Authorization': `Bearer ${token}`
-                                    }
+                                    credentials: 'include'
                                 });
                                 if (response.ok) {
                                     window.location.reload();

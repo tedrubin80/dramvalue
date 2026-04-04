@@ -48,25 +48,9 @@ if [ $? -eq 0 ] && [ -s "$BACKUP_FILE" ]; then
     REMAINING=$(ls db_*.sql.gz 2>/dev/null | wc -l)
     echo "[$(date)] Keeping $REMAINING backups" | tee -a "$LOG_FILE"
 
-    # Push to GitHub if requested
-    if [ "$PUSH_TO_GIT" = true ]; then
-        cd "$REPO_DIR"
-
-        # Only commit the latest backup (not all history)
-        cp "$BACKUP_FILE" "$BACKUP_DIR/db_latest_github.sql.gz"
-        git add backups/db_latest_github.sql.gz
-        git commit -m "Database backup: $(date '+%b %d, %Y %H:%M')
-
-Backup size: $SIZE
-
-Co-Authored-By: cron <noreply@dramvalue.com>" 2>/dev/null
-
-        if git push origin main 2>>"$LOG_FILE"; then
-            echo "[$(date)] Backup pushed to GitHub" | tee -a "$LOG_FILE"
-        else
-            echo "[$(date)] ERROR: Git push failed" | tee -a "$LOG_FILE"
-        fi
-    fi
+    # Note: Backups are stored locally only (not pushed to git for security).
+    # To enable remote backup, use a dedicated backup service (S3, etc.)
+    # with encryption at rest.
 else
     echo "[$(date)] ERROR: Backup failed" | tee -a "$LOG_FILE"
     rm -f "$BACKUP_FILE"

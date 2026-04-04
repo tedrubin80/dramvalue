@@ -134,10 +134,9 @@ REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 try:
     DATABASE_URL = str(app_settings.database_url)
 except Exception:
-    DATABASE_URL = os.getenv(
-        "DATABASE_URL",
-        "postgresql+asyncpg://wtracker:wtracker_dev_password_2024@db:5432/wtracker"
-    )
+    DATABASE_URL = os.getenv("DATABASE_URL")
+    if not DATABASE_URL:
+        raise RuntimeError("DATABASE_URL environment variable is required")
 
 # Feed exports (optional - for debugging)
 # FEEDS = {

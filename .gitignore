@@ -79,3 +79,9 @@ secrets/
 *.pem
 *.key
 credentials.json
+
+# Database backups (contain user data)
+backups/
+
+# Data exports and notebooks
+data/

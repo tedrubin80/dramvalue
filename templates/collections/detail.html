@@ -12,10 +12,9 @@
         async deleteItem(itemId) {
             this.loading = true;
             try {
-                const token = localStorage.getItem('access_token');
                 const response = await fetch(`/api/v1/collections/items/${itemId}`, {
                     method: 'DELETE',
-                    headers: { 'Authorization': `Bearer ${token}` }
+                    credentials: 'include'
                 });
                 if (response.ok) {
                     window.location.reload();
@@ -33,10 +32,9 @@
             if (!confirm('Are you sure you want to delete this entire collection?')) return;
             this.loading = true;
             try {
-                const token = localStorage.getItem('access_token');
                 const response = await fetch('/api/v1/collections/{{ collection.id }}', {
                     method: 'DELETE',
-                    headers: { 'Authorization': `Bearer ${token}` }
+                    credentials: 'include'
                 });
                 if (response.ok) {
                     window.location.href = '/collections';

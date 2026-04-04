@@ -56,12 +56,12 @@
                             const data = await response.json();
 
                             if (response.ok) {
-                                // Store tokens
-                                localStorage.setItem('access_token', data.access_token);
-                                localStorage.setItem('refresh_token', data.refresh_token);
-
-                                // Redirect to dashboard or intended page
-                                const redirect = new URLSearchParams(window.location.search).get('redirect') || '/';
+                                // Token is set as HTTP-only cookie by the server.
+                                // Redirect to intended page (relative paths only).
+                                let redirect = new URLSearchParams(window.location.search).get('redirect') || '/';
+                                if (!redirect.startsWith('/') || redirect.startsWith('//')) {
+                                    redirect = '/';
+                                }
                                 window.location.href = redirect;
                             } else {
                                 // Handle errors

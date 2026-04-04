@@ -19,13 +19,10 @@
             this.loading = true;
             this.error = '';
             try {
-                const token = localStorage.getItem('access_token');
                 const response = await fetch('/api/v1/collections', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         name: this.newCollectionName,
                         description: this.newCollectionDesc || null

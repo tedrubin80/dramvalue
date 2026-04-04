@@ -18,8 +18,10 @@ if git diff --quiet && git diff --cached --quiet && [ -z "$(git ls-files --other
     exit 0
 fi
 
-# Stage all tracked file changes and new files (exclude data/ and logs/)
-git add -A -- ':!data/' ':!logs/' ':!*.log' ':!*.pyc' ':!__pycache__/' ':!.env'
+# Stage only known-safe paths (never use git add -A)
+git add src/ templates/ scripts/ docker-compose.yml docker-compose.prod.yml \
+    Dockerfile pyproject.toml README.md CLAUDE.md .gitignore alembic/ tests/ \
+    2>/dev/null || true
 
 # Check if staging resulted in anything
 if git diff --cached --quiet; then
