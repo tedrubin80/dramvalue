@@ -1,0 +1,1720 @@
+auction_name,auction_slug,period_date,winning_bid_max,winning_bid_min,winning_bid_mean,trading_volume,lots_count,all_auctions_lots_count
+Australian Whisky Auctions,australian-whisky-auctions,2021-11-01 00:00:00+00,4078,6,241.85,120684,499,50235
+Australian Whisky Auctions,australian-whisky-auctions,2022-01-01 00:00:00+00,10750,3,266.01,200043,752,37474
+Australian Whisky Auctions,australian-whisky-auctions,2022-02-01 00:00:00+00,4218,16,268.45,118924,443,44602
+Australian Whisky Auctions,australian-whisky-auctions,2022-03-01 00:00:00+00,3060,28,281.94,153096,543,46544
+Australian Whisky Auctions,australian-whisky-auctions,2022-04-01 00:00:00+00,4544,23,273.62,112459,411,50951
+Australian Whisky Auctions,australian-whisky-auctions,2022-05-01 00:00:00+00,4711,9,277.79,161121,580,45291
+Australian Whisky Auctions,australian-whisky-auctions,2022-06-01 00:00:00+00,5639.4,22.6,287.48,122464.6,426,43553
+Australian Whisky Auctions,australian-whisky-auctions,2022-07-01 00:00:00+00,7764.4,2.3,280.71,248424.9,885,47042
+Australian Whisky Auctions,australian-whisky-auctions,2022-08-01 00:00:00+00,5276.1,11.7,279.31,136864.3,490,40649
+Australian Whisky Auctions,australian-whisky-auctions,2022-09-01 00:00:00+00,12392.4,10,351.64,136786.4,389,55429
+Australian Whisky Auctions,australian-whisky-auctions,2022-10-01 00:00:00+00,4379.7,11.2,287.59,139483.2,485,49660
+Australian Whisky Auctions,australian-whisky-auctions,2022-11-01 00:00:00+00,3901.7,0.6,211.74,196920,930,55340
+Australian Whisky Auctions,australian-whisky-auctions,2023-01-01 00:00:00+00,4854.7,5.8,250.37,217074.6,867,39650
+Australian Whisky Auctions,australian-whisky-auctions,2023-02-01 00:00:00+00,11625.9,11.3,232.06,210714.6,908,41735
+Australian Whisky Auctions,australian-whisky-auctions,2023-03-01 00:00:00+00,6580.1,10.4,237.31,190556.2,803,51697
+Australian Whisky Auctions,australian-whisky-auctions,2023-04-01 00:00:00+00,9178.6,3.2,302.18,230868.8,764,37629
+Australian Whisky Auctions,australian-whisky-auctions,2023-05-01 00:00:00+00,7396.3,1.1,233.88,154363.2,660,44950
+Australian Whisky Auctions,australian-whisky-auctions,2023-06-01 00:00:00+00,11980.3,8,236.57,224738.6,950,45412
+Australian Whisky Auctions,australian-whisky-auctions,2023-07-01 00:00:00+00,6817.6,8.9,223.53,271587.9,1215,33595
+Bonhams Whisky Auction,bonhams,2008-11-01 00:00:00+00,3400,40,243.25,92190,379,2282
+Bonhams Whisky Auction,bonhams,2009-03-01 00:00:00+00,1550,30,197.53,76840,389,1773
+Bonhams Whisky Auction,bonhams,2009-06-01 00:00:00+00,3600,30,315.88,107400,340,1988
+Bonhams Whisky Auction,bonhams,2009-08-01 00:00:00+00,2600,50,340.6,39850,117,1671
+Bonhams Whisky Auction,bonhams,2009-11-01 00:00:00+00,23000,40,346.65,174020,502,2329
+Bonhams Whisky Auction,bonhams,2009-12-01 00:00:00+00,4658,38,403.59,241753,599,2559
+Bonhams Whisky Auction,bonhams,2010-03-01 00:00:00+00,7500,40,333.33,108664,326,1857
+Bonhams Whisky Auction,bonhams,2010-06-01 00:00:00+00,21000,40,342.63,265194,774,2197
+Bonhams Whisky Auction,bonhams,2010-08-01 00:00:00+00,18000,50,1571.11,163395,104,1876
+Bonhams Whisky Auction,bonhams,2010-11-01 00:00:00+00,5500,20,261.51,123695,473,2372
+Bonhams Whisky Auction,bonhams,2010-12-01 00:00:00+00,7708,61,511.63,133024,260,1663
+Bonhams Whisky Auction,bonhams,2011-03-01 00:00:00+00,15000,20,350.36,139795,399,2237
+Bonhams Whisky Auction,bonhams,2011-04-01 00:00:00+00,13875,80,637.69,181105,284,2108
+Bonhams Whisky Auction,bonhams,2011-06-01 00:00:00+00,3200,30,437.96,118250,270,3060
+Bonhams Whisky Auction,bonhams,2011-08-01 00:00:00+00,4000,40,281.39,22230,79,1987
+Bonhams Whisky Auction,bonhams,2011-10-01 00:00:00+00,15000,20,581.16,140640,242,2933
+Bonhams Whisky Auction,bonhams,2011-12-01 00:00:00+00,38000,40,466.03,309911,665,3421
+Bonhams Whisky Auction,bonhams,2012-03-01 00:00:00+00,10000,40,522.23,151970,291,2689
+Bonhams Whisky Auction,bonhams,2012-05-01 00:00:00+00,10941,397,2402.95,103327,43,3015
+Bonhams Whisky Auction,bonhams,2012-06-01 00:00:00+00,14000,40,541.52,272928,504,3154
+Bonhams Whisky Auction,bonhams,2012-08-01 00:00:00+00,4500,50,405.76,32055,79,2782
+Bonhams Whisky Auction,bonhams,2012-10-01 00:00:00+00,8479,50,587.45,372444,634,3718
+Bonhams Whisky Auction,bonhams,2012-11-01 00:00:00+00,17904,188,2170.18,286464,132,3870
+Bonhams Whisky Auction,bonhams,2012-12-01 00:00:00+00,5500,40,334.82,66965,200,3901
+Bonhams Whisky Auction,bonhams,2013-02-01 00:00:00+00,7500,50,529.07,165070,312,4084
+Bonhams Whisky Auction,bonhams,2013-04-01 00:00:00+00,26209,46,807.81,166409,206,4402
+Bonhams Whisky Auction,bonhams,2013-05-01 00:00:00+00,10941,278,1592.68,159268,100,3798
+Bonhams Whisky Auction,bonhams,2013-06-01 00:00:00+00,5000,60,434.73,123030,283,5024
+Bonhams Whisky Auction,bonhams,2013-08-01 00:00:00+00,6000,280,865.71,24240,28,5223
+Bonhams Whisky Auction,bonhams,2013-10-01 00:00:00+00,9250,40,509.42,302087,593,6108
+Bonhams Whisky Auction,bonhams,2013-11-01 00:00:00+00,17904,169,1523.85,135623,89,6059
+Bonhams Whisky Auction,bonhams,2013-12-01 00:00:00+00,11000,60,611.28,114310,187,6365
+Bonhams Whisky Auction,bonhams,2014-02-01 00:00:00+00,13000,70,621.08,115520,186,5556
+Bonhams Whisky Auction,bonhams,2014-04-01 00:00:00+00,38543,53,487.87,453230,929,7415
+Bonhams Whisky Auction,bonhams,2014-05-01 00:00:00+00,2088,149,729.02,77276,106,5546
+Bonhams Whisky Auction,bonhams,2014-06-01 00:00:00+00,16000,100,618.55,295050,477,7191
+Bonhams Whisky Auction,bonhams,2014-08-01 00:00:00+00,23872,198,2073.13,534867,258,7168
+Bonhams Whisky Auction,bonhams,2014-10-01 00:00:00+00,12500,100,642.58,151650,236,8884
+Bonhams Whisky Auction,bonhams,2014-11-01 00:00:00+00,10941,99,1509.82,244591,162,8392
+Bonhams Whisky Auction,bonhams,2014-12-01 00:00:00+00,12000,100,649,162250,250,8401
+Bonhams Whisky Auction,bonhams,2015-02-01 00:00:00+00,25861,298,2347.55,727740,310,7589
+Bonhams Whisky Auction,bonhams,2015-03-01 00:00:00+00,17000,100,836.91,173240,207,8920
+Bonhams Whisky Auction,bonhams,2015-05-01 00:00:00+00,7460,129,1349.38,153829,114,8625
+Bonhams Whisky Auction,bonhams,2015-06-01 00:00:00+00,6000,100,613.46,95700,156,8690
+Bonhams Whisky Auction,bonhams,2015-08-01 00:00:00+00,308348,248,3753.49,1302461,347,9762
+Bonhams Whisky Auction,bonhams,2015-10-01 00:00:00+00,11000,100,952.5,129540,136,10600
+Bonhams Whisky Auction,bonhams,2015-11-01 00:00:00+00,16959,99,1708.21,345059,202,12620
+Bonhams Whisky Auction,bonhams,2015-12-01 00:00:00+00,14000,100,1300.26,200240,154,7338
+Bonhams Whisky Auction,bonhams,2016-01-01 00:00:00+00,39786,278,2050.98,447113,218,12604
+Bonhams Whisky Auction,bonhams,2016-03-01 00:00:00+00,12000,100,744.11,146590,197,11297
+Bonhams Whisky Auction,bonhams,2016-05-01 00:00:00+00,4476,139,710.33,38358,54,11184
+Bonhams Whisky Auction,bonhams,2016-06-01 00:00:00+00,14000,120,973.39,218040,224,11895
+Bonhams Whisky Auction,bonhams,2016-08-01 00:00:00+00,89520,348,3102.11,725894,234,12259
+Bonhams Whisky Auction,bonhams,2016-10-01 00:00:00+00,55000,100,1286.37,248270,193,14567
+Bonhams Whisky Auction,bonhams,2016-11-01 00:00:00+00,2685,109,794.97,51673,65,16312
+Bonhams Whisky Auction,bonhams,2016-12-01 00:00:00+00,7000,120,818.51,115410,141,9915
+Bonhams Whisky Auction,bonhams,2017-02-01 00:00:00+00,54707,348,2839.81,207306,73,14096
+Bonhams Whisky Auction,bonhams,2017-03-01 00:00:00+00,6000,90,797.15,103630,130,14468
+Bonhams Whisky Auction,bonhams,2017-05-01 00:00:00+00,11936,109,1359.7,194437,143,15351
+Bonhams Whisky Auction,bonhams,2017-06-01 00:00:00+00,17000,60,1076.01,196910,183,13228
+Bonhams Whisky Auction,bonhams,2017-08-01 00:00:00+00,308348,298,4355.1,1106195,254,14386
+Bonhams Whisky Auction,bonhams,2017-10-01 00:00:00+00,12500,150,1130.52,436380,386,18564
+Bonhams Whisky Auction,bonhams,2017-11-01 00:00:00+00,47744,159,2569.32,426507,166,21855
+Bonhams Whisky Auction,bonhams,2017-12-01 00:00:00+00,21000,100,1016.44,182960,180,13669
+Bonhams Whisky Auction,bonhams,2018-02-01 00:00:00+00,74600,218,3145.2,1081950,344,17815
+Bonhams Whisky Auction,bonhams,2018-03-01 00:00:00+00,14000,100,1165.19,181770,156,16837
+Bonhams Whisky Auction,bonhams,2018-05-01 00:00:00+00,646537,159,5749.84,1644453,286,18294
+Bonhams Whisky Auction,bonhams,2018-06-01 00:00:00+00,27000,100,1405.16,345670,246,16068
+Bonhams Whisky Auction,bonhams,2018-08-01 00:00:00+00,218828,377,4497.01,2113594,470,16684
+Bonhams Whisky Auction,bonhams,2018-10-01 00:00:00+00,700000,100,6477.62,1360300,210,22291
+Bonhams Whisky Auction,bonhams,2018-11-01 00:00:00+00,4476,129,1150.72,255460,222,26493
+Bonhams Whisky Auction,bonhams,2018-12-01 00:00:00+00,75000,21,2563.14,733058,286,24365
+Bonhams Whisky Auction,bonhams,2019-03-01 00:00:00+00,500000,100,6939.72,749490,108,29921
+Bonhams Whisky Auction,bonhams,2019-05-01 00:00:00+00,64653,79,1566.7,412041,263,25948
+Bonhams Whisky Auction,bonhams,2019-06-01 00:00:00+00,22000,190,1369.4,320440,234,25303
+Bonhams Whisky Auction,bonhams,2019-08-01 00:00:00+00,576910,397,5723.69,1963226,343,23428
+Bonhams Whisky Auction,bonhams,2019-10-01 00:00:00+00,80000,150,1790.71,583770,326,32793
+Bonhams Whisky Auction,bonhams,2019-11-01 00:00:00+00,5470,69,924.97,135970,147,31723
+Bonhams Whisky Auction,bonhams,2019-12-01 00:00:00+00,24000,100,1021,316510,310,31485
+Bonhams Whisky Auction,bonhams,2020-02-01 00:00:00+00,74600,149,2857.86,480120,168,31326
+Bonhams Whisky Auction,bonhams,2020-03-01 00:00:00+00,18000,100,1326.77,217590,164,22760
+Bonhams Whisky Auction,bonhams,2020-05-01 00:00:00+00,19893,179,1955.49,293324,150,28558
+Bonhams Whisky Auction,bonhams,2020-06-01 00:00:00+00,10000,220,1320.03,217805,165,28829
+Bonhams Whisky Auction,bonhams,2020-08-01 00:00:00+00,18696,177,2453.99,390184,159,34880
+Bonhams Whisky Auction,bonhams,2020-10-01 00:00:00+00,65000,280,2705.05,284030,105,43036
+Bonhams Whisky Auction,bonhams,2020-11-01 00:00:00+00,68037,340,6070.03,2306610,380,45162
+Bonhams Whisky Auction,bonhams,2020-12-01 00:00:00+00,8500,160,1347.5,107800,80,40691
+Bonhams Whisky Auction,bonhams,2021-01-01 00:00:00+00,79841,187,3423.47,845597,247,31995
+Bonhams Whisky Auction,bonhams,2021-02-01 00:00:00+00,88347,297,4906.46,402330,82,35065
+Bonhams Whisky Auction,bonhams,2021-05-01 00:00:00+00,19961,90,1908.08,295752,155,42530
+Bonhams Whisky Auction,bonhams,2021-06-01 00:00:00+00,16100,150,2386.84,136050,57,37702
+Bonhams Whisky Auction,bonhams,2021-08-01 00:00:00+00,339514,235,4425.66,1858779,420,42409
+Bonhams Whisky Auction,bonhams,2021-09-01 00:00:00+00,7000,100,1321.11,107010,81,38731
+Bonhams Whisky Auction,bonhams,2021-11-01 00:00:00+00,90727,124,5548.16,1952953,352,50235
+Bonhams Whisky Auction,bonhams,2021-12-01 00:00:00+00,68000,110,2771.25,133020,48,44158
+Bonhams Whisky Auction,bonhams,2022-01-01 00:00:00+00,94639,264,4541.35,1789291,394,37474
+Bonhams Whisky Auction,bonhams,2022-03-01 00:00:00+00,65000,220,1590.13,252830,159,46544
+Bonhams Whisky Auction,bonhams,2022-04-01 00:00:00+00,95000,190,3556.34,465880,131,50951
+Bonhams Whisky Auction,bonhams,2022-05-01 00:00:00+00,394785.8,171,4992.81,2800964.4,561,45291
+Bonhams Whisky Auction,bonhams,2022-06-01 00:00:00+00,65000,130,2208.1,324590,147,43553
+Bonhams Whisky Auction,bonhams,2022-08-01 00:00:00+00,7360.7,136.7,1975.76,187697.4,95,40649
+Bonhams Whisky Auction,bonhams,2022-09-01 00:00:00+00,22000,5,1667.05,256725,154,55429
+Bonhams Whisky Auction,bonhams,2022-11-01 00:00:00+00,65139,206.3,3249.37,591385.6,182,55340
+Bonhams Whisky Auction,bonhams,2022-12-01 00:00:00+00,13000,140,1502.89,67630,45,53794
+Bonhams Whisky Auction,bonhams,2023-05-01 00:00:00+00,30232.2,150,2639.93,583424.6,221,44950
+Catawiki Whisky Auction,catawiki,2019-01-01 00:00:00+00,3220,9,150.55,102676,682,18471
+Catawiki Whisky Auction,catawiki,2019-02-01 00:00:00+00,5298,1,178.34,452438,2537,27105
+Catawiki Whisky Auction,catawiki,2019-03-01 00:00:00+00,6154,1,175.37,475423,2711,29921
+Catawiki Whisky Auction,catawiki,2019-04-01 00:00:00+00,7281,1,195.34,508269,2602,27392
+Catawiki Whisky Auction,catawiki,2019-05-01 00:00:00+00,4140,2,167.48,406486,2427,25948
+Catawiki Whisky Auction,catawiki,2019-06-01 00:00:00+00,8426,2,166.25,401320,2414,25303
+Catawiki Whisky Auction,catawiki,2019-07-01 00:00:00+00,6280,1,159.26,336844,2115,27617
+Catawiki Whisky Auction,catawiki,2019-08-01 00:00:00+00,12761,1,157.8,371154,2352,23428
+Catawiki Whisky Auction,catawiki,2019-09-01 00:00:00+00,2716,1,151.58,473675,3125,30169
+Catawiki Whisky Auction,catawiki,2019-10-01 00:00:00+00,7917,1,142.06,474350,3339,32793
+Catawiki Whisky Auction,catawiki,2019-11-01 00:00:00+00,5806,3,156.43,548601,3507,31723
+Catawiki Whisky Auction,catawiki,2019-12-01 00:00:00+00,4261,1,150.06,530471,3535,31485
+Catawiki Whisky Auction,catawiki,2020-01-01 00:00:00+00,5871,1,161.39,507099,3142,26222
+Catawiki Whisky Auction,catawiki,2020-02-01 00:00:00+00,5892,1,149.27,630386,4223,31326
+Catawiki Whisky Auction,catawiki,2020-03-01 00:00:00+00,6696,13,180.01,696113,3867,22760
+Catawiki Whisky Auction,catawiki,2020-04-01 00:00:00+00,7431,5,180.44,638199,3537,17023
+Catawiki Whisky Auction,catawiki,2020-05-01 00:00:00+00,8690,13,175.4,765991,4367,28558
+Catawiki Whisky Auction,catawiki,2020-06-01 00:00:00+00,6126,9,171.66,719761,4193,28829
+Catawiki Whisky Auction,catawiki,2020-07-01 00:00:00+00,6511,14,170.8,592837,3471,31656
+Catawiki Whisky Auction,catawiki,2020-08-01 00:00:00+00,5673,1,167.51,447424,2671,34880
+Catawiki Whisky Auction,catawiki,2020-09-01 00:00:00+00,5552,1,165.09,474962,2877,36287
+Catawiki Whisky Auction,catawiki,2020-10-01 00:00:00+00,7258,5,174.37,739485,4241,43036
+Catawiki Whisky Auction,catawiki,2020-11-01 00:00:00+00,27062,2,202.97,1041663,5132,45162
+Catawiki Whisky Auction,catawiki,2020-12-01 00:00:00+00,8984,7,189.25,960643,5076,40691
+Catawiki Whisky Auction,catawiki,2021-01-01 00:00:00+00,6293,7,194.09,905052,4663,31995
+Catawiki Whisky Auction,catawiki,2021-02-01 00:00:00+00,5292,9,187.78,904720,4818,35065
+Catawiki Whisky Auction,catawiki,2021-03-01 00:00:00+00,8656,14,187.35,928329,4955,38735
+Catawiki Whisky Auction,catawiki,2021-04-01 00:00:00+00,8094,5,162.83,766287,4706,43356
+Catawiki Whisky Auction,catawiki,2021-05-01 00:00:00+00,5212,9,178.74,778943,4358,42530
+Catawiki Whisky Auction,catawiki,2021-06-01 00:00:00+00,5576,9,179.78,651526,3624,37702
+Catawiki Whisky Auction,catawiki,2021-07-01 00:00:00+00,7699,9,188.65,568226,3012,36170
+Catawiki Whisky Auction,catawiki,2021-08-01 00:00:00+00,4779,3,170.76,544215,3187,42409
+Catawiki Whisky Auction,catawiki,2021-09-01 00:00:00+00,8997,1,177.9,729223,4099,38731
+Catawiki Whisky Auction,catawiki,2021-10-01 00:00:00+00,12677,1,175.99,743018,4222,43367
+Catawiki Whisky Auction,catawiki,2021-11-01 00:00:00+00,16973,6,213.12,827955,3885,50235
+Catawiki Whisky Auction,catawiki,2021-12-01 00:00:00+00,15984,3,183.2,929742,5075,44158
+Catawiki Whisky Auction,catawiki,2022-01-01 00:00:00+00,17556,8,199.76,941460,4713,37474
+Catawiki Whisky Auction,catawiki,2022-02-01 00:00:00+00,14991,1,189.75,927699,4889,44602
+Catawiki Whisky Auction,catawiki,2022-03-01 00:00:00+00,8308,1,182.61,959411,5254,46544
+Catawiki Whisky Auction,catawiki,2022-04-01 00:00:00+00,25699,1,197.58,941881,4767,50951
+Catawiki Whisky Auction,catawiki,2022-05-01 00:00:00+00,19308,1,195.52,1003218.2,5131,45291
+Catawiki Whisky Auction,catawiki,2022-06-01 00:00:00+00,6080.4,2.6,187.23,802829.7,4288,43553
+Catawiki Whisky Auction,catawiki,2022-07-01 00:00:00+00,10769.4,2.5,190.26,797960,4194,47042
+Catawiki Whisky Auction,catawiki,2022-08-01 00:00:00+00,4468.7,7.6,195.02,712988.6,3656,40649
+Catawiki Whisky Auction,catawiki,2022-09-01 00:00:00+00,4774,6.9,197.89,828783,4188,55429
+Catawiki Whisky Auction,catawiki,2022-10-01 00:00:00+00,7978.3,2.6,186.43,1092109,5858,49660
+Catawiki Whisky Auction,catawiki,2022-11-01 00:00:00+00,5591.3,4.4,185.15,1115317.1,6024,55340
+Catawiki Whisky Auction,catawiki,2022-12-01 00:00:00+00,14234.4,2.6,184.13,1087289.9,5905,53794
+Catawiki Whisky Auction,catawiki,2023-01-01 00:00:00+00,15517.5,5.3,218.02,1212867.5,5563,39650
+Catawiki Whisky Auction,catawiki,2023-02-01 00:00:00+00,42311,1.8,222.78,1278102.1,5737,41735
+Catawiki Whisky Auction,catawiki,2023-03-01 00:00:00+00,7470.1,5.4,194.26,1244804.2,6408,51697
+Catawiki Whisky Auction,catawiki,2023-04-01 00:00:00+00,14957.8,0,192.42,1095848.9,5695,37629
+Catawiki Whisky Auction,catawiki,2023-05-01 00:00:00+00,11398.8,2.6,196.08,1140037.8,5814,44950
+Catawiki Whisky Auction,catawiki,2023-06-01 00:00:00+00,10307.4,0,203.41,809349.4,3979,45412
+Catawiki Whisky Auction,catawiki,2023-07-01 00:00:00+00,8166.5,5.2,183.93,880485.2,4787,33595
+Celtic Whiskey Auction,celtic-whiskey-auction,2018-11-01 00:00:00+00,24697,0,368.4,72206,196,26493
+Celtic Whiskey Auction,celtic-whiskey-auction,2019-01-01 00:00:00+00,21912,4,305.07,72911,239,18471
+Celtic Whiskey Auction,celtic-whiskey-auction,2019-03-01 00:00:00+00,2794,19,251.96,54423,216,29921
+Celtic Whiskey Auction,celtic-whiskey-auction,2019-05-01 00:00:00+00,28893,7,410.16,93517,228,25948
+Celtic Whiskey Auction,celtic-whiskey-auction,2019-07-01 00:00:00+00,5742,4,220.72,58932,267,27617
+Celtic Whiskey Auction,celtic-whiskey-auction,2019-08-01 00:00:00+00,1823,1171,1334.4,20016,15,23428
+Celtic Whiskey Auction,celtic-whiskey-auction,2019-09-01 00:00:00+00,7134,17,227.9,47176,207,30169
+Celtic Whiskey Auction,celtic-whiskey-auction,2019-11-01 00:00:00+00,2580,0,151.44,45130,298,31723
+Celtic Whiskey Auction,celtic-whiskey-auction,2020-01-01 00:00:00+00,8508,0,265.42,47511,179,26222
+Celtic Whiskey Auction,celtic-whiskey-auction,2020-03-01 00:00:00+00,3242,0,146.19,57451,393,22760
+Celtic Whiskey Auction,celtic-whiskey-auction,2020-05-01 00:00:00+00,2911,4,256.4,41024,160,28558
+Celtic Whiskey Auction,celtic-whiskey-auction,2020-07-01 00:00:00+00,2759,5,182.62,84917,465,31656
+Celtic Whiskey Auction,celtic-whiskey-auction,2020-09-01 00:00:00+00,2429,11,188.02,50012,266,36287
+Celtic Whiskey Auction,celtic-whiskey-auction,2020-11-01 00:00:00+00,3076,5,170.69,44209,259,45162
+Celtic Whiskey Auction,celtic-whiskey-auction,2021-01-01 00:00:00+00,9530,15,390.87,64494,165,31995
+Celtic Whiskey Auction,celtic-whiskey-auction,2021-03-01 00:00:00+00,4371,4,248.17,77925,314,38735
+Celtic Whiskey Auction,celtic-whiskey-auction,2021-05-01 00:00:00+00,6705,28,308.43,63537,206,42530
+Celtic Whiskey Auction,celtic-whiskey-auction,2021-06-01 00:00:00+00,3911,8,252.07,22182,88,37702
+Celtic Whiskey Auction,celtic-whiskey-auction,2021-07-01 00:00:00+00,1606,30,274.94,27219,99,36170
+Celtic Whiskey Auction,celtic-whiskey-auction,2021-08-01 00:00:00+00,1244,36,204.35,21048,103,42409
+Celtic Whiskey Auction,celtic-whiskey-auction,2021-09-01 00:00:00+00,7089,15,295.26,28640,97,38731
+Celtic Whiskey Auction,celtic-whiskey-auction,2021-10-01 00:00:00+00,4648,9,164.88,25556,155,43367
+Celtic Whiskey Auction,celtic-whiskey-auction,2021-11-01 00:00:00+00,4844,8,171.54,79765,465,50235
+Celtic Whiskey Auction,celtic-whiskey-auction,2021-12-01 00:00:00+00,18049,8,348.87,49888,143,44158
+Celtic Whiskey Auction,celtic-whiskey-auction,2022-01-01 00:00:00+00,1227,24,284.69,17651,62,37474
+Celtic Whiskey Auction,celtic-whiskey-auction,2022-02-01 00:00:00+00,1964,26,292.43,33045,113,44602
+Celtic Whiskey Auction,celtic-whiskey-auction,2022-03-01 00:00:00+00,2338,16,338.32,32817,97,46544
+Celtic Whiskey Auction,celtic-whiskey-auction,2022-04-01 00:00:00+00,2904.3,23.6,274.58,41736.6,152,50951
+Celtic Whiskey Auction,celtic-whiskey-auction,2022-05-01 00:00:00+00,3953.2,9.4,334.08,45768.3,137,45291
+Celtic Whiskey Auction,celtic-whiskey-auction,2022-06-01 00:00:00+00,1594.6,18.1,199.39,17346.6,87,43553
+Celtic Whiskey Auction,celtic-whiskey-auction,2022-07-01 00:00:00+00,7933.7,22.7,387.73,56220.5,145,47042
+Celtic Whiskey Auction,celtic-whiskey-auction,2022-08-01 00:00:00+00,5175.1,16.1,303.14,39105.6,129,40649
+Celtic Whiskey Auction,celtic-whiskey-auction,2022-09-01 00:00:00+00,8402.3,26.8,445.74,45465.1,102,55429
+Celtic Whiskey Auction,celtic-whiskey-auction,2022-10-01 00:00:00+00,4483.1,7.8,334.03,44760.2,134,49660
+Celtic Whiskey Auction,celtic-whiskey-auction,2022-11-01 00:00:00+00,2322.5,12,168.29,27432,163,55340
+Celtic Whiskey Auction,celtic-whiskey-auction,2022-12-01 00:00:00+00,4402.3,7.9,293.98,37335.4,127,53794
+Celtic Whiskey Auction,celtic-whiskey-auction,2023-02-01 00:00:00+00,2112.6,24,276.83,25744.9,93,41735
+Celtic Whiskey Auction,celtic-whiskey-auction,2023-03-01 00:00:00+00,1939.7,6.2,241.98,33635.6,139,51697
+Celtic Whiskey Auction,celtic-whiskey-auction,2023-04-01 00:00:00+00,1340.9,17.9,225.64,35425.9,157,37629
+Celtic Whiskey Auction,celtic-whiskey-auction,2023-05-01 00:00:00+00,1615.9,4.4,158.4,14730.9,93,44950
+Celtic Whiskey Auction,celtic-whiskey-auction,2023-06-01 00:00:00+00,2064.1,4.3,192.85,26613,138,45412
+Celtic Whiskey Auction,celtic-whiskey-auction,2023-07-01 00:00:00+00,2348.3,13.7,222.66,26496.8,119,33595
+European Whisky Auctions,european-whisky-auctions,2021-04-01 00:00:00+00,1873,15,208.45,18552,89,43356
+European Whisky Auctions,european-whisky-auctions,2021-05-01 00:00:00+00,8264,13,281.36,34326,122,42530
+European Whisky Auctions,european-whisky-auctions,2021-06-01 00:00:00+00,1986,22,216.44,19263,89,37702
+European Whisky Auctions,european-whisky-auctions,2021-07-01 00:00:00+00,2454,22,245.91,28280,115,36170
+European Whisky Auctions,european-whisky-auctions,2021-08-01 00:00:00+00,1367,20,235.67,20975,89,42409
+European Whisky Auctions,european-whisky-auctions,2021-09-01 00:00:00+00,2021,13,213.18,21531,101,38731
+European Whisky Auctions,european-whisky-auctions,2021-10-01 00:00:00+00,1071,21,226.56,24469,108,43367
+European Whisky Auctions,european-whisky-auctions,2021-11-01 00:00:00+00,1189,17,189.3,25555,135,50235
+European Whisky Auctions,european-whisky-auctions,2021-12-01 00:00:00+00,4266,10,312.37,54664,175,44158
+European Whisky Auctions,european-whisky-auctions,2022-01-01 00:00:00+00,3575,15,337.22,42490,126,37474
+European Whisky Auctions,european-whisky-auctions,2022-02-01 00:00:00+00,667,12,115.94,4174,36,44602
+European Whisky Auctions,european-whisky-auctions,2022-03-01 00:00:00+00,1836,12,204.44,31893,156,46544
+European Whisky Auctions,european-whisky-auctions,2022-04-01 00:00:00+00,1978,18,229.32,29811,130,50951
+European Whisky Auctions,european-whisky-auctions,2022-05-01 00:00:00+00,1870.3,31.5,290.52,39800.6,137,45291
+European Whisky Auctions,european-whisky-auctions,2022-06-01 00:00:00+00,1832.3,14.7,233.22,35915.6,154,43553
+European Whisky Auctions,european-whisky-auctions,2022-07-01 00:00:00+00,2896.4,0,246.36,33998.2,138,47042
+European Whisky Auctions,european-whisky-auctions,2022-09-01 00:00:00+00,1406,14.8,302.34,45351.4,150,55429
+European Whisky Auctions,european-whisky-auctions,2022-10-01 00:00:00+00,3965.9,17.2,264.85,41051.7,155,49660
+European Whisky Auctions,european-whisky-auctions,2022-11-01 00:00:00+00,4645.1,14.6,328.77,48329.5,147,55340
+European Whisky Auctions,european-whisky-auctions,2022-12-01 00:00:00+00,4257.1,17.2,289.55,50381,174,53794
+European Whisky Auctions,european-whisky-auctions,2023-01-01 00:00:00+00,2194.1,22.8,248.2,39712.6,160,39650
+European Whisky Auctions,european-whisky-auctions,2023-02-01 00:00:00+00,4137.4,15,280.45,32813.2,117,41735
+European Whisky Auctions,european-whisky-auctions,2023-03-01 00:00:00+00,2766.9,15.1,286.32,35504.2,124,51697
+European Whisky Auctions,european-whisky-auctions,2023-04-01 00:00:00+00,4201.6,15.2,304.35,42000.4,138,37629
+European Whisky Auctions,european-whisky-auctions,2023-05-01 00:00:00+00,3780.6,19.1,293.66,44342.1,151,44950
+European Whisky Auctions,european-whisky-auctions,2023-06-01 00:00:00+00,1719.9,25.8,267.57,35854.2,134,45412
+European Whisky Auctions,european-whisky-auctions,2023-07-01 00:00:00+00,1287.7,0,215.6,22853.6,106,33595
+Global Whisky Auctions,global-whisky-auctions,2017-02-01 00:00:00+00,1200,1.5,145.59,18780.5,129,14096
+Global Whisky Auctions,global-whisky-auctions,2017-03-01 00:00:00+00,1400,6,159.24,16083,101,14468
+Global Whisky Auctions,global-whisky-auctions,2017-05-01 00:00:00+00,2000,1.5,155.98,16378,105,15351
+Global Whisky Auctions,global-whisky-auctions,2017-06-01 00:00:00+00,2300,0.5,272.95,20744,76,13228
+Global Whisky Auctions,global-whisky-auctions,2017-07-01 00:00:00+00,890,20,169.05,19272,114,14562
+Global Whisky Auctions,global-whisky-auctions,2017-09-01 00:00:00+00,5100,4.5,228.07,23719,104,15423
+Global Whisky Auctions,global-whisky-auctions,2017-10-01 00:00:00+00,2161,5,136.31,21674,159,18564
+Global Whisky Auctions,global-whisky-auctions,2017-11-01 00:00:00+00,2451,1.5,186.43,21440,115,21855
+Global Whisky Auctions,global-whisky-auctions,2017-12-01 00:00:00+00,4000,10.5,216.05,37808.5,175,13669
+Global Whisky Auctions,global-whisky-auctions,2018-01-01 00:00:00+00,3950,5,177.55,26278,148,15171
+Global Whisky Auctions,global-whisky-auctions,2018-03-01 00:00:00+00,4450,14,187.38,25859,138,16837
+Global Whisky Auctions,global-whisky-auctions,2018-04-01 00:00:00+00,1600,20,122.03,17084,140,20978
+Global Whisky Auctions,global-whisky-auctions,2018-05-01 00:00:00+00,4050,27,322.85,42616,132,18294
+Global Whisky Auctions,global-whisky-auctions,2018-06-01 00:00:00+00,2620,16,218.9,35900,164,16068
+Global Whisky Auctions,global-whisky-auctions,2018-07-01 00:00:00+00,4400,34,323.88,44695,138,19846
+Global Whisky Auctions,global-whisky-auctions,2018-08-01 00:00:00+00,4500,16,305.44,46732,153,16684
+Global Whisky Auctions,global-whisky-auctions,2018-09-01 00:00:00+00,8650,17,257.39,38094,148,22553
+Global Whisky Auctions,global-whisky-auctions,2018-10-01 00:00:00+00,1601,15,140.63,24047,171,22291
+Global Whisky Auctions,global-whisky-auctions,2018-11-01 00:00:00+00,1225,10.5,121.74,23130.5,190,26493
+Global Whisky Auctions,global-whisky-auctions,2018-12-01 00:00:00+00,6850,6.5,176.41,36870.5,209,24365
+Global Whisky Auctions,global-whisky-auctions,2019-01-01 00:00:00+00,2900,4,178.49,12137.5,68,18471
+Global Whisky Auctions,global-whisky-auctions,2019-02-01 00:00:00+00,6000,16,181.25,39151,216,27105
+Global Whisky Auctions,global-whisky-auctions,2019-03-01 00:00:00+00,840,5.5,120.03,19324.5,161,29921
+Global Whisky Auctions,global-whisky-auctions,2019-04-01 00:00:00+00,1225,11,132.47,23579,178,27392
+Global Whisky Auctions,global-whisky-auctions,2019-05-01 00:00:00+00,3000,12,172.04,22193,129,25948
+Global Whisky Auctions,global-whisky-auctions,2019-06-01 00:00:00+00,5100,14,214.43,24660,115,25303
+Global Whisky Auctions,global-whisky-auctions,2019-07-01 00:00:00+00,1045,15,118.23,10168,86,27617
+Global Whisky Auctions,global-whisky-auctions,2019-09-01 00:00:00+00,3500,7,212.98,35142,165,30169
+Global Whisky Auctions,global-whisky-auctions,2019-10-01 00:00:00+00,1875,8.5,163.41,11112,68,32793
+Global Whisky Auctions,global-whisky-auctions,2019-11-01 00:00:00+00,3251,21,219.63,12519,57,31723
+Global Whisky Auctions,global-whisky-auctions,2020-02-01 00:00:00+00,1600,3,183.48,13761,75,31326
+Global Whisky Auctions,global-whisky-auctions,2020-03-01 00:00:00+00,2750,3,151.16,7709,51,22760
+Global Whisky Auctions,global-whisky-auctions,2020-04-01 00:00:00+00,970,3,96.84,3583,37,17023
+Global Whisky Auctions,global-whisky-auctions,2020-06-01 00:00:00+00,2575,15,210.76,9695,46,28829
+Global Whisky Auctions,global-whisky-auctions,2020-08-01 00:00:00+00,4000,16,755.15,19634,26,34880
+Global Whisky Auctions,global-whisky-auctions,2020-11-01 00:00:00+00,2025,16,285.61,10282,36,45162
+Global Whisky Auctions,global-whisky-auctions,2020-12-01 00:00:00+00,3333,29,335.25,5364,16,40691
+Global Whisky Auctions,global-whisky-auctions,2021-02-01 00:00:00+00,500,25,107.06,1927,18,35065
+Global Whisky Auctions,global-whisky-auctions,2021-04-01 00:00:00+00,1775,65,349.17,4190,12,43356
+Global Whisky Auctions,global-whisky-auctions,2021-05-01 00:00:00+00,2600,80,496.82,5465,11,42530
+Global Whisky Auctions,global-whisky-auctions,2021-07-01 00:00:00+00,620,50,223.67,1342,6,36170
+Highland Whisky Auctions,highland-whisky-auctions,2021-12-01 00:00:00+00,1475,4,169.54,14071.75,83,44158
+Highland Whisky Auctions,highland-whisky-auctions,2022-01-01 00:00:00+00,3950,4,142.46,16525.13,116,37474
+Highland Whisky Auctions,highland-whisky-auctions,2022-02-01 00:00:00+00,3900,5.5,135.72,29587.2,218,44602
+Highland Whisky Auctions,highland-whisky-auctions,2022-03-01 00:00:00+00,2425,3,82.08,24295.5,296,46544
+Highland Whisky Auctions,highland-whisky-auctions,2022-05-01 00:00:00+00,6800,4.5,159.94,48461.5,303,45291
+Highland Whisky Auctions,highland-whisky-auctions,2022-06-01 00:00:00+00,9400,4.5,147.42,57200.5,388,43553
+Highland Whisky Auctions,highland-whisky-auctions,2022-07-01 00:00:00+00,1900,4.5,98,39398,402,47042
+Highland Whisky Auctions,highland-whisky-auctions,2022-08-01 00:00:00+00,7000,4,152.09,66921.5,440,40649
+Highland Whisky Auctions,highland-whisky-auctions,2022-09-01 00:00:00+00,10500,4,194.57,72767.95,374,55429
+Highland Whisky Auctions,highland-whisky-auctions,2022-10-01 00:00:00+00,9600,0,229.22,130425.94,569,49660
+Highland Whisky Auctions,highland-whisky-auctions,2022-11-01 00:00:00+00,11250,1,114.35,96624.76,845,55340
+Highland Whisky Auctions,highland-whisky-auctions,2022-12-01 00:00:00+00,3300,0,124.68,81542.78,654,53794
+Highland Whisky Auctions,highland-whisky-auctions,2023-02-01 00:00:00+00,4050,0,119.16,86628.83,727,41735
+Highland Whisky Auctions,highland-whisky-auctions,2023-03-01 00:00:00+00,6000,1,150.28,107150.49,713,51697
+Highland Whisky Auctions,highland-whisky-auctions,2023-04-01 00:00:00+00,8700,1,166.92,120013.76,719,37629
+Highland Whisky Auctions,highland-whisky-auctions,2023-05-01 00:00:00+00,7600,2,155.73,130657.75,839,44950
+Highland Whisky Auctions,highland-whisky-auctions,2023-06-01 00:00:00+00,4000,1,135.63,71883.1,530,45412
+Highland Whisky Auctions,highland-whisky-auctions,2023-07-01 00:00:00+00,4200,3,182.98,84172.38,460,33595
+Irish Whiskey Auctions,irish-whiskey-auctions,2018-09-01 00:00:00+00,8974,9,258.55,517877,2003,22553
+Irish Whiskey Auctions,irish-whiskey-auctions,2018-10-01 00:00:00+00,32157,5,422.87,53705,127,22291
+Irish Whiskey Auctions,irish-whiskey-auctions,2018-11-01 00:00:00+00,11462,4,286.19,54090,189,26493
+Irish Whiskey Auctions,irish-whiskey-auctions,2018-12-01 00:00:00+00,7125,4,222.66,53660,241,24365
+Irish Whiskey Auctions,irish-whiskey-auctions,2019-02-01 00:00:00+00,2021,4,151.82,43723,288,27105
+Irish Whiskey Auctions,irish-whiskey-auctions,2019-03-01 00:00:00+00,8468,4,203.98,61397,301,29921
+Irish Whiskey Auctions,irish-whiskey-auctions,2019-04-01 00:00:00+00,6553,5,229.37,65142,284,27392
+Irish Whiskey Auctions,irish-whiskey-auctions,2019-05-01 00:00:00+00,10351,9,234.94,74241,316,25948
+Irish Whiskey Auctions,irish-whiskey-auctions,2019-07-01 00:00:00+00,3678,4,179.86,72483,403,27617
+Irish Whiskey Auctions,irish-whiskey-auctions,2019-08-01 00:00:00+00,3473,5,153.92,48945,318,23428
+Irish Whiskey Auctions,irish-whiskey-auctions,2019-10-01 00:00:00+00,7294,4,164.94,71089,431,32793
+Irish Whiskey Auctions,irish-whiskey-auctions,2019-11-01 00:00:00+00,12901,4,158.2,84003,531,31723
+Irish Whiskey Auctions,irish-whiskey-auctions,2019-12-01 00:00:00+00,4261,4,145.82,79472,545,31485
+Irish Whiskey Auctions,irish-whiskey-auctions,2020-02-01 00:00:00+00,2609,4,107.27,64683,603,31326
+Irish Whiskey Auctions,irish-whiskey-auctions,2020-03-01 00:00:00+00,35832,0,174.78,83371,477,22760
+Irish Whiskey Auctions,irish-whiskey-auctions,2020-04-01 00:00:00+00,18134,4,209.4,69521,332,17023
+Irish Whiskey Auctions,irish-whiskey-auctions,2020-05-01 00:00:00+00,13123,4,219.49,128401,585,28558
+Irish Whiskey Auctions,irish-whiskey-auctions,2020-07-01 00:00:00+00,11846,0,175.58,152579,869,31656
+Irish Whiskey Auctions,irish-whiskey-auctions,2020-08-01 00:00:00+00,3692,0,145.48,128458,883,34880
+Irish Whiskey Auctions,irish-whiskey-auctions,2020-09-01 00:00:00+00,3470,0,151.33,113498,750,36287
+Irish Whiskey Auctions,irish-whiskey-auctions,2020-10-01 00:00:00+00,10524,0,157.01,152139,969,43036
+Irish Whiskey Auctions,irish-whiskey-auctions,2020-11-01 00:00:00+00,3879,0,158.66,161356,1017,45162
+Irish Whiskey Auctions,irish-whiskey-auctions,2020-12-01 00:00:00+00,6331,0,186.53,179812,964,40691
+Irish Whiskey Auctions,irish-whiskey-auctions,2021-02-01 00:00:00+00,5292,0,232.03,253841,1094,35065
+Irish Whiskey Auctions,irish-whiskey-auctions,2021-03-01 00:00:00+00,26314,0,265.03,367866,1388,38735
+Irish Whiskey Auctions,irish-whiskey-auctions,2021-04-01 00:00:00+00,15889,17,275.68,239294,868,43356
+Irish Whiskey Auctions,irish-whiskey-auctions,2021-06-01 00:00:00+00,9032,9,207.85,266676,1283,37702
+Irish Whiskey Auctions,irish-whiskey-auctions,2021-07-01 00:00:00+00,8286,4,206.27,213486,1035,36170
+Irish Whiskey Auctions,irish-whiskey-auctions,2021-08-01 00:00:00+00,3490,9,178.44,137401,770,42409
+Irish Whiskey Auctions,irish-whiskey-auctions,2021-09-01 00:00:00+00,6407,4,170.9,177739,1040,38731
+Irish Whiskey Auctions,irish-whiskey-auctions,2021-10-01 00:00:00+00,13657,4,188.75,192716,1021,43367
+Irish Whiskey Auctions,irish-whiskey-auctions,2021-11-01 00:00:00+00,22436,4,207.49,318500,1535,50235
+Irish Whiskey Auctions,irish-whiskey-auctions,2021-12-01 00:00:00+00,5373,4,196.94,254249,1291,44158
+Irish Whiskey Auctions,irish-whiskey-auctions,2022-02-01 00:00:00+00,9796,4,211.77,231043,1091,44602
+Irish Whiskey Auctions,irish-whiskey-auctions,2022-03-01 00:00:00+00,40273,4,262.32,286193,1091,46544
+Irish Whiskey Auctions,irish-whiskey-auctions,2022-04-01 00:00:00+00,4197,4,175.05,192731,1101,50951
+Irish Whiskey Auctions,irish-whiskey-auctions,2022-05-01 00:00:00+00,5120.7,4.3,199.46,231377.8,1160,45291
+Irish Whiskey Auctions,irish-whiskey-auctions,2022-06-01 00:00:00+00,16721.5,4.3,243.3,281012.4,1155,43553
+Irish Whiskey Auctions,irish-whiskey-auctions,2022-07-01 00:00:00+00,11501.8,4.2,207.34,207136.3,999,47042
+Irish Whiskey Auctions,irish-whiskey-auctions,2022-09-01 00:00:00+00,6921.4,8.7,211.1,268306.3,1271,55429
+Irish Whiskey Auctions,irish-whiskey-auctions,2022-10-01 00:00:00+00,20043.7,8.7,204.45,301157.3,1473,49660
+Irish Whiskey Auctions,irish-whiskey-auctions,2022-11-01 00:00:00+00,6279.5,4.3,211.98,337477.8,1592,55340
+Irish Whiskey Auctions,irish-whiskey-auctions,2022-12-01 00:00:00+00,8892.6,4.4,269.06,270675.1,1006,53794
+Irish Whiskey Auctions,irish-whiskey-auctions,2023-02-01 00:00:00+00,37803.6,4.4,239.09,277818.2,1162,41735
+Irish Whiskey Auctions,irish-whiskey-auctions,2023-03-01 00:00:00+00,37975.1,4.4,249.29,350249.6,1405,51697
+Irish Whiskey Auctions,irish-whiskey-auctions,2023-04-01 00:00:00+00,19667.1,4.5,199.26,336741.6,1690,37629
+Irish Whiskey Auctions,irish-whiskey-auctions,2023-05-01 00:00:00+00,18772.5,4.3,208.61,306867.8,1471,44950
+Irish Whiskey Auctions,irish-whiskey-auctions,2023-06-01 00:00:00+00,5592.7,4.3,202.28,269641.9,1333,45412
+Just Whisky Auctions,just-whisky,2015-06-01 00:00:00+00,9500,5,171.96,100942.1,587,8690
+Just Whisky Auctions,just-whisky,2015-07-01 00:00:00+00,2950,2.5,126.99,99940.86,787,8822
+Just Whisky Auctions,just-whisky,2015-08-01 00:00:00+00,2725,5,128.77,122070.04,948,9762
+Just Whisky Auctions,just-whisky,2015-09-01 00:00:00+00,12545,2.5,176.47,139409.21,790,9126
+Just Whisky Auctions,just-whisky,2015-10-01 00:00:00+00,3275,2.5,157.45,142180.02,903,10600
+Just Whisky Auctions,just-whisky,2015-11-01 00:00:00+00,6000,5,127.31,145393.33,1142,12620
+Just Whisky Auctions,just-whisky,2015-12-01 00:00:00+00,7225,5,172.25,210147.1,1220,7338
+Just Whisky Auctions,just-whisky,2016-01-01 00:00:00+00,15025,7.5,216.39,146495.72,677,12604
+Just Whisky Auctions,just-whisky,2016-02-01 00:00:00+00,6075,5,158.95,188994.42,1189,11299
+Just Whisky Auctions,just-whisky,2016-03-01 00:00:00+00,15025,2.5,173.85,190712.94,1097,11297
+Just Whisky Auctions,just-whisky,2016-04-01 00:00:00+00,5475,2.5,183.93,178962.94,973,11521
+Just Whisky Auctions,just-whisky,2016-05-01 00:00:00+00,6200,2.5,139.72,206926.95,1481,11184
+Just Whisky Auctions,just-whisky,2016-06-01 00:00:00+00,7925,5,170.69,176660.37,1035,11895
+Just Whisky Auctions,just-whisky,2016-07-01 00:00:00+00,4125,5,166.64,214627.76,1288,13446
+Just Whisky Auctions,just-whisky,2016-08-01 00:00:00+00,17675,2.5,189.6,198705.74,1048,12259
+Just Whisky Auctions,just-whisky,2016-09-01 00:00:00+00,5025,2.5,190.85,177868.88,932,12877
+Just Whisky Auctions,just-whisky,2016-10-01 00:00:00+00,4575,2.5,181.62,251002.53,1382,14567
+Just Whisky Auctions,just-whisky,2016-11-01 00:00:00+00,7150,5,197.17,218666.84,1109,16312
+Just Whisky Auctions,just-whisky,2016-12-01 00:00:00+00,8125,2.5,183.54,200245.89,1091,9915
+Just Whisky Auctions,just-whisky,2017-01-01 00:00:00+00,17000,2.5,180.72,271257.58,1501,13983
+Just Whisky Auctions,just-whisky,2017-02-01 00:00:00+00,15225,2.5,202.79,226518.92,1117,14096
+Just Whisky Auctions,just-whisky,2017-03-01 00:00:00+00,7225,5.01,163.14,199034.99,1220,14468
+Just Whisky Auctions,just-whisky,2017-04-01 00:00:00+00,3755,2.5,175.31,275936,1574,17138
+Just Whisky Auctions,just-whisky,2017-05-01 00:00:00+00,14025,2.5,194.18,272436.93,1403,15351
+Just Whisky Auctions,just-whisky,2017-06-01 00:00:00+00,3525,2.5,163.63,180809.06,1105,13228
+Just Whisky Auctions,just-whisky,2017-07-01 00:00:00+00,11525,2.5,196.25,284764.73,1451,14562
+Just Whisky Auctions,just-whisky,2017-08-01 00:00:00+00,7500,2.5,209.6,270803.91,1292,14386
+Just Whisky Auctions,just-whisky,2017-09-01 00:00:00+00,6975,2.5,163.08,196680.11,1206,15423
+Just Whisky Auctions,just-whisky,2017-10-01 00:00:00+00,12500,2.5,239.43,381168.93,1592,18564
+Just Whisky Auctions,just-whisky,2017-11-01 00:00:00+00,13475,2.5,225.95,312946.04,1385,21855
+Just Whisky Auctions,just-whisky,2017-12-01 00:00:00+00,12625,2.5,175.31,360439.59,2056,13669
+Just Whisky Auctions,just-whisky,2018-01-01 00:00:00+00,7500,5.5,223.37,230296.34,1031,15171
+Just Whisky Auctions,just-whisky,2018-02-01 00:00:00+00,14125,2.5,243.87,293858.77,1205,17815
+Just Whisky Auctions,just-whisky,2018-03-01 00:00:00+00,33050,2.5,325.13,383008.83,1178,16837
+Just Whisky Auctions,just-whisky,2018-04-01 00:00:00+00,32525,2.5,300.45,421535.28,1403,20978
+Just Whisky Auctions,just-whisky,2018-05-01 00:00:00+00,11500,2.5,237.41,308872.07,1301,18294
+Just Whisky Auctions,just-whisky,2018-06-01 00:00:00+00,26691,0.58,338.95,394878.53,1165,16068
+Just Whisky Auctions,just-whisky,2018-07-01 00:00:00+00,25675,2.5,267.36,424307.14,1587,19846
+Just Whisky Auctions,just-whisky,2018-08-01 00:00:00+00,25025,5.5,382.92,376025.22,982,16684
+Just Whisky Auctions,just-whisky,2018-09-01 00:00:00+00,28035,2.5,289.47,369076.11,1275,22553
+Just Whisky Auctions,just-whisky,2018-10-01 00:00:00+00,14475,3.5,250.29,372675.47,1489,22291
+Just Whisky Auctions,just-whisky,2018-11-01 00:00:00+00,16225,2.5,318.86,422169.22,1324,26493
+Just Whisky Auctions,just-whisky,2018-12-01 00:00:00+00,28025,2.5,361.47,487984.85,1350,24365
+Just Whisky Auctions,just-whisky,2019-01-01 00:00:00+00,38825,3,325.51,430975.98,1324,18471
+Just Whisky Auctions,just-whisky,2019-02-01 00:00:00+00,30525,5,340.78,349639.57,1026,27105
+Just Whisky Auctions,just-whisky,2019-03-01 00:00:00+00,31275,2.5,291.46,322646.36,1107,29921
+Just Whisky Auctions,just-whisky,2019-04-01 00:00:00+00,23457,0,227.69,412126.43,1810,27392
+Just Whisky Auctions,just-whisky,2019-05-01 00:00:00+00,18373,0,309.49,342607.23,1107,25948
+Just Whisky Auctions,just-whisky,2019-06-01 00:00:00+00,58000,2.5,299.22,359361.99,1201,25303
+Just Whisky Auctions,just-whisky,2019-07-01 00:00:00+00,90750,0,548.52,573752.94,1046,27617
+Just Whisky Auctions,just-whisky,2019-08-01 00:00:00+00,85000,0,394.34,499631.19,1267,23428
+Just Whisky Auctions,just-whisky,2019-09-01 00:00:00+00,30750,2.5,369.03,466824.97,1265,30169
+Just Whisky Auctions,just-whisky,2019-10-01 00:00:00+00,51500,2.5,341.35,371052.41,1087,32793
+Just Whisky Auctions,just-whisky,2019-11-01 00:00:00+00,70000,0,273.7,396312.38,1448,31723
+Just Whisky Auctions,just-whisky,2019-12-01 00:00:00+00,64250,2.5,274.36,363252.82,1324,31485
+Just Whisky Auctions,just-whisky,2020-01-01 00:00:00+00,49250,5,316.42,446156.41,1410,26222
+Just Whisky Auctions,just-whisky,2020-02-01 00:00:00+00,46250,0,278.59,305894.09,1098,31326
+Just Whisky Auctions,just-whisky,2020-03-01 00:00:00+00,60000,0.5,397.07,435585.51,1097,22760
+Just Whisky Auctions,just-whisky,2020-04-01 00:00:00+00,4000,3.5,269.78,222569.67,825,17023
+Just Whisky Auctions,just-whisky,2020-05-01 00:00:00+00,12250,5,390.35,285345.13,731,28558
+Just Whisky Auctions,just-whisky,2020-06-01 00:00:00+00,26950,4,290.06,281358.33,970,28829
+Just Whisky Auctions,just-whisky,2020-07-01 00:00:00+00,12250,2.5,258.21,322244.07,1248,31656
+Just Whisky Auctions,just-whisky,2020-08-01 00:00:00+00,5600,3.28,224.58,244789.1,1090,34880
+Just Whisky Auctions,just-whisky,2020-09-01 00:00:00+00,20905,6,230.05,224992.6,978,36287
+Just Whisky Auctions,just-whisky,2020-10-01 00:00:00+00,13500,5,226.53,279086.84,1232,43036
+Just Whisky Auctions,just-whisky,2020-11-01 00:00:00+00,25751,6,276.12,319471.14,1157,45162
+Just Whisky Auctions,just-whisky,2020-12-01 00:00:00+00,70000,2.5,411.58,507889.1,1234,40691
+Just Whisky Auctions,just-whisky,2021-01-01 00:00:00+00,60000,3.23,308.83,501225.45,1623,31995
+Just Whisky Auctions,just-whisky,2021-02-01 00:00:00+00,63250,4,398.38,539810.11,1355,35065
+Just Whisky Auctions,just-whisky,2021-03-01 00:00:00+00,28000,4,373,362930.91,973,38735
+Just Whisky Auctions,just-whisky,2021-04-01 00:00:00+00,7620,2.5,274.98,328877.54,1196,43356
+Just Whisky Auctions,just-whisky,2021-05-01 00:00:00+00,40251,2.5,274.33,387080.3,1411,42530
+Just Whisky Auctions,just-whisky,2021-06-01 00:00:00+00,4651,2.5,205.97,268170.26,1302,37702
+Just Whisky Auctions,just-whisky,2021-07-01 00:00:00+00,13950,5,260.76,270148.22,1036,36170
+Just Whisky Auctions,just-whisky,2021-08-01 00:00:00+00,60500,2.5,357.75,525887.31,1470,42409
+Just Whisky Auctions,just-whisky,2021-09-01 00:00:00+00,16500,2.5,273.89,340449.77,1243,38731
+Just Whisky Auctions,just-whisky,2021-10-01 00:00:00+00,8600,6.5,254.74,268236.95,1053,43367
+Just Whisky Auctions,just-whisky,2021-11-01 00:00:00+00,39250,2.5,335.89,435313.53,1296,50235
+Just Whisky Auctions,just-whisky,2021-12-01 00:00:00+00,8900,2.5,228.74,198543.69,868,44158
+Just Whisky Auctions,just-whisky,2022-01-01 00:00:00+00,9900,4,252,350030.93,1389,37474
+Just Whisky Auctions,just-whisky,2022-02-01 00:00:00+00,14859,2.5,264,319436.46,1210,44602
+Just Whisky Auctions,just-whisky,2022-03-01 00:00:00+00,26200,2.5,336.5,333136.16,990,46544
+Just Whisky Auctions,just-whisky,2022-04-01 00:00:00+00,11900,2.5,235.43,292408.7,1242,50951
+Just Whisky Auctions,just-whisky,2022-05-01 00:00:00+00,16500,5,266.07,324599.51,1220,45291
+Just Whisky Auctions,just-whisky,2022-06-01 00:00:00+00,17250,2.5,286.19,346864.85,1212,43553
+Just Whisky Auctions,just-whisky,2022-07-01 00:00:00+00,5700,2.5,289.21,306277.14,1059,47042
+Just Whisky Auctions,just-whisky,2022-08-01 00:00:00+00,15050,2.5,282.4,340007.39,1204,40649
+Just Whisky Auctions,just-whisky,2022-09-01 00:00:00+00,8600,2.5,274.93,244965.29,891,55429
+Just Whisky Auctions,just-whisky,2022-10-01 00:00:00+00,13250,2.5,245,287630.5,1174,49660
+Just Whisky Auctions,just-whisky,2022-11-01 00:00:00+00,24250,2.5,236.48,448135.89,1895,55340
+Just Whisky Auctions,just-whisky,2022-12-01 00:00:00+00,4602,4,190.45,281860.65,1480,53794
+Just Whisky Auctions,just-whisky,2023-01-01 00:00:00+00,8700,2.5,189.46,312610.62,1650,39650
+Just Whisky Auctions,just-whisky,2023-02-01 00:00:00+00,4500,2.5,205.37,203929.21,993,41735
+Just Whisky Auctions,just-whisky,2023-03-01 00:00:00+00,8900,2.5,172.68,232602.83,1347,51697
+Just Whisky Auctions,just-whisky,2023-04-01 00:00:00+00,22250,2.5,242.31,276959.91,1143,37629
+Just Whisky Auctions,just-whisky,2023-05-01 00:00:00+00,60000,2.5,264.51,390685.5,1477,44950
+Just Whisky Auctions,just-whisky,2023-06-01 00:00:00+00,7500,2.5,175.64,234650.51,1336,45412
+Just Whisky Auctions,just-whisky,2023-07-01 00:00:00+00,17500,2.5,254.95,289115.81,1134,33595
+McTear’s Whisky Auction,mctears,2014-03-01 00:00:00+00,2400,25,280.22,100320,358,6224
+McTear’s Whisky Auction,mctears,2014-04-01 00:00:00+00,5000,25,248.35,55630,224,7415
+McTear’s Whisky Auction,mctears,2014-05-01 00:00:00+00,4200,20,419.26,144645,345,5546
+McTear’s Whisky Auction,mctears,2014-06-01 00:00:00+00,3000,30,194.63,78045,401,7191
+McTear’s Whisky Auction,mctears,2014-07-01 00:00:00+00,11000,25,291.02,114660,394,5679
+McTear’s Whisky Auction,mctears,2014-08-01 00:00:00+00,5000,25,252.65,97775,387,7168
+McTear’s Whisky Auction,mctears,2014-10-01 00:00:00+00,20000,20,323.44,156220,483,8884
+McTear’s Whisky Auction,mctears,2014-11-01 00:00:00+00,2600,20,198.67,73905,372,8392
+McTear’s Whisky Auction,mctears,2014-12-01 00:00:00+00,6000,25,227.29,70915,312,8401
+McTear’s Whisky Auction,mctears,2015-01-01 00:00:00+00,10500,25,295.31,95090,322,6418
+McTear’s Whisky Auction,mctears,2015-02-01 00:00:00+00,3400,25,275.26,99370,361,7589
+McTear’s Whisky Auction,mctears,2015-03-01 00:00:00+00,4200,15,212.09,86533,408,8920
+McTear’s Whisky Auction,mctears,2015-04-01 00:00:00+00,4600,15,273.26,91815,336,7989
+McTear’s Whisky Auction,mctears,2015-06-01 00:00:00+00,5000,15,224.75,75965,338,8690
+McTear’s Whisky Auction,mctears,2015-07-01 00:00:00+00,3500,20,217.05,53395,246,8822
+McTear’s Whisky Auction,mctears,2015-08-01 00:00:00+00,3400,15,227.17,74965,330,9762
+McTear’s Whisky Auction,mctears,2015-09-01 00:00:00+00,18000,15,265.51,75935,286,9126
+McTear’s Whisky Auction,mctears,2015-10-01 00:00:00+00,4200,20,178.2,54885,308,10600
+McTear’s Whisky Auction,mctears,2015-11-01 00:00:00+00,20000,10,268.45,70335,262,12620
+McTear’s Whisky Auction,mctears,2015-12-01 00:00:00+00,1800,10,174.8,52440,300,7338
+McTear’s Whisky Auction,mctears,2016-01-01 00:00:00+00,3400,8,183.06,56566,309,12604
+McTear’s Whisky Auction,mctears,2016-02-01 00:00:00+00,7500,15,259.92,67840,261,11299
+McTear’s Whisky Auction,mctears,2016-03-01 00:00:00+00,7000,25,232.97,47060,202,11297
+McTear’s Whisky Auction,mctears,2016-04-01 00:00:00+00,8500,30,251.36,93005,370,11521
+McTear’s Whisky Auction,mctears,2016-06-01 00:00:00+00,1700,20,236.2,65900,279,11895
+McTear’s Whisky Auction,mctears,2016-07-01 00:00:00+00,6000,15,226.82,68045,300,13446
+McTear’s Whisky Auction,mctears,2016-08-01 00:00:00+00,5500,25,288.36,84200,292,12259
+McTear’s Whisky Auction,mctears,2016-09-01 00:00:00+00,3600,30,246.76,75755,307,12877
+McTear’s Whisky Auction,mctears,2016-10-01 00:00:00+00,8500,25,431.82,110115,255,14567
+McTear’s Whisky Auction,mctears,2016-11-01 00:00:00+00,6300,35,322.8,85220,264,16312
+McTear’s Whisky Auction,mctears,2017-01-01 00:00:00+00,10000,35,348.61,121315,348,13983
+McTear’s Whisky Auction,mctears,2017-02-01 00:00:00+00,6500,40,337.51,57715,171,14096
+McTear’s Whisky Auction,mctears,2017-04-01 00:00:00+00,4400,30,293.28,75080,256,17138
+McTear’s Whisky Auction,mctears,2017-05-01 00:00:00+00,5000,30,280.94,101140,360,15351
+McTear’s Whisky Auction,mctears,2017-06-01 00:00:00+00,4000,45,312.89,108260,346,13228
+McTear’s Whisky Auction,mctears,2017-08-01 00:00:00+00,11500,45,476.8,88685,186,14386
+McTear’s Whisky Auction,mctears,2017-09-01 00:00:00+00,9000,50,438.6,153950,351,15423
+McTear’s Whisky Auction,mctears,2017-11-01 00:00:00+00,7500,45,438.3,171815,392,21855
+McTear’s Whisky Auction,mctears,2017-12-01 00:00:00+00,8000,25,389.95,155590,399,13669
+McTear’s Whisky Auction,mctears,2018-01-01 00:00:00+00,5500,10,414.11,69985,169,15171
+McTear’s Whisky Auction,mctears,2018-02-01 00:00:00+00,55,15,35,420,12,17815
+McTear’s Whisky Auction,mctears,2018-03-01 00:00:00+00,3800,5,343.47,158340,461,16837
+McTear’s Whisky Auction,mctears,2018-04-01 00:00:00+00,11000,25,408.49,91910,225,20978
+McTear’s Whisky Auction,mctears,2018-05-01 00:00:00+00,3600,5,325.69,108130,332,18294
+McTear’s Whisky Auction,mctears,2018-07-01 00:00:00+00,3500,15,286.21,50945,178,19846
+McTear’s Whisky Auction,mctears,2018-08-01 00:00:00+00,34000,20,495,137115,277,16684
+McTear’s Whisky Auction,mctears,2018-09-01 00:00:00+00,15000,20,459.49,103385,225,22553
+McTear’s Whisky Auction,mctears,2018-10-01 00:00:00+00,900,15,96.18,8175,85,22291
+McTear’s Whisky Auction,mctears,2018-11-01 00:00:00+00,25000,15,535.26,184130,344,26493
+McTear’s Whisky Auction,mctears,2018-12-01 00:00:00+00,10000,10,326.42,96295,295,24365
+McTear’s Whisky Auction,mctears,2019-12-01 00:00:00+00,170,10,47.61,5380,113,31485
+McTear’s Whisky Auction,mctears,2020-01-01 00:00:00+00,3000,50,304.36,14305,47,26222
+McTear’s Whisky Auction,mctears,2020-02-01 00:00:00+00,11000,15,266.91,54450,204,31326
+McTear’s Whisky Auction,mctears,2020-03-01 00:00:00+00,360,10,49.85,3340,67,22760
+McTear’s Whisky Auction,mctears,2020-07-01 00:00:00+00,2500,15,188.16,44595,237,31656
+McTear’s Whisky Auction,mctears,2020-08-01 00:00:00+00,3600,45,234.62,27685,118,34880
+McTear’s Whisky Auction,mctears,2020-09-01 00:00:00+00,3600,5,133.94,39780,297,36287
+McTear’s Whisky Auction,mctears,2020-11-01 00:00:00+00,2800,15,159.82,49705,311,45162
+McTear’s Whisky Auction,mctears,2020-12-01 00:00:00+00,1600,20,140.5,39340,280,40691
+McTear’s Whisky Auction,mctears,2021-02-01 00:00:00+00,3200,25,317.9,92510,291,35065
+McTear’s Whisky Auction,mctears,2021-03-01 00:00:00+00,3000,20,480.94,50980,106,38735
+McTear’s Whisky Auction,mctears,2021-05-01 00:00:00+00,1300,20,108.19,12550,116,42530
+McTear’s Whisky Auction,mctears,2021-06-01 00:00:00+00,15000,15,298.51,42985,144,37702
+McTear’s Whisky Auction,mctears,2021-07-01 00:00:00+00,3200,15,286.22,63255,221,36170
+McTear’s Whisky Auction,mctears,2021-09-01 00:00:00+00,2400,15,322.09,66995,208,38731
+McTear’s Whisky Auction,mctears,2021-10-01 00:00:00+00,8500,15,238.39,53400,224,43367
+McTear’s Whisky Auction,mctears,2021-12-01 00:00:00+00,4200,15,197.41,42245,214,44158
+McTear’s Whisky Auction,mctears,2022-01-01 00:00:00+00,10000,20,254.4,76830,302,37474
+McTear’s Whisky Auction,mctears,2022-03-01 00:00:00+00,4200,10,184.17,39965,217,46544
+McTear’s Whisky Auction,mctears,2022-04-01 00:00:00+00,4800,10,216.2,75670,350,50951
+McTear’s Whisky Auction,mctears,2022-05-01 00:00:00+00,6000,15,264.36,90675,343,45291
+McTear’s Whisky Auction,mctears,2022-07-01 00:00:00+00,4800,15,414.56,88715,214,47042
+McTear’s Whisky Auction,mctears,2022-08-01 00:00:00+00,3300,10,254.39,73265,288,40649
+McTear’s Whisky Auction,mctears,2022-09-01 00:00:00+00,24000,10,406.83,106590,262,55429
+McTear’s Whisky Auction,mctears,2022-11-01 00:00:00+00,9000,20,225.93,84045,372,55340
+McTear’s Whisky Auction,mctears,2022-12-01 00:00:00+00,4200,10,276.3,55260,200,53794
+McTear’s Whisky Auction,mctears,2023-01-01 00:00:00+00,2500,10,139.71,19560,140,39650
+McTear’s Whisky Auction,mctears,2023-03-01 00:00:00+00,3200,10,164.29,78695,479,51697
+McTear’s Whisky Auction,mctears,2023-04-01 00:00:00+00,4500,10,211.08,60580,287,37629
+McTear’s Whisky Auction,mctears,2023-05-01 00:00:00+00,3800,10,134.1,55385,413,44950
+McTear’s Whisky Auction,mctears,2023-07-01 00:00:00+00,3400,15,119.1,49785,418,33595
+Prestige Whisky Auction,prestige-whisky-auction,2022-01-01 00:00:00+00,1700,20,191.74,17065,89,37474
+Prestige Whisky Auction,prestige-whisky-auction,2022-02-01 00:00:00+00,600,3,53.72,5372,100,44602
+Prestige Whisky Auction,prestige-whisky-auction,2022-03-01 00:00:00+00,7900,1,153.89,14465.5,94,46544
+Prestige Whisky Auction,prestige-whisky-auction,2022-04-01 00:00:00+00,3450,1,71.72,17643,246,50951
+Prestige Whisky Auction,prestige-whisky-auction,2022-05-01 00:00:00+00,7000,1,121.73,23980,197,45291
+Prestige Whisky Auction,prestige-whisky-auction,2022-06-01 00:00:00+00,2750,1,76.74,23175,302,43553
+Prestige Whisky Auction,prestige-whisky-auction,2022-07-01 00:00:00+00,3200,1,161.29,43225.5,268,47042
+Prestige Whisky Auction,prestige-whisky-auction,2022-08-01 00:00:00+00,2025,1,92.64,23808,257,40649
+Prestige Whisky Auction,prestige-whisky-auction,2022-09-01 00:00:00+00,6500,1,143.38,29824,208,55429
+Prestige Whisky Auction,prestige-whisky-auction,2022-10-01 00:00:00+00,3250,1,124.1,50135,404,49660
+Prestige Whisky Auction,prestige-whisky-auction,2022-11-01 00:00:00+00,15000,1,115.67,49392.5,427,55340
+Prestige Whisky Auction,prestige-whisky-auction,2022-12-01 00:00:00+00,3450,1,129.1,41570.5,322,53794
+Prestige Whisky Auction,prestige-whisky-auction,2023-01-01 00:00:00+00,8000,1,117.2,34574,295,39650
+Prestige Whisky Auction,prestige-whisky-auction,2023-02-01 00:00:00+00,2800,1,99.88,29765.5,298,41735
+Prestige Whisky Auction,prestige-whisky-auction,2023-03-01 00:00:00+00,9000,1,142.12,59832.5,421,51697
+Prestige Whisky Auction,prestige-whisky-auction,2023-04-01 00:00:00+00,4050,2,104.44,31017.5,297,37629
+Prestige Whisky Auction,prestige-whisky-auction,2023-05-01 00:00:00+00,9300,2,125.64,58674.5,467,44950
+Prestige Whisky Auction,prestige-whisky-auction,2023-06-01 00:00:00+00,8000,2,106.61,53731,504,45412
+Prestige Whisky Auction,prestige-whisky-auction,2023-07-01 00:00:00+00,3100,2,114.62,45388.5,396,33595
+Rum Auctioneer,rumauctioneer,2019-09-01 00:00:00+00,9000,15,252.62,159406,631,30169
+Rum Auctioneer,rumauctioneer,2019-10-01 00:00:00+00,3700,15,223.4,88021,394,32793
+Rum Auctioneer,rumauctioneer,2019-11-01 00:00:00+00,7600,15,324.96,108538,334,31723
+Rum Auctioneer,rumauctioneer,2019-12-01 00:00:00+00,6800,15,251.32,112591,448,31485
+Rum Auctioneer,rumauctioneer,2020-01-01 00:00:00+00,2300,15,237.79,95828,403,26222
+Rum Auctioneer,rumauctioneer,2020-02-01 00:00:00+00,9000,15,236.65,120927.5,511,31326
+Rum Auctioneer,rumauctioneer,2020-03-01 00:00:00+00,2750,15,183.64,139932.5,762,22760
+Rum Auctioneer,rumauctioneer,2020-04-01 00:00:00+00,5800,15,225.99,106892,473,17023
+Rum Auctioneer,rumauctioneer,2020-06-01 00:00:00+00,5100,15,228.03,133627,586,28829
+Rum Auctioneer,rumauctioneer,2020-07-01 00:00:00+00,5400,15,238.05,158541,666,31656
+Rum Auctioneer,rumauctioneer,2020-08-01 00:00:00+00,2100,15,223.73,124396,556,34880
+Rum Auctioneer,rumauctioneer,2020-09-01 00:00:00+00,6400,15,229.11,169767,741,36287
+Rum Auctioneer,rumauctioneer,2020-10-01 00:00:00+00,21500,15,264.02,193527,733,43036
+Rum Auctioneer,rumauctioneer,2020-11-01 00:00:00+00,6200,15,253.35,229791,907,45162
+Rum Auctioneer,rumauctioneer,2020-12-01 00:00:00+00,27500,15,267.56,228762,855,40691
+Rum Auctioneer,rumauctioneer,2021-01-01 00:00:00+00,8000,15,227.73,241848,1062,31995
+Rum Auctioneer,rumauctioneer,2021-02-01 00:00:00+00,5400,15,242.13,219372,906,35065
+Rum Auctioneer,rumauctioneer,2021-03-01 00:00:00+00,4500,15,231.32,146660,634,38735
+Rum Auctioneer,rumauctioneer,2021-04-01 00:00:00+00,3600,15,237.47,283299,1193,43356
+Rum Auctioneer,rumauctioneer,2021-05-01 00:00:00+00,4900,15,272.23,337840,1241,42530
+Rum Auctioneer,rumauctioneer,2021-06-01 00:00:00+00,9500,15,242.22,221150,913,37702
+Rum Auctioneer,rumauctioneer,2021-07-01 00:00:00+00,20500,15,240.97,239287,993,36170
+Rum Auctioneer,rumauctioneer,2021-08-01 00:00:00+00,12505,15,226.58,273708,1208,42409
+Rum Auctioneer,rumauctioneer,2021-09-01 00:00:00+00,2200,15,253.63,228269,900,38731
+Rum Auctioneer,rumauctioneer,2021-10-01 00:00:00+00,8350,15,270.57,281934,1042,43367
+Rum Auctioneer,rumauctioneer,2021-11-01 00:00:00+00,15500,15,268.64,463948,1727,50235
+Rum Auctioneer,rumauctioneer,2021-12-01 00:00:00+00,21000,15,299.16,372149,1244,44158
+Rum Auctioneer,rumauctioneer,2022-01-01 00:00:00+00,4051,15,337.66,331915,983,37474
+Rum Auctioneer,rumauctioneer,2022-02-01 00:00:00+00,8500,15,291.55,501473,1720,44602
+Rum Auctioneer,rumauctioneer,2022-03-01 00:00:00+00,39500,15,274.27,390287,1423,46544
+Rum Auctioneer,rumauctioneer,2022-04-01 00:00:00+00,4800,15,281.06,377185,1342,50951
+Rum Auctioneer,rumauctioneer,2022-05-01 00:00:00+00,9200,15,276.2,366520,1327,45291
+Rum Auctioneer,rumauctioneer,2022-06-01 00:00:00+00,6250,15,226.85,258382,1139,43553
+Rum Auctioneer,rumauctioneer,2022-07-01 00:00:00+00,6700,15,248.31,304179,1225,47042
+Rum Auctioneer,rumauctioneer,2022-08-01 00:00:00+00,9500,15,312.18,252244,808,40649
+Rum Auctioneer,rumauctioneer,2022-09-01 00:00:00+00,40000,15,310.97,294485,947,55429
+Rum Auctioneer,rumauctioneer,2022-10-01 00:00:00+00,9100,15,277.82,416458,1499,49660
+Rum Auctioneer,rumauctioneer,2022-11-01 00:00:00+00,25000,15,334.04,381805,1143,55340
+Rum Auctioneer,rumauctioneer,2022-12-01 00:00:00+00,13000,15,262.6,368426,1403,53794
+Rum Auctioneer,rumauctioneer,2023-01-01 00:00:00+00,6200,15,170.65,152223,892,39650
+Rum Auctioneer,rumauctioneer,2023-02-01 00:00:00+00,20001,15,213.17,180985,849,41735
+Rum Auctioneer,rumauctioneer,2023-03-01 00:00:00+00,8100,15,293.94,174603,594,51697
+Rum Auctioneer,rumauctioneer,2023-04-01 00:00:00+00,3620,15,193.33,169359,876,37629
+Rum Auctioneer,rumauctioneer,2023-05-01 00:00:00+00,19000,15,184.26,139667,758,44950
+Rum Auctioneer,rumauctioneer,2023-06-01 00:00:00+00,8200,15,200.73,135295,674,45412
+Rum Auctioneer,rumauctioneer,2023-07-01 00:00:00+00,40000,15,301.97,209870,695,33595
+Scotch Whisky Auctions,scotchwhiskyauctions,2011-04-01 00:00:00+00,740,20,121.67,13505,111,2108
+Scotch Whisky Auctions,scotchwhiskyauctions,2011-05-01 00:00:00+00,340,20,87.87,5975,68,2094
+Scotch Whisky Auctions,scotchwhiskyauctions,2011-06-01 00:00:00+00,900,25,166.62,10830,65,3060
+Scotch Whisky Auctions,scotchwhiskyauctions,2011-07-01 00:00:00+00,620,20,122.33,10765,88,2265
+Scotch Whisky Auctions,scotchwhiskyauctions,2011-08-01 00:00:00+00,1650,5,145.4,19775,136,1987
+Scotch Whisky Auctions,scotchwhiskyauctions,2011-09-01 00:00:00+00,1400,10,124.24,26215,211,2154
+Scotch Whisky Auctions,scotchwhiskyauctions,2011-10-01 00:00:00+00,1550,15,106.84,30235,283,2933
+Scotch Whisky Auctions,scotchwhiskyauctions,2011-11-01 00:00:00+00,1350,10,129.33,39835,308,2740
+Scotch Whisky Auctions,scotchwhiskyauctions,2011-12-01 00:00:00+00,2000,10,122.69,23680,193,3421
+Scotch Whisky Auctions,scotchwhiskyauctions,2012-01-01 00:00:00+00,2000,10,106.45,29275,275,3586
+Scotch Whisky Auctions,scotchwhiskyauctions,2012-02-01 00:00:00+00,1100,10,126.11,45020,357,2683
+Scotch Whisky Auctions,scotchwhiskyauctions,2012-03-01 00:00:00+00,2350,10,141.07,60380,428,2689
+Scotch Whisky Auctions,scotchwhiskyauctions,2012-04-01 00:00:00+00,1400,5,131.54,68795,523,2409
+Scotch Whisky Auctions,scotchwhiskyauctions,2012-05-01 00:00:00+00,3500,15,143.32,74385,519,3015
+Scotch Whisky Auctions,scotchwhiskyauctions,2012-06-01 00:00:00+00,1450,5,110.75,61690,557,3154
+Scotch Whisky Auctions,scotchwhiskyauctions,2012-07-01 00:00:00+00,2350,5,121.66,73240,602,2888
+Scotch Whisky Auctions,scotchwhiskyauctions,2012-08-01 00:00:00+00,3050,10,116.35,70855,609,2782
+Scotch Whisky Auctions,scotchwhiskyauctions,2012-09-01 00:00:00+00,1650,5,121.89,84105,690,2331
+Scotch Whisky Auctions,scotchwhiskyauctions,2012-10-01 00:00:00+00,3550,5,134.3,104890,781,3718
+Scotch Whisky Auctions,scotchwhiskyauctions,2012-11-01 00:00:00+00,3650,10,120.31,111645,928,3738
+Scotch Whisky Auctions,scotchwhiskyauctions,2012-12-01 00:00:00+00,4350,5,139.19,108845,782,3901
+Scotch Whisky Auctions,scotchwhiskyauctions,2013-01-01 00:00:00+00,940,10,113.62,130440,1148,5467
+Scotch Whisky Auctions,scotchwhiskyauctions,2013-02-01 00:00:00+00,5500,5,159.51,168123,1054,4084
+Scotch Whisky Auctions,scotchwhiskyauctions,2013-03-01 00:00:00+00,4300,5,143.58,204600,1425,3225
+Scotch Whisky Auctions,scotchwhiskyauctions,2013-04-01 00:00:00+00,12050,5,137.41,225910,1644,4402
+Scotch Whisky Auctions,scotchwhiskyauctions,2013-05-01 00:00:00+00,5050,10,161.93,172135,1063,3798
+Scotch Whisky Auctions,scotchwhiskyauctions,2013-06-01 00:00:00+00,4000,5,143.81,290935,2023,5024
+Scotch Whisky Auctions,scotchwhiskyauctions,2013-07-01 00:00:00+00,6050,5,148.97,190830,1281,4548
+Scotch Whisky Auctions,scotchwhiskyauctions,2013-08-01 00:00:00+00,3900,5,147.97,242960,1642,5223
+Scotch Whisky Auctions,scotchwhiskyauctions,2013-09-01 00:00:00+00,4300,5,149.29,231395,1550,5096
+Scotch Whisky Auctions,scotchwhiskyauctions,2013-10-01 00:00:00+00,4450,5,157.24,247810,1576,6108
+Scotch Whisky Auctions,scotchwhiskyauctions,2013-11-01 00:00:00+00,6150,5,138.41,265055,1915,6059
+Scotch Whisky Auctions,scotchwhiskyauctions,2013-12-01 00:00:00+00,7050,5,156.42,244640,1564,6365
+Scotch Whisky Auctions,scotchwhiskyauctions,2014-01-01 00:00:00+00,2250,5,142.49,192795,1353,6127
+Scotch Whisky Auctions,scotchwhiskyauctions,2014-02-01 00:00:00+00,3600,5,140.99,249265,1768,5556
+Scotch Whisky Auctions,scotchwhiskyauctions,2014-03-01 00:00:00+00,6600,5,140.25,326360,2327,6224
+Scotch Whisky Auctions,scotchwhiskyauctions,2014-04-01 00:00:00+00,12500,5,156.87,307940,1963,7415
+Scotch Whisky Auctions,scotchwhiskyauctions,2014-05-01 00:00:00+00,6600,5,134.72,234680,1742,5546
+Scotch Whisky Auctions,scotchwhiskyauctions,2014-06-01 00:00:00+00,7800,5,163.53,387565,2370,7191
+Scotch Whisky Auctions,scotchwhiskyauctions,2014-07-01 00:00:00+00,12000,5,161.36,300610,1863,5679
+Scotch Whisky Auctions,scotchwhiskyauctions,2014-08-01 00:00:00+00,8200,5,164.71,293340,1781,7168
+Scotch Whisky Auctions,scotchwhiskyauctions,2014-09-01 00:00:00+00,4600,5,168.67,312705,1854,6194
+Scotch Whisky Auctions,scotchwhiskyauctions,2014-10-01 00:00:00+00,8600,5,159.05,410655,2582,8884
+Scotch Whisky Auctions,scotchwhiskyauctions,2014-11-01 00:00:00+00,7800,5,156.96,496166,3161,8392
+Scotch Whisky Auctions,scotchwhiskyauctions,2014-12-01 00:00:00+00,3400,5,163.2,291645,1787,8401
+Scotch Whisky Auctions,scotchwhiskyauctions,2015-01-01 00:00:00+00,5000,5,214.47,356230,1661,6418
+Scotch Whisky Auctions,scotchwhiskyauctions,2015-02-01 00:00:00+00,3900,5,213.32,478043,2241,7589
+Scotch Whisky Auctions,scotchwhiskyauctions,2015-03-01 00:00:00+00,8200,5,175.92,577361,3282,8920
+Scotch Whisky Auctions,scotchwhiskyauctions,2015-04-01 00:00:00+00,4200,5,182.38,508665,2789,7989
+Scotch Whisky Auctions,scotchwhiskyauctions,2015-05-01 00:00:00+00,5200,5,170.39,431435,2532,8625
+Scotch Whisky Auctions,scotchwhiskyauctions,2015-06-01 00:00:00+00,8600,5,185.54,459385,2476,8690
+Scotch Whisky Auctions,scotchwhiskyauctions,2015-07-01 00:00:00+00,11000,5,187.03,364520,1949,8822
+Scotch Whisky Auctions,scotchwhiskyauctions,2015-08-01 00:00:00+00,7800,5,211.42,518825,2454,9762
+Scotch Whisky Auctions,scotchwhiskyauctions,2015-09-01 00:00:00+00,9000,5,190.34,398755,2095,9126
+Scotch Whisky Auctions,scotchwhiskyauctions,2015-10-01 00:00:00+00,9000,5,166.65,467130,2803,10600
+Scotch Whisky Auctions,scotchwhiskyauctions,2015-11-01 00:00:00+00,23000,5,173.52,583720,3364,12620
+Scotch Whisky Auctions,scotchwhiskyauctions,2015-12-01 00:00:00+00,4500,5,179.96,342275,1902,7338
+Scotch Whisky Auctions,scotchwhiskyauctions,2016-01-01 00:00:00+00,17500,5,190.57,951920,4995,12604
+Scotch Whisky Auctions,scotchwhiskyauctions,2016-02-01 00:00:00+00,7200,5,166.1,573050,3450,11299
+Scotch Whisky Auctions,scotchwhiskyauctions,2016-03-01 00:00:00+00,9000,5,179.1,505420,2822,11297
+Scotch Whisky Auctions,scotchwhiskyauctions,2016-04-01 00:00:00+00,6600,5,161.31,406010,2517,11521
+Scotch Whisky Auctions,scotchwhiskyauctions,2016-05-01 00:00:00+00,6800,5,163.66,493285,3014,11184
+Scotch Whisky Auctions,scotchwhiskyauctions,2016-06-01 00:00:00+00,9600,5,176.97,502585,2840,11895
+Scotch Whisky Auctions,scotchwhiskyauctions,2016-07-01 00:00:00+00,17500,5,202.49,841940,4158,13446
+Scotch Whisky Auctions,scotchwhiskyauctions,2016-08-01 00:00:00+00,16000,5,217.77,694905,3191,12259
+Scotch Whisky Auctions,scotchwhiskyauctions,2016-09-01 00:00:00+00,19000,5,222.62,801650,3601,12877
+Scotch Whisky Auctions,scotchwhiskyauctions,2016-10-01 00:00:00+00,7600,5,185.77,962465,5181,14567
+Scotch Whisky Auctions,scotchwhiskyauctions,2016-11-01 00:00:00+00,67500,5,257.48,1263450,4907,16312
+Scotch Whisky Auctions,scotchwhiskyauctions,2016-12-01 00:00:00+00,6800,5,212.48,789790,3717,9915
+Scotch Whisky Auctions,scotchwhiskyauctions,2017-01-01 00:00:00+00,20000,5,273.96,1027620,3751,13983
+Scotch Whisky Auctions,scotchwhiskyauctions,2017-02-01 00:00:00+00,7800,5,212.39,867620,4085,14096
+Scotch Whisky Auctions,scotchwhiskyauctions,2017-03-01 00:00:00+00,16500,5,233.44,1220405,5228,14468
+Scotch Whisky Auctions,scotchwhiskyauctions,2017-04-01 00:00:00+00,23000,5,206.7,1277830,6182,17138
+Scotch Whisky Auctions,scotchwhiskyauctions,2017-05-01 00:00:00+00,6800,5,210.48,1026085,4875,15351
+Scotch Whisky Auctions,scotchwhiskyauctions,2017-06-01 00:00:00+00,21000,5,217.88,866515,3977,13228
+Scotch Whisky Auctions,scotchwhiskyauctions,2017-07-01 00:00:00+00,31000,5,239.64,1065425,4446,14562
+Scotch Whisky Auctions,scotchwhiskyauctions,2017-08-01 00:00:00+00,10500,5,215.84,846305,3921,14386
+Scotch Whisky Auctions,scotchwhiskyauctions,2017-09-01 00:00:00+00,29500,5,227.58,1073285,4716,15423
+Scotch Whisky Auctions,scotchwhiskyauctions,2017-10-01 00:00:00+00,17500,5,234.44,1445350,6165,18564
+Scotch Whisky Auctions,scotchwhiskyauctions,2017-11-01 00:00:00+00,40000,5,248.26,1463255,5894,21855
+Scotch Whisky Auctions,scotchwhiskyauctions,2017-12-01 00:00:00+00,15500,5,236.31,1180130,4994,13669
+Scotch Whisky Auctions,scotchwhiskyauctions,2018-01-01 00:00:00+00,40500,5,272.55,1151805,4226,15171
+Scotch Whisky Auctions,scotchwhiskyauctions,2018-02-01 00:00:00+00,19500,5,209.21,1312785,6275,17815
+Scotch Whisky Auctions,scotchwhiskyauctions,2018-03-01 00:00:00+00,15500,5,230.37,1316805,5716,16837
+Scotch Whisky Auctions,scotchwhiskyauctions,2018-04-01 00:00:00+00,16000,5,249.4,1915920,7682,20978
+Scotch Whisky Auctions,scotchwhiskyauctions,2018-05-01 00:00:00+00,26000,20,268.51,1545285,5755,18294
+Scotch Whisky Auctions,scotchwhiskyauctions,2018-06-01 00:00:00+00,15000,20,266.7,1286565,4824,16068
+Scotch Whisky Auctions,scotchwhiskyauctions,2018-07-01 00:00:00+00,20000,20,247.96,1535630,6193,19846
+Scotch Whisky Auctions,scotchwhiskyauctions,2018-08-01 00:00:00+00,26000,20,258.45,1512450,5852,16684
+Scotch Whisky Auctions,scotchwhiskyauctions,2018-09-01 00:00:00+00,62000,20,269.39,1991365,7392,22553
+Scotch Whisky Auctions,scotchwhiskyauctions,2018-10-01 00:00:00+00,56000,20,283.03,2089015,7381,22291
+Scotch Whisky Auctions,scotchwhiskyauctions,2018-11-01 00:00:00+00,38000,20,270.8,2505690,9253,26493
+Scotch Whisky Auctions,scotchwhiskyauctions,2018-12-01 00:00:00+00,58000,20,289.35,1938955,6701,24365
+Scotch Whisky Auctions,scotchwhiskyauctions,2019-01-01 00:00:00+00,18000,20,258.31,1299290,5030,18471
+Scotch Whisky Auctions,scotchwhiskyauctions,2019-02-01 00:00:00+00,64000,0,275.95,2124825,7700,27105
+Scotch Whisky Auctions,scotchwhiskyauctions,2019-03-01 00:00:00+00,32000,0,232.53,2357354,10138,29921
+Scotch Whisky Auctions,scotchwhiskyauctions,2019-04-01 00:00:00+00,58000,0,251.55,1664250,6616,27392
+Scotch Whisky Auctions,scotchwhiskyauctions,2019-05-01 00:00:00+00,32000,0,282.1,1775000,6292,25948
+Scotch Whisky Auctions,scotchwhiskyauctions,2019-06-01 00:00:00+00,54000,0,293.11,2332005,7956,25303
+Scotch Whisky Auctions,scotchwhiskyauctions,2019-07-01 00:00:00+00,32000,0,286.59,1787195,6236,27617
+Scotch Whisky Auctions,scotchwhiskyauctions,2019-08-01 00:00:00+00,76000,0,319.02,1872985,5871,23428
+Scotch Whisky Auctions,scotchwhiskyauctions,2019-09-01 00:00:00+00,52000,0,235.67,1994720,8464,30169
+Scotch Whisky Auctions,scotchwhiskyauctions,2019-10-01 00:00:00+00,58000,0,255.69,1931750,7555,32793
+Scotch Whisky Auctions,scotchwhiskyauctions,2019-11-01 00:00:00+00,22000,0,259.76,2058355,7924,31723
+Scotch Whisky Auctions,scotchwhiskyauctions,2019-12-01 00:00:00+00,54000,0,270.18,2087670,7727,31485
+Scotch Whisky Auctions,scotchwhiskyauctions,2020-01-01 00:00:00+00,58000,0,279.43,1456650,5213,26222
+Scotch Whisky Auctions,scotchwhiskyauctions,2020-02-01 00:00:00+00,62000,0,246.93,1767545,7158,31326
+Scotch Whisky Auctions,scotchwhiskyauctions,2020-05-01 00:00:00+00,40000,0,262.1,2197680,8385,28558
+Scotch Whisky Auctions,scotchwhiskyauctions,2020-06-01 00:00:00+00,60000,0,235.73,1313730,5573,28829
+Scotch Whisky Auctions,scotchwhiskyauctions,2020-07-01 00:00:00+00,14000,0,210.31,1398535,6650,31656
+Scotch Whisky Auctions,scotchwhiskyauctions,2020-08-01 00:00:00+00,82000,0,243.9,1773365,7271,34880
+Scotch Whisky Auctions,scotchwhiskyauctions,2020-09-01 00:00:00+00,38000,0,245.44,1865105,7599,36287
+Scotch Whisky Auctions,scotchwhiskyauctions,2020-10-01 00:00:00+00,14000,0,219.49,1785300,8134,43036
+Scotch Whisky Auctions,scotchwhiskyauctions,2020-11-01 00:00:00+00,20000,0,213.37,2218575,10398,45162
+Scotch Whisky Auctions,scotchwhiskyauctions,2020-12-01 00:00:00+00,12500,0,251.91,1571185,6237,40691
+Scotch Whisky Auctions,scotchwhiskyauctions,2021-01-01 00:00:00+00,25000,0,299.44,1620575,5412,31995
+Scotch Whisky Auctions,scotchwhiskyauctions,2021-02-01 00:00:00+00,42000,0,255.16,1658310,6499,35065
+Scotch Whisky Auctions,scotchwhiskyauctions,2021-03-01 00:00:00+00,58000,0,250.1,1612635,6448,38735
+Scotch Whisky Auctions,scotchwhiskyauctions,2021-04-01 00:00:00+00,56000,20,272.45,1768230,6490,43356
+Scotch Whisky Auctions,scotchwhiskyauctions,2021-05-01 00:00:00+00,38000,20,229.37,1788180,7796,42530
+Scotch Whisky Auctions,scotchwhiskyauctions,2021-06-01 00:00:00+00,18000,20,276.97,1563520,5645,37702
+Scotch Whisky Auctions,scotchwhiskyauctions,2021-07-01 00:00:00+00,32000,20,239.49,1456080,6080,36170
+Scotch Whisky Auctions,scotchwhiskyauctions,2021-08-01 00:00:00+00,42000,20,257.96,1770635,6864,42409
+Scotch Whisky Auctions,scotchwhiskyauctions,2021-09-01 00:00:00+00,22000,20,219.28,1304260,5948,38731
+Scotch Whisky Auctions,scotchwhiskyauctions,2021-10-01 00:00:00+00,20000,20,262.56,1942190,7397,43367
+Scotch Whisky Auctions,scotchwhiskyauctions,2021-11-01 00:00:00+00,23000,20,241.68,2092935,8660,50235
+Scotch Whisky Auctions,scotchwhiskyauctions,2021-12-01 00:00:00+00,76000,20,321.83,2090315,6495,44158
+Scotch Whisky Auctions,scotchwhiskyauctions,2022-02-01 00:00:00+00,21000,20,265.24,2014735,7596,44602
+Scotch Whisky Auctions,scotchwhiskyauctions,2022-03-01 00:00:00+00,21000,20,270.58,2420340,8945,46544
+Scotch Whisky Auctions,scotchwhiskyauctions,2022-04-01 00:00:00+00,30000,20,274.31,4152445,15138,50951
+Scotch Whisky Auctions,scotchwhiskyauctions,2022-06-01 00:00:00+00,60000,20,303.65,2725870,8977,43553
+Scotch Whisky Auctions,scotchwhiskyauctions,2022-07-01 00:00:00+00,72000,20,331.69,2518220,7592,47042
+Scotch Whisky Auctions,scotchwhiskyauctions,2022-08-01 00:00:00+00,52000,20,325.44,2330185,7160,40649
+Scotch Whisky Auctions,scotchwhiskyauctions,2022-09-01 00:00:00+00,78000,20,294.76,4357070,14782,55429
+Scotch Whisky Auctions,scotchwhiskyauctions,2022-11-01 00:00:00+00,80000,20,299.89,2413800,8049,55340
+Scotch Whisky Auctions,scotchwhiskyauctions,2022-12-01 00:00:00+00,200000,20,279.35,3910875,14000,53794
+Scotch Whisky Auctions,scotchwhiskyauctions,2023-02-01 00:00:00+00,20000,20,292.04,1835185,6284,41735
+Scotch Whisky Auctions,scotchwhiskyauctions,2023-03-01 00:00:00+00,68000,20,280.17,4207800,15019,51697
+Scotch Whisky Auctions,scotchwhiskyauctions,2023-05-01 00:00:00+00,36000,20,261.88,2208670,8434,44950
+Scotch Whisky Auctions,scotchwhiskyauctions,2023-06-01 00:00:00+00,23000,20,235.74,3470530,14722,45412
+Sotheby's Whisky Auction,sothebys-whisky-auction,2019-07-01 00:00:00+00,50418.5,252.1,4841.27,222698.6,46,27617
+Sotheby's Whisky Auction,sothebys-whisky-auction,2019-10-01 00:00:00+00,1200000,100,16140.18,6310810,391,32793
+Sotheby's Whisky Auction,sothebys-whisky-auction,2020-01-01 00:00:00+00,29041.2,242,3991.67,323325.2,81,26222
+Sotheby's Whisky Auction,sothebys-whisky-auction,2020-03-01 00:00:00+00,350000,60,14649.37,1157300,79,22760
+Sotheby's Whisky Auction,sothebys-whisky-auction,2020-04-01 00:00:00+00,104759.2,604.4,21107.64,949843.9,45,17023
+Sotheby's Whisky Auction,sothebys-whisky-auction,2020-05-01 00:00:00+00,38963.3,205.1,3965.38,491706.8,124,28558
+Sotheby's Whisky Auction,sothebys-whisky-auction,2020-06-01 00:00:00+00,206630,103.3,4701.28,550049.6,117,28829
+Sotheby's Whisky Auction,sothebys-whisky-auction,2020-08-01 00:00:00+00,39441.2,98.6,3447.88,317205,92,34880
+Sotheby's Whisky Auction,sothebys-whisky-auction,2020-09-01 00:00:00+00,62622.3,80,4005.72,1361946.2,340,36287
+Sotheby's Whisky Auction,sothebys-whisky-auction,2020-10-01 00:00:00+00,620000,120,5690.66,1889300,332,43036
+Sotheby's Whisky Auction,sothebys-whisky-auction,2020-11-01 00:00:00+00,74802.8,193.3,5160.88,939280.9,182,45162
+Sotheby's Whisky Auction,sothebys-whisky-auction,2020-12-01 00:00:00+00,15373.1,192.2,1862.62,195575.3,105,40691
+Sotheby's Whisky Auction,sothebys-whisky-auction,2021-01-01 00:00:00+00,24526.1,235.8,3477.1,212102.8,61,31995
+Sotheby's Whisky Auction,sothebys-whisky-auction,2021-02-01 00:00:00+00,69514.2,100,8762.22,411824.2,47,35065
+Sotheby's Whisky Auction,sothebys-whisky-auction,2021-03-01 00:00:00+00,251298.6,35.9,1962.29,1006654.1,513,38735
+Sotheby's Whisky Auction,sothebys-whisky-auction,2021-04-01 00:00:00+00,325279.5,72.3,4663.91,1506442.9,323,43356
+Sotheby's Whisky Auction,sothebys-whisky-auction,2021-05-01 00:00:00+00,35407.6,46.6,2441.78,261270.7,107,42530
+Sotheby's Whisky Auction,sothebys-whisky-auction,2021-06-01 00:00:00+00,800000,106,7969.43,2016264.8,253,37702
+Sotheby's Whisky Auction,sothebys-whisky-auction,2021-07-01 00:00:00+00,20585.4,514.6,4651.59,372127.2,80,36170
+Sotheby's Whisky Auction,sothebys-whisky-auction,2021-09-01 00:00:00+00,37380.4,186.9,3877.61,298575.6,77,38731
+Sotheby's Whisky Auction,sothebys-whisky-auction,2021-10-01 00:00:00+00,664482,1234,42455.65,1018935.6,24,43367
+Sotheby's Whisky Auction,sothebys-whisky-auction,2021-11-01 00:00:00+00,124521.1,80,2759.52,1920627.2,696,50235
+Sotheby's Whisky Auction,sothebys-whisky-auction,2021-12-01 00:00:00+00,90430.1,113,2778.3,1386369.4,499,44158
+Sotheby's Whisky Auction,sothebys-whisky-auction,2022-01-01 00:00:00+00,252350.1,7991.1,54255.27,596808,11,37474
+Sotheby's Whisky Auction,sothebys-whisky-auction,2022-02-01 00:00:00+00,70267.6,110.9,4035.7,1057352.3,262,44602
+Sotheby's Whisky Auction,sothebys-whisky-auction,2022-03-01 00:00:00+00,26275.8,75.1,1328.22,981552,739,46544
+Sotheby's Whisky Auction,sothebys-whisky-auction,2022-04-01 00:00:00+00,111925,152.6,8173.91,1103477.6,135,50951
+Sotheby's Whisky Auction,sothebys-whisky-auction,2022-05-01 00:00:00+00,750000,40.5,2303.97,2456027.6,1066,45291
+Sotheby's Whisky Auction,sothebys-whisky-auction,2022-06-01 00:00:00+00,700000,750,34953.09,2761293.8,79,43553
+Sotheby's Whisky Auction,sothebys-whisky-auction,2022-07-01 00:00:00+00,376880,41.1,4365,2736856.5,627,47042
+Sotheby's Whisky Auction,sothebys-whisky-auction,2022-09-01 00:00:00+00,480000,186.1,5808.27,2375581.4,409,55429
+Sotheby's Whisky Auction,sothebys-whisky-auction,2022-10-01 00:00:00+00,750000,165.4,7917.8,2644544.7,334,49660
+Sotheby's Whisky Auction,sothebys-whisky-auction,2022-11-01 00:00:00+00,95000,95000,95000,95000,1,55340
+Sotheby's Whisky Auction,sothebys-whisky-auction,2022-12-01 00:00:00+00,282467.6,120,3644.99,2967017.8,814,53794
+Sotheby's Whisky Auction,sothebys-whisky-auction,2023-02-01 00:00:00+00,165852.8,165.9,3242.75,882028.6,272,41735
+Sotheby's Whisky Auction,sothebys-whisky-auction,2023-03-01 00:00:00+00,280872,81.2,2519.38,1750970.9,695,51697
+Sotheby's Whisky Auction,sothebys-whisky-auction,2023-04-01 00:00:00+00,5046279.3,102.6,32738,11261873.4,344,37629
+Sotheby's Whisky Auction,sothebys-whisky-auction,2023-05-01 00:00:00+00,150000,103.5,5135.25,1653551.3,322,44950
+Sotheby's Whisky Auction,sothebys-whisky-auction,2023-06-01 00:00:00+00,58850.9,118,1834.63,823750.6,449,45412
+Sotheby's Whisky Auction,sothebys-whisky-auction,2023-07-01 00:00:00+00,170000,48.9,3226.97,1210115,375,33595
+Speyside Whisky Auctions,speyside-whisky-auctions,2019-08-01 00:00:00+00,1500,0,214.84,15898,74,23540
+Speyside Whisky Auctions,speyside-whisky-auctions,2019-09-01 00:00:00+00,5300,18,266.03,74753.73,281,30169
+Speyside Whisky Auctions,speyside-whisky-auctions,2019-10-01 00:00:00+00,4900,4,242.75,67727.03,279,32793
+Speyside Whisky Auctions,speyside-whisky-auctions,2019-11-01 00:00:00+00,1560,7,118.62,38551.81,325,31723
+Speyside Whisky Auctions,speyside-whisky-auctions,2019-12-01 00:00:00+00,3200,5,139.2,42594.86,306,31485
+Speyside Whisky Auctions,speyside-whisky-auctions,2020-01-01 00:00:00+00,3350,5,177.36,47888.21,270,26222
+Speyside Whisky Auctions,speyside-whisky-auctions,2020-02-01 00:00:00+00,8001,5,351.23,147163.5,419,31326
+Speyside Whisky Auctions,speyside-whisky-auctions,2020-03-01 00:00:00+00,15000,4,168.96,74679,442,22760
+Speyside Whisky Auctions,speyside-whisky-auctions,2020-04-01 00:00:00+00,18050,4,249.5,77595.88,311,17023
+Speyside Whisky Auctions,speyside-whisky-auctions,2020-05-01 00:00:00+00,2900,5,121.16,44103.55,364,28558
+Speyside Whisky Auctions,speyside-whisky-auctions,2020-07-01 00:00:00+00,11400,5,203.27,83138.67,409,31656
+Speyside Whisky Auctions,speyside-whisky-auctions,2020-08-01 00:00:00+00,10950,5,223.21,101339.52,454,34880
+Speyside Whisky Auctions,speyside-whisky-auctions,2020-09-01 00:00:00+00,11000,5,216.05,95710.03,443,36287
+Speyside Whisky Auctions,speyside-whisky-auctions,2020-10-01 00:00:00+00,11500,3,204.49,132302.58,647,43036
+Speyside Whisky Auctions,speyside-whisky-auctions,2020-11-01 00:00:00+00,4650,5,182.3,100262.59,550,45162
+Speyside Whisky Auctions,speyside-whisky-auctions,2020-12-01 00:00:00+00,5025,5,208.52,151591.08,727,40691
+Speyside Whisky Auctions,speyside-whisky-auctions,2021-01-01 00:00:00+00,17000,5,262.15,120325.81,459,31995
+Speyside Whisky Auctions,speyside-whisky-auctions,2021-02-01 00:00:00+00,12500,7,293.89,130486.76,444,35065
+Speyside Whisky Auctions,speyside-whisky-auctions,2021-03-01 00:00:00+00,8500,10,307.98,120727,392,38735
+Speyside Whisky Auctions,speyside-whisky-auctions,2021-04-01 00:00:00+00,21100,10,316.71,196043,619,43356
+Speyside Whisky Auctions,speyside-whisky-auctions,2021-05-01 00:00:00+00,3600,10,175.61,72528,413,42530
+Speyside Whisky Auctions,speyside-whisky-auctions,2021-06-01 00:00:00+00,15500,12,312.79,141068,451,37702
+Speyside Whisky Auctions,speyside-whisky-auctions,2021-07-01 00:00:00+00,5200,6,206.44,88976,431,36170
+Speyside Whisky Auctions,speyside-whisky-auctions,2021-08-01 00:00:00+00,16000,8,301.16,106311,353,42409
+Speyside Whisky Auctions,speyside-whisky-auctions,2021-09-01 00:00:00+00,5500,8,283.3,119551,422,38731
+Speyside Whisky Auctions,speyside-whisky-auctions,2021-10-01 00:00:00+00,24000,6,302.75,131089,433,43367
+Speyside Whisky Auctions,speyside-whisky-auctions,2021-11-01 00:00:00+00,16700,6,297.33,199212,670,50235
+Speyside Whisky Auctions,speyside-whisky-auctions,2021-12-01 00:00:00+00,32250,6,309.48,212612,687,44158
+Speyside Whisky Auctions,speyside-whisky-auctions,2022-01-01 00:00:00+00,12000,6,284.42,153020,538,37474
+Speyside Whisky Auctions,speyside-whisky-auctions,2022-02-01 00:00:00+00,17200,6,253.84,169564,668,44602
+Speyside Whisky Auctions,speyside-whisky-auctions,2022-03-01 00:00:00+00,23000,6,404.21,287393,711,46544
+Speyside Whisky Auctions,speyside-whisky-auctions,2022-04-01 00:00:00+00,18000,6,411.68,191020,464,50951
+Speyside Whisky Auctions,speyside-whisky-auctions,2022-05-01 00:00:00+00,18400,6,265.28,152004,573,45291
+Speyside Whisky Auctions,speyside-whisky-auctions,2022-06-01 00:00:00+00,8500,6,306.79,192971,629,43553
+Speyside Whisky Auctions,speyside-whisky-auctions,2022-07-01 00:00:00+00,12100,6,347.24,261818,754,47042
+Speyside Whisky Auctions,speyside-whisky-auctions,2022-08-01 00:00:00+00,14400,6,355.01,276196,778,40649
+Speyside Whisky Auctions,speyside-whisky-auctions,2022-09-01 00:00:00+00,20000,6,478.82,285378,596,55429
+Speyside Whisky Auctions,speyside-whisky-auctions,2022-10-01 00:00:00+00,11500,6,428.13,247457,578,49660
+Speyside Whisky Auctions,speyside-whisky-auctions,2022-11-01 00:00:00+00,4800,6,219.72,210929,960,55340
+Speyside Whisky Auctions,speyside-whisky-auctions,2022-12-01 00:00:00+00,24000,6,304.88,187804,616,53794
+Speyside Whisky Auctions,speyside-whisky-auctions,2023-01-01 00:00:00+00,12000,6,249.33,156327,627,39650
+Speyside Whisky Auctions,speyside-whisky-auctions,2023-02-01 00:00:00+00,8300,10,246.35,147813,600,41735
+Speyside Whisky Auctions,speyside-whisky-auctions,2023-03-01 00:00:00+00,18100,10,327.15,237510,726,51697
+Speyside Whisky Auctions,speyside-whisky-auctions,2023-04-01 00:00:00+00,18000,20,358.52,243794,680,37629
+Speyside Whisky Auctions,speyside-whisky-auctions,2023-05-01 00:00:00+00,10500,20,252.1,182519,724,44950
+Speyside Whisky Auctions,speyside-whisky-auctions,2023-06-01 00:00:00+00,10000,20,157.6,123875,786,45412
+Speyside Whisky Auctions,speyside-whisky-auctions,2023-07-01 00:00:00+00,5000,20,227.6,126319,555,33595
+The Grand Whisky Auction,thegrandwhiskyauction,2019-04-01 00:00:00+00,2100,10,163.78,32265.17,197,27392
+The Grand Whisky Auction,thegrandwhiskyauction,2019-05-01 00:00:00+00,5000,10,295.83,53544.5,181,25948
+The Grand Whisky Auction,thegrandwhiskyauction,2019-06-01 00:00:00+00,6500,7,234.08,41665.77,178,25303
+The Grand Whisky Auction,thegrandwhiskyauction,2019-07-01 00:00:00+00,4150,1,205.86,75343.33,366,27617
+The Grand Whisky Auction,thegrandwhiskyauction,2019-08-01 00:00:00+00,5200,5,214.15,123564.31,577,23428
+The Grand Whisky Auction,thegrandwhiskyauction,2019-09-01 00:00:00+00,21250,10,267.51,135893.88,508,30169
+The Grand Whisky Auction,thegrandwhiskyauction,2019-10-01 00:00:00+00,22000,5,242.15,212363.03,877,32793
+The Grand Whisky Auction,thegrandwhiskyauction,2019-11-01 00:00:00+00,25000,5,306.76,236207.91,770,31723
+The Grand Whisky Auction,thegrandwhiskyauction,2019-12-01 00:00:00+00,23750,7,267.16,231898,868,31485
+The Grand Whisky Auction,thegrandwhiskyauction,2020-01-01 00:00:00+00,8700,5,210.82,183414.71,870,26222
+The Grand Whisky Auction,thegrandwhiskyauction,2020-02-01 00:00:00+00,9600,5,201.76,158785.13,787,31326
+The Grand Whisky Auction,thegrandwhiskyauction,2020-04-01 00:00:00+00,2950,5,188.93,153031.01,810,17023
+The Grand Whisky Auction,thegrandwhiskyauction,2020-05-01 00:00:00+00,5800,7,242.41,194900.93,804,28558
+The Grand Whisky Auction,thegrandwhiskyauction,2020-06-01 00:00:00+00,21250,5,192.99,289094.47,1498,28829
+The Grand Whisky Auction,thegrandwhiskyauction,2020-07-01 00:00:00+00,10000,5,243.37,391586.66,1609,31656
+The Grand Whisky Auction,thegrandwhiskyauction,2020-08-01 00:00:00+00,13250,5,254.18,409236.05,1610,34880
+The Grand Whisky Auction,thegrandwhiskyauction,2020-09-01 00:00:00+00,60000,5,266.29,511806.74,1922,36287
+The Grand Whisky Auction,thegrandwhiskyauction,2020-10-01 00:00:00+00,16500,5,249.26,596729.91,2394,43036
+The Grand Whisky Auction,thegrandwhiskyauction,2020-11-01 00:00:00+00,19000,7,226.18,608651.35,2691,45162
+The Grand Whisky Auction,thegrandwhiskyauction,2020-12-01 00:00:00+00,13000,5,231.8,635124.6,2740,40691
+The Grand Whisky Auction,thegrandwhiskyauction,2021-01-01 00:00:00+00,57500,5,227.76,395612.49,1737,31995
+The Grand Whisky Auction,thegrandwhiskyauction,2021-02-01 00:00:00+00,5000,7,218.03,352557.85,1617,35065
+The Grand Whisky Auction,thegrandwhiskyauction,2021-03-01 00:00:00+00,9000,7,219.94,535762.26,2436,38735
+The Grand Whisky Auction,thegrandwhiskyauction,2021-04-01 00:00:00+00,20750,2,291.3,619601.81,2127,43356
+The Grand Whisky Auction,thegrandwhiskyauction,2021-05-01 00:00:00+00,12750,5,207.68,541832.02,2609,42530
+The Grand Whisky Auction,thegrandwhiskyauction,2021-06-01 00:00:00+00,17250,4,212.25,623386.91,2937,37702
+The Grand Whisky Auction,thegrandwhiskyauction,2021-07-01 00:00:00+00,38250,5,282.82,665199.68,2352,36170
+The Grand Whisky Auction,thegrandwhiskyauction,2021-08-01 00:00:00+00,59000,5,294.24,711461.17,2418,42409
+The Grand Whisky Auction,thegrandwhiskyauction,2021-09-01 00:00:00+00,29500,5,237.45,625669.11,2635,38731
+The Grand Whisky Auction,thegrandwhiskyauction,2021-10-01 00:00:00+00,15500,5,271.34,503601.72,1856,43367
+The Grand Whisky Auction,thegrandwhiskyauction,2021-11-01 00:00:00+00,20000,8,284.89,769214.3,2700,50235
+The Grand Whisky Auction,thegrandwhiskyauction,2021-12-01 00:00:00+00,17500,6,281.95,727995.72,2582,44158
+The Grand Whisky Auction,thegrandwhiskyauction,2022-01-01 00:00:00+00,76000,5,341.38,631210.27,1849,37474
+The Grand Whisky Auction,thegrandwhiskyauction,2022-02-01 00:00:00+00,14750,12.5,256.78,536165.06,2088,44602
+The Grand Whisky Auction,thegrandwhiskyauction,2022-03-01 00:00:00+00,15500,5,319.52,656301.94,2054,46544
+The Grand Whisky Auction,thegrandwhiskyauction,2022-04-01 00:00:00+00,21750,5,340.63,699307.5,2053,50951
+The Grand Whisky Auction,thegrandwhiskyauction,2022-05-01 00:00:00+00,21250,5,382.22,752971.56,1970,45291
+The Grand Whisky Auction,thegrandwhiskyauction,2022-06-01 00:00:00+00,12500,6,320.67,746200.08,2327,43553
+The Grand Whisky Auction,thegrandwhiskyauction,2022-07-01 00:00:00+00,34750,8,456.52,1130808.89,2477,47042
+The Grand Whisky Auction,thegrandwhiskyauction,2022-08-01 00:00:00+00,18750,3,420.86,745334.21,1771,40649
+The Grand Whisky Auction,thegrandwhiskyauction,2022-09-01 00:00:00+00,60000,5,465.44,802424.47,1724,55429
+The Grand Whisky Auction,thegrandwhiskyauction,2022-10-01 00:00:00+00,60250,5,357.6,1854167.53,5185,49660
+The Grand Whisky Auction,thegrandwhiskyauction,2022-11-01 00:00:00+00,15000,1,284.97,897646.52,3150,55340
+The Grand Whisky Auction,thegrandwhiskyauction,2022-12-01 00:00:00+00,30250,5,314.23,661767.29,2106,53794
+The Grand Whisky Auction,thegrandwhiskyauction,2023-01-01 00:00:00+00,56000,6,412.83,511904.28,1240,39650
+The Grand Whisky Auction,thegrandwhiskyauction,2023-02-01 00:00:00+00,23250,5,342.66,707941.64,2066,41735
+The Grand Whisky Auction,thegrandwhiskyauction,2023-03-01 00:00:00+00,36000,7,364.46,930464.68,2553,51697
+The Grand Whisky Auction,thegrandwhiskyauction,2023-04-01 00:00:00+00,87750,5,395.21,750506.01,1899,37629
+The Grand Whisky Auction,thegrandwhiskyauction,2023-05-01 00:00:00+00,32000,5,300.78,705930.28,2347,44950
+The Grand Whisky Auction,thegrandwhiskyauction,2023-06-01 00:00:00+00,23500,5,285.79,601584.83,2105,45412
+The Grand Whisky Auction,thegrandwhiskyauction,2023-07-01 00:00:00+00,8100,5,320.45,770042.77,2403,33595
+The Whisky Shop Auctions,the-whisky-shop-auctions,2019-08-01 00:00:00+00,5500,13,158.09,54224,343,23428
+The Whisky Shop Auctions,the-whisky-shop-auctions,2019-09-01 00:00:00+00,3800,15,169.25,57037,337,30169
+The Whisky Shop Auctions,the-whisky-shop-auctions,2019-10-01 00:00:00+00,2300,15,157.96,46598,295,32793
+The Whisky Shop Auctions,the-whisky-shop-auctions,2019-11-01 00:00:00+00,3700,15,173.36,47848,276,31723
+The Whisky Shop Auctions,the-whisky-shop-auctions,2019-12-01 00:00:00+00,3700,15,248.77,59704,240,31485
+The Whisky Shop Auctions,the-whisky-shop-auctions,2020-01-01 00:00:00+00,2100,15,167.14,33762,202,26222
+The Whisky Shop Auctions,the-whisky-shop-auctions,2020-02-01 00:00:00+00,4600,15,204.54,54407,266,31326
+The Whisky Shop Auctions,the-whisky-shop-auctions,2020-03-01 00:00:00+00,3500,15,231.02,88941,385,22760
+The Whisky Shop Auctions,the-whisky-shop-auctions,2020-04-01 00:00:00+00,3400,15,229.5,48425,211,17023
+The Whisky Shop Auctions,the-whisky-shop-auctions,2020-05-01 00:00:00+00,4000,15,223.41,68810,308,28558
+The Whisky Shop Auctions,the-whisky-shop-auctions,2020-06-01 00:00:00+00,4200,16,207.17,77689,375,28829
+The Whisky Shop Auctions,the-whisky-shop-auctions,2020-07-01 00:00:00+00,15500,15,227.58,93990,413,31656
+The Whisky Shop Auctions,the-whisky-shop-auctions,2020-08-01 00:00:00+00,4300,15,166.51,79923,480,34880
+The Whisky Shop Auctions,the-whisky-shop-auctions,2020-09-01 00:00:00+00,10000,15,220.06,76801,349,36287
+The Whisky Shop Auctions,the-whisky-shop-auctions,2020-10-01 00:00:00+00,2800,16,224.44,107282,478,43036
+The Whisky Shop Auctions,the-whisky-shop-auctions,2020-11-01 00:00:00+00,8900,16,278.05,197417,710,45162
+The Whisky Shop Auctions,the-whisky-shop-auctions,2020-12-01 00:00:00+00,9500,15,180.88,136022,752,40691
+The Whisky Shop Auctions,the-whisky-shop-auctions,2021-01-01 00:00:00+00,2700,15,205.61,108359,527,31995
+The Whisky Shop Auctions,the-whisky-shop-auctions,2021-02-01 00:00:00+00,3300,16,199.71,113832,570,35065
+The Whisky Shop Auctions,the-whisky-shop-auctions,2021-03-01 00:00:00+00,10000,15,206.54,184442,893,38735
+The Whisky Shop Auctions,the-whisky-shop-auctions,2021-04-01 00:00:00+00,21000,15,230.07,231915,1008,43356
+The Whisky Shop Auctions,the-whisky-shop-auctions,2021-05-01 00:00:00+00,4700,15,171.42,223880,1306,42530
+The Whisky Shop Auctions,the-whisky-shop-auctions,2021-06-01 00:00:00+00,7500,16,176.43,249471,1414,37702
+The Whisky Shop Auctions,the-whisky-shop-auctions,2021-07-01 00:00:00+00,4900,16,172.09,239201,1390,36170
+The Whisky Shop Auctions,the-whisky-shop-auctions,2021-08-01 00:00:00+00,6500,16,146.49,232482,1587,42409
+The Whisky Shop Auctions,the-whisky-shop-auctions,2021-09-01 00:00:00+00,5200,16,133.45,178152,1335,38731
+The Whisky Shop Auctions,the-whisky-shop-auctions,2021-10-01 00:00:00+00,3600,16,144.62,233122,1612,43367
+The Whisky Shop Auctions,the-whisky-shop-auctions,2021-11-01 00:00:00+00,4600,16,167.22,286781,1715,50235
+The Whisky Shop Auctions,the-whisky-shop-auctions,2021-12-01 00:00:00+00,5000,16,142.32,170930,1201,44158
+The Whisky Shop Auctions,the-whisky-shop-auctions,2022-01-01 00:00:00+00,3000,16,176.52,201939,1144,37474
+The Whisky Shop Auctions,the-whisky-shop-auctions,2022-02-01 00:00:00+00,5600,16,165.86,234022,1411,44602
+The Whisky Shop Auctions,the-whisky-shop-auctions,2022-03-01 00:00:00+00,4700,16,179.38,355351,1981,46544
+The Whisky Shop Auctions,the-whisky-shop-auctions,2022-04-01 00:00:00+00,10000,16,174.86,345867,1978,50951
+The Whisky Shop Auctions,the-whisky-shop-auctions,2022-05-01 00:00:00+00,4500,16,199.89,392587,1964,45291
+The Whisky Shop Auctions,the-whisky-shop-auctions,2022-06-01 00:00:00+00,12500,16,214.02,378819,1770,43553
+The Whisky Shop Auctions,the-whisky-shop-auctions,2022-07-01 00:00:00+00,10000,16,228.69,378253,1654,47042
+The Whisky Shop Auctions,the-whisky-shop-auctions,2022-08-01 00:00:00+00,4800,16,232.64,388974,1672,40649
+The Whisky Shop Auctions,the-whisky-shop-auctions,2022-09-01 00:00:00+00,7400,16,223.99,338225,1510,55429
+The Whisky Shop Auctions,the-whisky-shop-auctions,2022-10-01 00:00:00+00,4600,16,223.89,413969,1849,49660
+The Whisky Shop Auctions,the-whisky-shop-auctions,2022-11-01 00:00:00+00,4800,16,223.71,462186,2066,55340
+The Whisky Shop Auctions,the-whisky-shop-auctions,2022-12-01 00:00:00+00,4200,16,199.62,262299,1314,53794
+The Whisky Shop Auctions,the-whisky-shop-auctions,2023-01-01 00:00:00+00,4000,17,215.46,178830,830,39650
+The Whisky Shop Auctions,the-whisky-shop-auctions,2023-02-01 00:00:00+00,12000,16,216.86,367793,1696,41735
+The Whisky Shop Auctions,the-whisky-shop-auctions,2023-03-01 00:00:00+00,3800,16,227.1,472135,2079,51697
+The Whisky Shop Auctions,the-whisky-shop-auctions,2023-04-01 00:00:00+00,4000,18,233.17,328997,1411,37629
+The Whisky Shop Auctions,the-whisky-shop-auctions,2023-05-01 00:00:00+00,12500,16,204.22,424166,2077,44950
+The Whisky Shop Auctions,the-whisky-shop-auctions,2023-06-01 00:00:00+00,3700,16,186.02,345247,1856,45412
+The Whisky Shop Auctions,the-whisky-shop-auctions,2023-07-01 00:00:00+00,6300,16,222.97,391984,1758,33595
+Unicorn Auctions,unicorn-auctions,2020-03-01 00:00:00+00,1632,12,334.55,18400,55,22760
+Unicorn Auctions,unicorn-auctions,2020-05-01 00:00:00+00,1278,6,263.58,20032,76,28558
+Unicorn Auctions,unicorn-auctions,2020-06-01 00:00:00+00,1412,4,203.03,26191,129,28829
+Unicorn Auctions,unicorn-auctions,2020-08-01 00:00:00+00,2432,30,170.7,49503,290,34880
+Unicorn Auctions,unicorn-auctions,2020-09-01 00:00:00+00,779,4,111.05,50085,451,36287
+Unicorn Auctions,unicorn-auctions,2020-10-01 00:00:00+00,2393,4,157.53,68366,434,43036
+Unicorn Auctions,unicorn-auctions,2020-11-01 00:00:00+00,4318,8,192.94,154356,800,45162
+Unicorn Auctions,unicorn-auctions,2020-12-01 00:00:00+00,2251,15,189.55,166805,880,40691
+Unicorn Auctions,unicorn-auctions,2021-02-01 00:00:00+00,5474,4,226.21,238655,1055,35065
+Unicorn Auctions,unicorn-auctions,2021-03-01 00:00:00+00,5745,7,212.35,181987,857,38735
+Unicorn Auctions,unicorn-auctions,2021-05-01 00:00:00+00,8340,4,171.09,351768,2056,42530
+Unicorn Auctions,unicorn-auctions,2021-06-01 00:00:00+00,5364,4,225.06,309905,1377,37702
+Unicorn Auctions,unicorn-auctions,2021-07-01 00:00:00+00,10801,4,273.9,376880,1376,36170
+Unicorn Auctions,unicorn-auctions,2021-08-01 00:00:00+00,13151,4,259.97,990754,3811,42409
+Unicorn Auctions,unicorn-auctions,2021-09-01 00:00:00+00,9140,4,196.54,410187,2087,38731
+Unicorn Auctions,unicorn-auctions,2021-10-01 00:00:00+00,13160,4,218.49,490723,2246,43367
+Unicorn Auctions,unicorn-auctions,2021-11-01 00:00:00+00,14250,4,373.46,796589,2133,50235
+Unicorn Auctions,unicorn-auctions,2021-12-01 00:00:00+00,15925,11,492.03,560422,1139,44158
+Unicorn Auctions,unicorn-auctions,2022-01-01 00:00:00+00,5598,4,239.51,1153022,4814,37474
+Unicorn Auctions,unicorn-auctions,2022-02-01 00:00:00+00,14338,4,277.29,745358,2688,44602
+Unicorn Auctions,unicorn-auctions,2022-03-01 00:00:00+00,8131,4,250.66,801605,3198,46544
+Unicorn Auctions,unicorn-auctions,2022-05-01 00:00:00+00,12046.6,2,281.13,1675520.6,5960,45291
+Unicorn Auctions,unicorn-auctions,2022-06-01 00:00:00+00,14451.3,4.1,281.43,712030,2530,43553
+Unicorn Auctions,unicorn-auctions,2022-07-01 00:00:00+00,12408.3,4.1,305.38,899351.3,2945,47042
+Unicorn Auctions,unicorn-auctions,2022-08-01 00:00:00+00,9785.5,4.1,321.46,863127,2685,40649
+Unicorn Auctions,unicorn-auctions,2022-09-01 00:00:00+00,11807.3,4.4,258.6,822851.7,3182,55429
+Unicorn Auctions,unicorn-auctions,2022-10-01 00:00:00+00,44861.2,4.3,300.7,1311371.5,4361,49660
+Unicorn Auctions,unicorn-auctions,2022-11-01 00:00:00+00,11610.9,4.1,241.83,1162981.3,4809,55340
+Unicorn Auctions,unicorn-auctions,2022-12-01 00:00:00+00,25409.2,16.6,548.14,893475.5,1630,53794
+Unicorn Auctions,unicorn-auctions,2023-01-01 00:00:00+00,15423.7,4,266,2179575.7,8194,39650
+Unicorn Auctions,unicorn-auctions,2023-02-01 00:00:00+00,22894,4.1,289.62,1454783.3,5023,41735
+Unicorn Auctions,unicorn-auctions,2023-03-01 00:00:00+00,11420.5,4.1,277.48,1525873.9,5499,51697
+Unicorn Auctions,unicorn-auctions,2023-04-01 00:00:00+00,32135.3,4,285.44,2170172.4,7603,37629
+Unicorn Auctions,unicorn-auctions,2023-05-01 00:00:00+00,16798.2,4,262.78,1874177.6,7132,44950
+Unicorn Auctions,unicorn-auctions,2023-06-01 00:00:00+00,4174.2,3.9,190.85,894322.7,4686,45412
+Unicorn Auctions,unicorn-auctions,2023-07-01 00:00:00+00,28387.5,3.8,232.84,1490643.8,6402,33595
+WVA Whisky Auctions,wva-whisky-auctions,2018-09-01 00:00:00+00,3300,2.5,177.65,22562,127,22553
+WVA Whisky Auctions,wva-whisky-auctions,2018-10-01 00:00:00+00,1900,5,116.22,11622.5,100,22291
+WVA Whisky Auctions,wva-whisky-auctions,2018-11-01 00:00:00+00,2250,5.1,176.07,17783.35,101,26493
+WVA Whisky Auctions,wva-whisky-auctions,2018-12-01 00:00:00+00,5500,2.5,261.04,28714.03,110,24365
+WVA Whisky Auctions,wva-whisky-auctions,2019-01-01 00:00:00+00,1625,2,125.82,18621.83,148,18471
+WVA Whisky Auctions,wva-whisky-auctions,2019-02-01 00:00:00+00,4000,2,134.22,22817.55,170,27105
+WVA Whisky Auctions,wva-whisky-auctions,2019-03-01 00:00:00+00,3250,2,230.92,29788.09,129,29921
+WVA Whisky Auctions,wva-whisky-auctions,2019-04-01 00:00:00+00,1700,1,60.53,16584.5,274,27392
+WVA Whisky Auctions,wva-whisky-auctions,2019-05-01 00:00:00+00,15500,1,312.49,49686.5,159,25948
+WVA Whisky Auctions,wva-whisky-auctions,2019-06-01 00:00:00+00,8000,1,166.11,35547,214,25303
+WVA Whisky Auctions,wva-whisky-auctions,2019-07-01 00:00:00+00,6500,1,223.27,32374,145,27617
+WVA Whisky Auctions,wva-whisky-auctions,2019-08-01 00:00:00+00,5700,4,314.61,22652,72,23428
+WVA Whisky Auctions,wva-whisky-auctions,2019-09-01 00:00:00+00,1375,4,89.75,10141.5,113,30169
+WVA Whisky Auctions,wva-whisky-auctions,2019-10-01 00:00:00+00,2000,1,122.06,19530,160,32793
+WVA Whisky Auctions,wva-whisky-auctions,2019-11-01 00:00:00+00,3500,1,110.6,17253,156,31723
+WVA Whisky Auctions,wva-whisky-auctions,2019-12-01 00:00:00+00,3850,1,165.38,12073,73,31485
+WVA Whisky Auctions,wva-whisky-auctions,2020-01-01 00:00:00+00,2100,1,298.38,9548,32,26222
+WVA Whisky Auctions,wva-whisky-auctions,2020-02-01 00:00:00+00,2950,1,182.34,19510,107,31326
+WVA Whisky Auctions,wva-whisky-auctions,2020-03-01 00:00:00+00,3550,1,83.49,33145.5,397,22760
+WVA Whisky Auctions,wva-whisky-auctions,2020-04-01 00:00:00+00,2755,2.5,117.54,16102.5,137,17023
+WVA Whisky Auctions,wva-whisky-auctions,2020-05-01 00:00:00+00,2800,2.5,92.48,19142.5,207,28558
+WVA Whisky Auctions,wva-whisky-auctions,2020-06-01 00:00:00+00,3450,2.5,96.18,26257.5,273,28829
+WVA Whisky Auctions,wva-whisky-auctions,2020-07-01 00:00:00+00,3800,2.5,73.17,28757.5,393,31656
+WVA Whisky Auctions,wva-whisky-auctions,2020-08-01 00:00:00+00,820,2.5,51.52,12622.5,245,34880
+WVA Whisky Auctions,wva-whisky-auctions,2020-09-01 00:00:00+00,1875,2.5,44.03,19460,442,36287
+WVA Whisky Auctions,wva-whisky-auctions,2020-10-01 00:00:00+00,880,2.5,40.5,20980,518,43036
+WVA Whisky Auctions,wva-whisky-auctions,2020-11-01 00:00:00+00,3350,2.5,69.57,33185,477,45162
+WVA Whisky Auctions,wva-whisky-auctions,2020-12-01 00:00:00+00,3400,2.5,85.73,46977.5,548,40691
+WVA Whisky Auctions,wva-whisky-auctions,2021-01-01 00:00:00+00,980,2.5,79.45,28997.5,365,31995
+WVA Whisky Auctions,wva-whisky-auctions,2021-02-01 00:00:00+00,3100,2.5,69.78,51497.5,738,35065
+WVA Whisky Auctions,wva-whisky-auctions,2021-03-01 00:00:00+00,2050,2.5,62.99,41070,652,38735
+WVA Whisky Auctions,wva-whisky-auctions,2021-04-01 00:00:00+00,4050,2.5,64.88,59690,920,43356
+WVA Whisky Auctions,wva-whisky-auctions,2021-05-01 00:00:00+00,7300,2.5,100.79,61080,606,42530
+WVA Whisky Auctions,wva-whisky-auctions,2021-06-01 00:00:00+00,840,2.5,59.89,22277.5,372,37702
+WVA Whisky Auctions,wva-whisky-auctions,2021-07-01 00:00:00+00,1775,2.5,58.69,36977.5,630,36170
+WVA Whisky Auctions,wva-whisky-auctions,2021-08-01 00:00:00+00,600,2.5,45.85,16507.5,360,42409
+WVA Whisky Auctions,wva-whisky-auctions,2021-09-01 00:00:00+00,2100,2.5,67.09,24890,371,38731
+WVA Whisky Auctions,wva-whisky-auctions,2021-10-01 00:00:00+00,4500,2.5,71.41,39917.5,559,43367
+WVA Whisky Auctions,wva-whisky-auctions,2021-11-01 00:00:00+00,3600,2.5,78.35,39487.5,504,50235
+WVA Whisky Auctions,wva-whisky-auctions,2021-12-01 00:00:00+00,6700,2.5,63.98,73707.5,1152,44158
+WVA Whisky Auctions,wva-whisky-auctions,2022-01-01 00:00:00+00,6700,2.5,142.29,110557.5,777,37474
+WVA Whisky Auctions,wva-whisky-auctions,2022-02-01 00:00:00+00,40100,2.5,244.72,198222.5,810,44602
+WVA Whisky Auctions,wva-whisky-auctions,2022-03-01 00:00:00+00,16500,2.5,203.8,108217.5,531,46544
+WVA Whisky Auctions,wva-whisky-auctions,2022-05-01 00:00:00+00,60250,2.5,271.26,411232.5,1516,45291
+WVA Whisky Auctions,wva-whisky-auctions,2022-06-01 00:00:00+00,420,2.5,13.73,7990,582,582
+WVA Whisky Auctions,wva-whisky-auctions,2022-07-01 00:00:00+00,76000,2.5,366.1,541097.5,1478,47042
+WVA Whisky Auctions,wva-whisky-auctions,2022-09-01 00:00:00+00,15500,2.5,219.16,405452.5,1850,55429
+WVA Whisky Auctions,wva-whisky-auctions,2022-10-01 00:00:00+00,10500,2.5,257.06,250375,974,49660
+WVA Whisky Auctions,wva-whisky-auctions,2022-12-01 00:00:00+00,7700,2.5,194.8,216030,1109,53794
+WVA Whisky Auctions,wva-whisky-auctions,2023-01-01 00:00:00+00,29500,2.5,261.3,215310,824,39650
+WVA Whisky Auctions,wva-whisky-auctions,2023-02-01 00:00:00+00,3700,2.5,169.94,84632.5,498,498
+WVA Whisky Auctions,wva-whisky-auctions,2023-03-01 00:00:00+00,10000,2.5,258.51,236277.5,914,914
+WVA Whisky Auctions,wva-whisky-auctions,2023-04-01 00:00:00+00,19200,2.5,300.34,267300,890,37629
+WVA Whisky Auctions,wva-whisky-auctions,2023-05-01 00:00:00+00,18000,2.5,307.04,405290,661,661
+WVA Whisky Auctions,wva-whisky-auctions,2023-07-01 00:00:00+00,3800,2.5,226.77,192305,848,848
+Waddington's Whisky Auction,waddingtons-whisky-auction,2016-02-01 00:00:00+00,1607.6,50.2,525.66,21552,41,11299
+Waddington's Whisky Auction,waddingtons-whisky-auction,2016-11-01 00:00:00+00,3410.4,60.9,491.85,33445.6,68,16312
+Waddington's Whisky Auction,waddingtons-whisky-auction,2017-02-01 00:00:00+00,5483.2,54.8,414.97,25728.2,62,14096
+Waddington's Whisky Auction,waddingtons-whisky-auction,2017-05-01 00:00:00+00,6235.6,56.7,523.23,47090.7,90,15351
+Waddington's Whisky Auction,waddingtons-whisky-auction,2017-09-01 00:00:00+00,1858.4,61.9,333.54,34020.9,102,15423
+Waddington's Whisky Auction,waddingtons-whisky-auction,2017-11-01 00:00:00+00,5543.8,35,457.03,45245.9,99,21855
+Waddington's Whisky Auction,waddingtons-whisky-auction,2018-02-01 00:00:00+00,2576,28.6,312.21,34655.3,111,17815
+Waddington's Whisky Auction,waddingtons-whisky-auction,2018-05-01 00:00:00+00,1499.4,33.9,244.65,23241.5,95,18294
+Waddington's Whisky Auction,waddingtons-whisky-auction,2018-09-01 00:00:00+00,11837.3,47.3,555.63,102235.2,184,22553
+Waddington's Whisky Auction,waddingtons-whisky-auction,2018-11-01 00:00:00+00,15475.3,35.7,535.43,109227.7,204,26493
+Waddington's Whisky Auction,waddingtons-whisky-auction,2019-02-01 00:00:00+00,5520.7,23.2,570.94,235226.7,412,27105
+Waddington's Whisky Auction,waddingtons-whisky-auction,2019-05-01 00:00:00+00,2262.6,28.6,275.66,68364.6,248,25948
+Waddington's Whisky Auction,waddingtons-whisky-auction,2019-09-01 00:00:00+00,11428.7,49.4,390.3,136995.1,351,30169
+Waddington's Whisky Auction,waddingtons-whisky-auction,2019-12-01 00:00:00+00,3032.4,23.3,281.69,76337.4,271,31485
+Waddington's Whisky Auction,waddingtons-whisky-auction,2020-03-01 00:00:00+00,5506,58,427.73,83406.6,195,22760
+Waddington's Whisky Auction,waddingtons-whisky-auction,2020-06-01 00:00:00+00,2064.6,76.7,416.02,74468.3,179,28829
+Waddington's Whisky Auction,waddingtons-whisky-auction,2020-09-01 00:00:00+00,6288.5,68.6,518,87541.8,169,36287
+Waddington's Whisky Auction,waddingtons-whisky-auction,2020-12-01 00:00:00+00,5353.9,74.8,565.24,74612.1,132,40691
+Waddington's Whisky Auction,waddingtons-whisky-auction,2021-03-01 00:00:00+00,11527.5,56.8,739.96,125793.7,170,38735
+Waddington's Whisky Auction,waddingtons-whisky-auction,2021-06-01 00:00:00+00,17848.4,46.8,728.33,124544.1,171,37702
+Waddington's Whisky Auction,waddingtons-whisky-auction,2021-09-01 00:00:00+00,13536,51.8,454.92,127376.6,280,38731
+Waddington's Whisky Auction,waddingtons-whisky-auction,2021-11-01 00:00:00+00,5322.5,29.6,320.93,126126.6,393,50235
+Waddington's Whisky Auction,waddingtons-whisky-auction,2022-03-01 00:00:00+00,4889.1,53,451.17,175506.7,389,46544
+Waddington's Whisky Auction,waddingtons-whisky-auction,2022-05-01 00:00:00+00,2489.7,49.8,344.48,97833,284,45291
+Waddington's Whisky Auction,waddingtons-whisky-auction,2022-09-01 00:00:00+00,6446.5,54.3,342.02,98501.8,288,55429
+Waddington's Whisky Auction,waddingtons-whisky-auction,2022-11-01 00:00:00+00,4949.3,46.4,415.36,237172,571,55340
+Waddington's Whisky Auction,waddingtons-whisky-auction,2023-03-01 00:00:00+00,10457.5,30.8,595.27,199416.3,335,51697
+Waddington's Whisky Auction,waddingtons-whisky-auction,2023-06-01 00:00:00+00,2853.7,36,369.41,130400.3,353,45412
+Whisky Auctioneer,whiskyauctioneer,2014-01-01 00:00:00+00,2500,9,189.86,70058.05,369,6127
+Whisky Auctioneer,whiskyauctioneer,2014-02-01 00:00:00+00,2125,0,161.67,40417.5,250,5556
+Whisky Auctioneer,whiskyauctioneer,2014-03-01 00:00:00+00,2450,4,155.11,28695.35,185,6224
+Whisky Auctioneer,whiskyauctioneer,2014-04-01 00:00:00+00,1750,5,160.17,37961,237,7415
+Whisky Auctioneer,whiskyauctioneer,2014-05-01 00:00:00+00,2250,6,157.88,41522,263,5546
+Whisky Auctioneer,whiskyauctioneer,2014-06-01 00:00:00+00,7400,5,211.36,55800,264,7191
+Whisky Auctioneer,whiskyauctioneer,2014-07-01 00:00:00+00,2100,5,158.42,66853.24,422,5679
+Whisky Auctioneer,whiskyauctioneer,2014-08-01 00:00:00+00,4900,0,199.99,108993.43,545,7168
+Whisky Auctioneer,whiskyauctioneer,2014-09-01 00:00:00+00,2725,5,158.07,107646.48,681,6194
+Whisky Auctioneer,whiskyauctioneer,2014-10-01 00:00:00+00,5200,0,173.35,133306.39,769,8884
+Whisky Auctioneer,whiskyauctioneer,2014-11-01 00:00:00+00,3300,0,191.46,149914.01,783,8392
+Whisky Auctioneer,whiskyauctioneer,2014-12-01 00:00:00+00,8350,9,213.48,198534,930,8401
+Whisky Auctioneer,whiskyauctioneer,2015-01-01 00:00:00+00,16000,9,233.54,202478.64,867,6418
+Whisky Auctioneer,whiskyauctioneer,2015-02-01 00:00:00+00,8700,9,283.04,224449.69,793,7589
+Whisky Auctioneer,whiskyauctioneer,2015-03-01 00:00:00+00,12100,5,218.41,245710.96,1125,8920
+Whisky Auctioneer,whiskyauctioneer,2015-04-01 00:00:00+00,12000,7,280.07,246459.03,880,7989
+Whisky Auctioneer,whiskyauctioneer,2015-05-01 00:00:00+00,5010,7,182.87,218710.99,1196,8625
+Whisky Auctioneer,whiskyauctioneer,2015-06-01 00:00:00+00,4550,5,195.39,235646.31,1206,8690
+Whisky Auctioneer,whiskyauctioneer,2015-07-01 00:00:00+00,3500,4,165.02,204127.4,1237,8822
+Whisky Auctioneer,whiskyauctioneer,2015-08-01 00:00:00+00,19000,6,227.04,297647,1311,9762
+Whisky Auctioneer,whiskyauctioneer,2015-09-01 00:00:00+00,4100,7,240.35,238185,991,9126
+Whisky Auctioneer,whiskyauctioneer,2015-10-01 00:00:00+00,9400,4,242.73,400265,1649,10600
+Whisky Auctioneer,whiskyauctioneer,2015-11-01 00:00:00+00,10500,4,193.99,380803,1963,12620
+Whisky Auctioneer,whiskyauctioneer,2015-12-01 00:00:00+00,15100,2,205.59,415495,2021,7338
+Whisky Auctioneer,whiskyauctioneer,2016-01-01 00:00:00+00,8000,5,262.67,323342,1231,12604
+Whisky Auctioneer,whiskyauctioneer,2016-02-01 00:00:00+00,7700,2,233.38,548899,2352,11299
+Whisky Auctioneer,whiskyauctioneer,2016-03-01 00:00:00+00,9500,2,265.44,518413,1953,11297
+Whisky Auctioneer,whiskyauctioneer,2016-04-01 00:00:00+00,17800,0,241.78,530462,2194,11521
+Whisky Auctioneer,whiskyauctioneer,2016-05-01 00:00:00+00,18700,4,248.56,515760,2075,11184
+Whisky Auctioneer,whiskyauctioneer,2016-06-01 00:00:00+00,6500,3,226.29,573879,2536,11895
+Whisky Auctioneer,whiskyauctioneer,2016-07-01 00:00:00+00,16300,0,243.68,670850.75,2753,13446
+Whisky Auctioneer,whiskyauctioneer,2016-08-01 00:00:00+00,7900,0.25,267.97,497625.5,1857,12259
+Whisky Auctioneer,whiskyauctioneer,2016-09-01 00:00:00+00,17500,0.25,231.95,540437.75,2330,12877
+Whisky Auctioneer,whiskyauctioneer,2016-10-01 00:00:00+00,5901,2,229.52,525150,2288,14567
+Whisky Auctioneer,whiskyauctioneer,2016-11-01 00:00:00+00,8200,2,246.78,620664,2515,16312
+Whisky Auctioneer,whiskyauctioneer,2016-12-01 00:00:00+00,14000,3,259.28,899433,3469,9915
+Whisky Auctioneer,whiskyauctioneer,2017-01-01 00:00:00+00,16500,0.25,234.4,586476.5,2502,13983
+Whisky Auctioneer,whiskyauctioneer,2017-02-01 00:00:00+00,23000,0,315.6,879274,2786,14096
+Whisky Auctioneer,whiskyauctioneer,2017-03-01 00:00:00+00,10505,0,267.94,722637.75,2697,14468
+Whisky Auctioneer,whiskyauctioneer,2017-04-01 00:00:00+00,100100,0.25,522.26,1735990.25,3324,17138
+Whisky Auctioneer,whiskyauctioneer,2017-05-01 00:00:00+00,40600,0.25,335.62,1050142.75,3129,15351
+Whisky Auctioneer,whiskyauctioneer,2017-06-01 00:00:00+00,14200,0.25,354.49,1002490.25,2828,13228
+Whisky Auctioneer,whiskyauctioneer,2017-07-01 00:00:00+00,22100,4,298.81,1078414,3609,14562
+Whisky Auctioneer,whiskyauctioneer,2017-08-01 00:00:00+00,23200,2,310.3,971866,3132,14386
+Whisky Auctioneer,whiskyauctioneer,2017-09-01 00:00:00+00,24100,0,293.05,974090.5,3324,15423
+Whisky Auctioneer,whiskyauctioneer,2017-10-01 00:00:00+00,23100,0.25,302.16,1167856.25,3865,18564
+Whisky Auctioneer,whiskyauctioneer,2017-11-01 00:00:00+00,24100,0.25,326.66,1221389.25,3739,21855
+Whisky Auctioneer,whiskyauctioneer,2017-12-01 00:00:00+00,17600,2,292.26,1267831,4338,13669
+Whisky Auctioneer,whiskyauctioneer,2018-01-01 00:00:00+00,13600,2,335.41,1102172,3286,15171
+Whisky Auctioneer,whiskyauctioneer,2018-02-01 00:00:00+00,22500,4,351.61,1306224,3715,17815
+Whisky Auctioneer,whiskyauctioneer,2018-03-01 00:00:00+00,45460,3,359.42,1297850,3611,16837
+Whisky Auctioneer,whiskyauctioneer,2018-04-01 00:00:00+00,40205,2,353.18,1553642,4399,20978
+Whisky Auctioneer,whiskyauctioneer,2018-05-01 00:00:00+00,36500,15,285.48,1332071,4666,18294
+Whisky Auctioneer,whiskyauctioneer,2018-06-01 00:00:00+00,51611,15,358,1286308,3593,16068
+Whisky Auctioneer,whiskyauctioneer,2018-07-01 00:00:00+00,61000,15,346,1468784,4245,19846
+Whisky Auctioneer,whiskyauctioneer,2018-08-01 00:00:00+00,56000,15,376.17,1490007,3961,16684
+Whisky Auctioneer,whiskyauctioneer,2018-09-01 00:00:00+00,60000,15,462.68,2105644,4551,22553
+Whisky Auctioneer,whiskyauctioneer,2018-10-01 00:00:00+00,81500,15,414.12,1951742,4713,22291
+Whisky Auctioneer,whiskyauctioneer,2018-11-01 00:00:00+00,35500,15,370.75,2107339,5684,26493
+Whisky Auctioneer,whiskyauctioneer,2018-12-01 00:00:00+00,110000,15,404.37,2606574.6,6446,24365
+Whisky Auctioneer,whiskyauctioneer,2019-01-01 00:00:00+00,25024,15,416.38,2106056.5,5058,18471
+Whisky Auctioneer,whiskyauctioneer,2019-02-01 00:00:00+00,38000,15,366.98,2393078,6521,27105
+Whisky Auctioneer,whiskyauctioneer,2019-03-01 00:00:00+00,83000,13,381,2928403.42,7686,29921
+Whisky Auctioneer,whiskyauctioneer,2019-04-01 00:00:00+00,22500,15,414.47,2270039.5,5477,27392
+Whisky Auctioneer,whiskyauctioneer,2019-05-01 00:00:00+00,91000,15,408.4,2590461,6343,25948
+Whisky Auctioneer,whiskyauctioneer,2019-06-01 00:00:00+00,29000,15,325.88,1951716.5,5989,25303
+Whisky Auctioneer,whiskyauctioneer,2019-07-01 00:00:00+00,56000,15,386.68,2601572,6728,27617
+Whisky Auctioneer,whiskyauctioneer,2019-08-01 00:00:00+00,80500,15,411.28,2385856,5801,23428
+Whisky Auctioneer,whiskyauctioneer,2019-09-01 00:00:00+00,80000,15,514.32,3412538,6635,30169
+Whisky Auctioneer,whiskyauctioneer,2019-10-01 00:00:00+00,160500,15,612.94,3701556,6039,32793
+Whisky Auctioneer,whiskyauctioneer,2019-11-01 00:00:00+00,65500,6,404.08,2587755,6404,31723
+Whisky Auctioneer,whiskyauctioneer,2019-12-01 00:00:00+00,100500,14,415.56,2698630.5,6494,31485
+Whisky Auctioneer,whiskyauctioneer,2020-01-01 00:00:00+00,50000,15,418.09,2008904,4805,26222
+Whisky Auctioneer,whiskyauctioneer,2020-02-01 00:00:00+00,825000,15,709.12,5890632,8307,31326
+Whisky Auctioneer,whiskyauctioneer,2020-03-01 00:00:00+00,62000,15,424.64,2386067,5619,22760
+Whisky Auctioneer,whiskyauctioneer,2020-05-01 00:00:00+00,25000,15,432.22,2214712,5124,28558
+Whisky Auctioneer,whiskyauctioneer,2020-06-01 00:00:00+00,35000,15,380.73,2254293,5921,28829
+Whisky Auctioneer,whiskyauctioneer,2020-07-01 00:00:00+00,60000,15,378.83,2250253,5940,31656
+Whisky Auctioneer,whiskyauctioneer,2020-08-01 00:00:00+00,50000,15,346.14,2684005,7754,34880
+Whisky Auctioneer,whiskyauctioneer,2020-09-01 00:00:00+00,52000,15,304.67,2423034,7953,36287
+Whisky Auctioneer,whiskyauctioneer,2020-10-01 00:00:00+00,122000,15,380.73,3720867,9773,43036
+Whisky Auctioneer,whiskyauctioneer,2020-11-01 00:00:00+00,68000,15,377.55,3253748,8618,45162
+Whisky Auctioneer,whiskyauctioneer,2020-12-01 00:00:00+00,72000,0,488.07,3885024,7960,40691
+Whisky Auctioneer,whiskyauctioneer,2021-01-01 00:00:00+00,56500,15,447.25,2551999,5706,31995
+Whisky Auctioneer,whiskyauctioneer,2021-02-01 00:00:00+00,1000000,15,815.42,6234738,7646,35065
+Whisky Auctioneer,whiskyauctioneer,2021-03-01 00:00:00+00,60000,15,494.56,3554908,7188,38735
+Whisky Auctioneer,whiskyauctioneer,2021-04-01 00:00:00+00,54500,15,428.57,4164459,9717,43356
+Whisky Auctioneer,whiskyauctioneer,2021-05-01 00:00:00+00,55500,15,412.6,3415902,8279,42530
+Whisky Auctioneer,whiskyauctioneer,2021-06-01 00:00:00+00,70000,15,407.61,3197296,7844,37702
+Whisky Auctioneer,whiskyauctioneer,2021-07-01 00:00:00+00,28000,15,381.69,3185591,8346,36170
+Whisky Auctioneer,whiskyauctioneer,2021-08-01 00:00:00+00,61500,15,491.05,3719220,7574,42409
+Whisky Auctioneer,whiskyauctioneer,2021-09-01 00:00:00+00,63000,15,459.24,3388290,7378,38731
+Whisky Auctioneer,whiskyauctioneer,2021-10-01 00:00:00+00,490000,15,507.07,5308991,10470,43367
+Whisky Auctioneer,whiskyauctioneer,2021-11-01 00:00:00+00,80000,15,427.19,4863941,11386,50235
+Whisky Auctioneer,whiskyauctioneer,2021-12-01 00:00:00+00,120000,15,594.29,5298104,8915,44158
+Whisky Auctioneer,whiskyauctioneer,2022-01-01 00:00:00+00,41500,15,401.96,3225292,8024,37474
+Whisky Auctioneer,whiskyauctioneer,2022-02-01 00:00:00+00,70500,15,441.5,3723156,8433,44602
+Whisky Auctioneer,whiskyauctioneer,2022-03-01 00:00:00+00,70000,15,497.91,4058007,8150,46544
+Whisky Auctioneer,whiskyauctioneer,2022-04-01 00:00:00+00,43000,15,425.15,4245573,9986,50951
+Whisky Auctioneer,whiskyauctioneer,2022-05-01 00:00:00+00,205000,15,501.97,5702901,11361,45291
+Whisky Auctioneer,whiskyauctioneer,2022-06-01 00:00:00+00,40500,15,429.61,3815803,8882,43553
+Whisky Auctioneer,whiskyauctioneer,2022-07-01 00:00:00+00,32000,15,457.66,4274049,9339,47042
+Whisky Auctioneer,whiskyauctioneer,2022-08-01 00:00:00+00,40500,15,509.62,4322053,8481,40649
+Whisky Auctioneer,whiskyauctioneer,2022-09-01 00:00:00+00,78500,15,456.99,4217526,9229,55429
+Whisky Auctioneer,whiskyauctioneer,2022-10-01 00:00:00+00,70000,15,422.28,4405667,10433,49660
+Whisky Auctioneer,whiskyauctioneer,2022-11-01 00:00:00+00,26000,15,422.69,4094596,9687,55340
+Whisky Auctioneer,whiskyauctioneer,2022-12-01 00:00:00+00,42000,15,450.96,4225087,9369,53794
+Whisky Auctioneer,whiskyauctioneer,2023-01-01 00:00:00+00,85500,15,564.41,3221103,5707,39650
+Whisky Auctioneer,whiskyauctioneer,2023-02-01 00:00:00+00,60000,15,559.21,3414526,6106,41735
+Whisky Auctioneer,whiskyauctioneer,2023-04-01 00:00:00+00,60000,15,453.19,3586528,7914,7914
+Whisky Auctioneer,whiskyauctioneer,2023-05-01 00:00:00+00,45500,15,395.66,2862976,7236,7236
+Whisky Auctioneer,whiskyauctioneer,2023-06-01 00:00:00+00,180000,15,425.55,3071226,7217,7217
+Whisky Auctioneer,whiskyauctioneer,2023-07-01 00:00:00+00,40000,15,400.3,2764850,6907,6907
+Whisky Auktion Berlin,whisky-auktion-berlin,2022-10-01 00:00:00+00,562.1,0.9,70.02,11133.6,159,49660
+Whisky Auktion Berlin,whisky-auktion-berlin,2022-11-01 00:00:00+00,544.5,12,108.14,12544.6,116,55340
+Whisky Auktion Berlin,whisky-auktion-berlin,2022-12-01 00:00:00+00,639.2,13.2,80.25,9630.1,120,53794
+Whisky Auktion Berlin,whisky-auktion-berlin,2023-01-01 00:00:00+00,498,15,72.86,8233.4,113,39650
+Whisky Auktion Berlin,whisky-auktion-berlin,2023-03-01 00:00:00+00,249.7,7.1,71.17,10319.7,145,51697
+Whisky Auktion Berlin,whisky-auktion-berlin,2023-06-01 00:00:00+00,685.2,17.1,100.98,20499.8,203,45412
+Whisky Auktion Berlin,whisky-auktion-berlin,2023-07-01 00:00:00+00,1466.6,9.6,84.8,32816.4,387,33595
+Whisky Bull Auctions,whisky-bull-auctions,2020-10-01 00:00:00+00,2100,2.5,321.85,26070,81,43036
+Whisky Bull Auctions,whisky-bull-auctions,2020-11-01 00:00:00+00,20000,5,315.62,48921,155,45162
+Whisky Bull Auctions,whisky-bull-auctions,2020-12-01 00:00:00+00,14150,5,295.19,47230.5,160,40691
+Whisky Bull Auctions,whisky-bull-auctions,2021-01-01 00:00:00+00,3300,5,258.15,31752.38,123,31995
+Whisky Bull Auctions,whisky-bull-auctions,2021-02-01 00:00:00+00,2300,5,125.24,23669.5,189,35065
+Whisky Bull Auctions,whisky-bull-auctions,2021-03-01 00:00:00+00,1350,5,146.57,16122.5,110,38735
+Whisky Bull Auctions,whisky-bull-auctions,2021-04-01 00:00:00+00,2500,5,202.1,27283.5,135,43356
+Whisky Bull Auctions,whisky-bull-auctions,2021-05-01 00:00:00+00,2400,5,227.7,22542.5,99,42530
+Whisky Bull Auctions,whisky-bull-auctions,2021-06-01 00:00:00+00,4550,5,256.27,25883.5,101,37702
+Whisky Bull Auctions,whisky-bull-auctions,2021-07-01 00:00:00+00,1950,5,215.43,16373,76,36170
+Whisky Bull Auctions,whisky-bull-auctions,2021-08-01 00:00:00+00,24000,5,585.14,131070.5,224,42409
+Whisky Bull Auctions,whisky-bull-auctions,2021-09-01 00:00:00+00,10000,5,633.79,186968.53,295,38731
+Whisky Bull Auctions,whisky-bull-auctions,2021-10-01 00:00:00+00,24000,5,641.2,184024,287,43367
+Whisky Bull Auctions,whisky-bull-auctions,2021-11-01 00:00:00+00,21150,5,584.55,136200,233,50235
+Whisky Bull Auctions,whisky-bull-auctions,2021-12-01 00:00:00+00,25050,10,671.01,277800,414,44158
+Whisky Bull Auctions,whisky-bull-auctions,2022-01-01 00:00:00+00,22550,5,690.07,127662.5,185,37474
+Whisky Bull Auctions,whisky-bull-auctions,2022-02-01 00:00:00+00,11200,5,500.29,128575,257,44602
+Whisky Bull Auctions,whisky-bull-auctions,2022-03-01 00:00:00+00,12550,15,653.77,152982,234,46544
+Whisky Bull Auctions,whisky-bull-auctions,2022-04-01 00:00:00+00,7500,5,577.32,117772.5,204,50951
+Whisky Bull Auctions,whisky-bull-auctions,2022-05-01 00:00:00+00,6550,10,494.34,69702.5,141,45291
+Whisky Bull Auctions,whisky-bull-auctions,2022-06-01 00:00:00+00,12000,5,483.09,100482.4,208,43553
+Whisky Bull Auctions,whisky-bull-auctions,2022-07-01 00:00:00+00,33950,5,320.37,82974.94,259,47042
+Whisky Bull Auctions,whisky-bull-auctions,2022-08-01 00:00:00+00,10000,5,240.03,86650,361,40649
+Whisky Bull Auctions,whisky-bull-auctions,2022-09-01 00:00:00+00,23550,5,322.84,115898,359,55429
+Whisky Bull Auctions,whisky-bull-auctions,2022-10-01 00:00:00+00,4650,5,211.63,77879.54,368,49660
+Whisky Bull Auctions,whisky-bull-auctions,2022-11-01 00:00:00+00,14900,5,421.36,99440,236,55340
+Whisky Bull Auctions,whisky-bull-auctions,2022-12-01 00:00:00+00,13000,5,652.09,172803.94,265,53794
+Whisky Bull Auctions,whisky-bull-auctions,2023-01-01 00:00:00+00,11000,5,527.34,81737.5,155,39650
+Whisky Bull Auctions,whisky-bull-auctions,2023-02-01 00:00:00+00,10050,5,345.1,83860,243,41735
+Whisky Bull Auctions,whisky-bull-auctions,2023-03-01 00:00:00+00,8850,5,431.23,112982.5,262,51697
+Whisky Bull Auctions,whisky-bull-auctions,2023-04-01 00:00:00+00,8050,5,308.24,161517.01,524,37629
+Whisky Bull Auctions,whisky-bull-auctions,2023-05-01 00:00:00+00,25000,3,430.61,320377,744,44950
+Whisky Bull Auctions,whisky-bull-auctions,2023-06-01 00:00:00+00,40000,3,645.61,471941,731,45412
+Whisky Bull Auctions,whisky-bull-auctions,2023-07-01 00:00:00+00,90000,2.5,608.44,827480.5,1360,33595
+Whisky Hammer,whisky-hammer,2016-03-01 00:00:00+00,1875,5,136.62,28417.59,208,11297
+Whisky Hammer,whisky-hammer,2016-04-01 00:00:00+00,3300,10,203.75,41157.5,202,11521
+Whisky Hammer,whisky-hammer,2016-05-01 00:00:00+00,1650,1,180.83,30380,168,11184
+Whisky Hammer,whisky-hammer,2016-06-01 00:00:00+00,1075,8,129.51,24995.5,193,11895
+Whisky Hammer,whisky-hammer,2016-07-01 00:00:00+00,5500,3,216.02,46011.5,213,13446
+Whisky Hammer,whisky-hammer,2016-08-01 00:00:00+00,1800,5,153.52,27940,182,12259
+Whisky Hammer,whisky-hammer,2016-09-01 00:00:00+00,1800,6,147.64,28790,195,12877
+Whisky Hammer,whisky-hammer,2016-10-01 00:00:00+00,2100,10,173.81,38759.5,223,14567
+Whisky Hammer,whisky-hammer,2016-11-01 00:00:00+00,4250,6,138.83,79273.5,571,16312
+Whisky Hammer,whisky-hammer,2016-12-01 00:00:00+00,2300,1,109.58,59174.5,540,9915
+Whisky Hammer,whisky-hammer,2017-02-01 00:00:00+00,3050,12.5,183.1,56762.5,310,14096
+Whisky Hammer,whisky-hammer,2017-03-01 00:00:00+00,2400,3,156.88,52398.5,334,14468
+Whisky Hammer,whisky-hammer,2017-04-01 00:00:00+00,3850,12.5,196.67,48184.5,245,17138
+Whisky Hammer,whisky-hammer,2017-05-01 00:00:00+00,2025,2,133.6,63192.5,473,15351
+Whisky Hammer,whisky-hammer,2017-06-01 00:00:00+00,1775,5,126.21,57172,453,13228
+Whisky Hammer,whisky-hammer,2017-07-01 00:00:00+00,7200,6,168.51,59991,356,14562
+Whisky Hammer,whisky-hammer,2017-08-01 00:00:00+00,11000,6,197.92,93615.5,473,14386
+Whisky Hammer,whisky-hammer,2017-09-01 00:00:00+00,3500,6,148.32,54582.5,368,15423
+Whisky Hammer,whisky-hammer,2017-10-01 00:00:00+00,2425,5,130.03,84128.5,647,18564
+Whisky Hammer,whisky-hammer,2017-11-01 00:00:00+00,10600,4,171.19,151157,883,21855
+Whisky Hammer,whisky-hammer,2017-12-01 00:00:00+00,2900,5,139.45,80739.5,579,13669
+Whisky Hammer,whisky-hammer,2018-01-01 00:00:00+00,2800,3,158.87,52108.5,328,15171
+Whisky Hammer,whisky-hammer,2018-02-01 00:00:00+00,6000,10,239.66,146195,610,17815
+Whisky Hammer,whisky-hammer,2018-03-01 00:00:00+00,12200,12.5,192.65,126955,659,16837
+Whisky Hammer,whisky-hammer,2018-04-01 00:00:00+00,8000,4,209.64,132912,634,20978
+Whisky Hammer,whisky-hammer,2018-05-01 00:00:00+00,13200,17.5,347.78,222930,641,18294
+Whisky Hammer,whisky-hammer,2018-06-01 00:00:00+00,7700,15,208.32,155195,745,16068
+Whisky Hammer,whisky-hammer,2018-07-01 00:00:00+00,12300,6,281.12,219276,780,19846
+Whisky Hammer,whisky-hammer,2018-08-01 00:00:00+00,16200,15,359.47,280390,780,16684
+Whisky Hammer,whisky-hammer,2018-09-01 00:00:00+00,5700,15,251.55,277957.5,1105,22553
+Whisky Hammer,whisky-hammer,2018-10-01 00:00:00+00,6000,10,331.66,321377.5,969,22291
+Whisky Hammer,whisky-hammer,2018-11-01 00:00:00+00,15600,10,320.26,450927.5,1408,26493
+Whisky Hammer,whisky-hammer,2018-12-01 00:00:00+00,14500,15,220.98,367702.5,1664,24365
+Whisky Hammer,whisky-hammer,2019-01-01 00:00:00+00,7700,15,204.05,186702.5,915,18471
+Whisky Hammer,whisky-hammer,2019-02-01 00:00:00+00,161500,15,346.08,530535,1533,27105
+Whisky Hammer,whisky-hammer,2019-03-01 00:00:00+00,11700,15,265.43,382480,1441,29921
+Whisky Hammer,whisky-hammer,2019-04-01 00:00:00+00,8500,12.5,223.4,392282.5,1756,27392
+Whisky Hammer,whisky-hammer,2019-05-01 00:00:00+00,24100,4,252.99,318009,1257,25948
+Whisky Hammer,whisky-hammer,2019-06-01 00:00:00+00,58000,20,268.81,337895,1257,25303
+Whisky Hammer,whisky-hammer,2019-07-01 00:00:00+00,5800,20,222.56,295115,1326,27617
+Whisky Hammer,whisky-hammer,2019-08-01 00:00:00+00,7500,20,206.37,288090,1396,23428
+Whisky Hammer,whisky-hammer,2019-09-01 00:00:00+00,9400,20,259.73,336087.5,1294,30169
+Whisky Hammer,whisky-hammer,2019-10-01 00:00:00+00,160500,20,353.11,471050,1334,32793
+Whisky Hammer,whisky-hammer,2019-11-01 00:00:00+00,10600,20,236.66,310027.5,1310,31723
+Whisky Hammer,whisky-hammer,2019-12-01 00:00:00+00,11000,20,191.75,291465,1520,31485
+Whisky Hammer,whisky-hammer,2020-01-01 00:00:00+00,10000,20,247.04,192447.5,779,26222
+Whisky Hammer,whisky-hammer,2020-02-01 00:00:00+00,14600,20,240.71,334107.5,1388,31326
+Whisky Hammer,whisky-hammer,2020-03-01 00:00:00+00,9100,20,245.33,364315,1485,22760
+Whisky Hammer,whisky-hammer,2020-04-01 00:00:00+00,9200,20,253.57,267010,1053,17023
+Whisky Hammer,whisky-hammer,2020-05-01 00:00:00+00,11500,20,243.04,507950,2090,28558
+Whisky Hammer,whisky-hammer,2020-06-01 00:00:00+00,40000,20,256.77,583890,2274,28829
+Whisky Hammer,whisky-hammer,2020-07-01 00:00:00+00,11500,20,272.31,410915,1509,31656
+Whisky Hammer,whisky-hammer,2020-08-01 00:00:00+00,14100,20,309.82,601977.5,1943,34880
+Whisky Hammer,whisky-hammer,2020-09-01 00:00:00+00,65000,20,365.21,930555,2548,36287
+Whisky Hammer,whisky-hammer,2020-10-01 00:00:00+00,92500,20,348.01,1022452.5,2938,43036
+Whisky Hammer,whisky-hammer,2020-11-01 00:00:00+00,43250,20,320.29,1238882.5,3868,45162
+Whisky Hammer,whisky-hammer,2020-12-01 00:00:00+00,88000,20,339.08,1189147.5,3507,40691
+Whisky Hammer,whisky-hammer,2021-01-01 00:00:00+00,31250,20,431.6,646532.5,1498,31995
+Whisky Hammer,whisky-hammer,2021-02-01 00:00:00+00,41750,20,406.58,964810,2373,35065
+Whisky Hammer,whisky-hammer,2021-03-01 00:00:00+00,125500,20,403.38,1298077.5,3218,38735
+Whisky Hammer,whisky-hammer,2021-04-01 00:00:00+00,39000,20,362.08,1095295,3025,43356
+Whisky Hammer,whisky-hammer,2021-05-01 00:00:00+00,30750,20,319.37,1280670,4010,42530
+Whisky Hammer,whisky-hammer,2021-06-01 00:00:00+00,60000,20,414.97,804217.5,1938,37702
+Whisky Hammer,whisky-hammer,2021-07-01 00:00:00+00,50500,20,363.6,731570,2012,36170
+Whisky Hammer,whisky-hammer,2021-08-01 00:00:00+00,63000,20,414.89,922725,2224,42409
+Whisky Hammer,whisky-hammer,2021-09-01 00:00:00+00,35000,20,396.63,909070,2292,38731
+Whisky Hammer,whisky-hammer,2021-10-01 00:00:00+00,73000,20,384.29,812015,2113,43367
+Whisky Hammer,whisky-hammer,2021-11-01 00:00:00+00,380000,20,435.55,1464335,3362,50235
+Whisky Hammer,whisky-hammer,2021-12-01 00:00:00+00,104500,20,524.51,1245187.5,2374,44158
+Whisky Hammer,whisky-hammer,2022-01-01 00:00:00+00,77000,20,482.36,1326477.5,2750,37474
+Whisky Hammer,whisky-hammer,2022-02-01 00:00:00+00,79000,20,458.82,1701777.5,3709,44602
+Whisky Hammer,whisky-hammer,2022-03-01 00:00:00+00,77000,20,433.17,1005385,2321,46544
+Whisky Hammer,whisky-hammer,2022-04-01 00:00:00+00,915500,20,900.52,1701977.5,1890,50951
+Whisky Hammer,whisky-hammer,2022-05-01 00:00:00+00,141000,20,569.33,1668127.5,2930,45291
+Whisky Hammer,whisky-hammer,2022-06-01 00:00:00+00,45250,20,604.7,1008637.5,1668,43553
+Whisky Hammer,whisky-hammer,2022-07-01 00:00:00+00,140500,20,681.85,1341887.5,1968,47042
+Whisky Hammer,whisky-hammer,2022-08-01 00:00:00+00,36000,20,372.39,1060937.5,2849,40649
+Whisky Hammer,whisky-hammer,2022-09-01 00:00:00+00,20100,20,474.64,1124417.5,2369,55429
+Whisky Hammer,whisky-hammer,2022-10-01 00:00:00+00,57500,20,498.88,1449247.5,2905,49660
+Whisky Hammer,whisky-hammer,2022-11-01 00:00:00+00,22000,20,352.01,1362280,3870,55340
+Whisky Hammer,whisky-hammer,2022-12-01 00:00:00+00,12500,20,513.9,1298122.5,2526,53794
+Whisky Hammer,whisky-hammer,2023-01-01 00:00:00+00,46250,20,448.32,956270,2133,39650
+Whisky Hammer,whisky-hammer,2023-02-01 00:00:00+00,41500,20,358.09,812155,2268,41735
+Whisky Hammer,whisky-hammer,2023-03-01 00:00:00+00,90000,20,502.98,1477265,2937,51697
+Whisky Hammer,whisky-hammer,2023-04-01 00:00:00+00,40500,20,394.79,1092390,2767,37629
+Whisky Hammer,whisky-hammer,2023-05-01 00:00:00+00,23000,20,350.8,947155,2700,44950
+Whisky Hammer,whisky-hammer,2023-06-01 00:00:00+00,29500,20,321.3,655140,2039,45412
+Whisky Hammer,whisky-hammer,2023-07-01 00:00:00+00,28000,20,361.93,737970,2039,33595
+Whisky-Online Auctions,whisky-online-auctions,2012-05-01 00:00:00+00,6100,2.26,175.88,26910.09,153,3015
+Whisky-Online Auctions,whisky-online-auctions,2012-06-01 00:00:00+00,1250,12,115.51,13168.5,114,3154
+Whisky-Online Auctions,whisky-online-auctions,2012-07-01 00:00:00+00,1200,10,132.01,21122.25,160,2888
+Whisky-Online Auctions,whisky-online-auctions,2012-08-01 00:00:00+00,1700,2,180.1,33678,187,2782
+Whisky-Online Auctions,whisky-online-auctions,2012-09-01 00:00:00+00,1150,3,110.23,18960,172,2331
+Whisky-Online Auctions,whisky-online-auctions,2012-10-01 00:00:00+00,2050,3,162.99,22493,138,3718
+Whisky-Online Auctions,whisky-online-auctions,2012-11-01 00:00:00+00,6801,10,500.02,57002,114,3738
+Whisky-Online Auctions,whisky-online-auctions,2012-12-01 00:00:00+00,1850,10,167.84,34408,205,3901
+Whisky-Online Auctions,whisky-online-auctions,2013-01-01 00:00:00+00,5100,4,179.82,32548,181,5467
+Whisky-Online Auctions,whisky-online-auctions,2013-02-01 00:00:00+00,3200,2,131.81,29789,226,4084
+Whisky-Online Auctions,whisky-online-auctions,2013-03-01 00:00:00+00,2701,7,157.76,29343,186,3225
+Whisky-Online Auctions,whisky-online-auctions,2013-04-01 00:00:00+00,1000,1,154.7,26454.5,171,4402
+Whisky-Online Auctions,whisky-online-auctions,2013-05-01 00:00:00+00,2700,8.25,156.85,65563.25,418,3798
+Whisky-Online Auctions,whisky-online-auctions,2013-06-01 00:00:00+00,975,5,72.63,46989.5,647,5024
+Whisky-Online Auctions,whisky-online-auctions,2013-07-01 00:00:00+00,2700,5,111.69,48137,431,4548
+Whisky-Online Auctions,whisky-online-auctions,2013-08-01 00:00:00+00,2450,1,77,65369,849,5223
+Whisky-Online Auctions,whisky-online-auctions,2013-09-01 00:00:00+00,1120,1,16.32,8125.5,498,5096
+Whisky-Online Auctions,whisky-online-auctions,2013-10-01 00:00:00+00,4300,1,103.33,117490.25,1137,6108
+Whisky-Online Auctions,whisky-online-auctions,2013-11-01 00:00:00+00,6600,15,193.38,135172.5,699,6059
+Whisky-Online Auctions,whisky-online-auctions,2013-12-01 00:00:00+00,12600,1,152.41,226477,1486,6365
+Whisky-Online Auctions,whisky-online-auctions,2014-01-01 00:00:00+00,8600,1,117.43,160876.75,1370,6127
+Whisky-Online Auctions,whisky-online-auctions,2014-02-01 00:00:00+00,17000,1,136.92,147056.5,1074,5556
+Whisky-Online Auctions,whisky-online-auctions,2014-03-01 00:00:00+00,6900,1,127.88,175960.5,1376,6224
+Whisky-Online Auctions,whisky-online-auctions,2014-04-01 00:00:00+00,6200,0.5,147.8,239877,1623,7415
+Whisky-Online Auctions,whisky-online-auctions,2014-05-01 00:00:00+00,7400,6,199.41,154346,774,5546
+Whisky-Online Auctions,whisky-online-auctions,2014-06-01 00:00:00+00,5100,1,138.87,152059,1095,7191
+Whisky-Online Auctions,whisky-online-auctions,2014-07-01 00:00:00+00,20100,10,273.1,148017.5,542,5679
+Whisky-Online Auctions,whisky-online-auctions,2014-08-01 00:00:00+00,7900,1,123.14,116125.5,943,7168
+Whisky-Online Auctions,whisky-online-auctions,2014-09-01 00:00:00+00,11100,10,214.53,155535,725,6194
+Whisky-Online Auctions,whisky-online-auctions,2014-10-01 00:00:00+00,15100,1,119.09,200670,1685,8884
+Whisky-Online Auctions,whisky-online-auctions,2014-11-01 00:00:00+00,8000,6,144.5,161546,1118,8392
+Whisky-Online Auctions,whisky-online-auctions,2014-12-01 00:00:00+00,15100,1,145.53,300227.5,2063,8401
+Whisky-Online Auctions,whisky-online-auctions,2015-01-01 00:00:00+00,4500,10,120.07,96772.5,806,6418
+Whisky-Online Auctions,whisky-online-auctions,2015-02-01 00:00:00+00,27200,1,132.16,211327.75,1599,7589
+Whisky-Online Auctions,whisky-online-auctions,2015-03-01 00:00:00+00,15100,6,239.24,183499.5,767,8920
+Whisky-Online Auctions,whisky-online-auctions,2015-04-01 00:00:00+00,8200,5,178.55,152482.5,854,7989
+Whisky-Online Auctions,whisky-online-auctions,2015-05-01 00:00:00+00,17600,1,75.89,130837.25,1724,8625
+Whisky-Online Auctions,whisky-online-auctions,2015-06-01 00:00:00+00,8200,10,224.32,199195,888,8690
+Whisky-Online Auctions,whisky-online-auctions,2015-07-01 00:00:00+00,5800,1,98.67,131433.25,1332,8822
+Whisky-Online Auctions,whisky-online-auctions,2015-08-01 00:00:00+00,7200,2,194.27,127444,656,9762
+Whisky-Online Auctions,whisky-online-auctions,2015-09-01 00:00:00+00,5500,10,275.2,185760,675,9126
+Whisky-Online Auctions,whisky-online-auctions,2015-10-01 00:00:00+00,4100,5,154.15,124090,805,10600
+Whisky-Online Auctions,whisky-online-auctions,2015-11-01 00:00:00+00,8800,1,83.08,162262,1953,12620
+Whisky-Online Auctions,whisky-online-auctions,2015-12-01 00:00:00+00,8500,6,208.8,236151,1131,7338
+Whisky-Online Auctions,whisky-online-auctions,2016-01-01 00:00:00+00,5500,5,201.27,134046.5,666,12604
+Whisky-Online Auctions,whisky-online-auctions,2016-02-01 00:00:00+00,12100,2,200.11,139474,697,11299
+Whisky-Online Auctions,whisky-online-auctions,2016-03-01 00:00:00+00,5900,1,90.75,135945.25,1498,11297
+Whisky-Online Auctions,whisky-online-auctions,2016-04-01 00:00:00+00,6500,5,188.8,201446,1067,11521
+Whisky-Online Auctions,whisky-online-auctions,2016-05-01 00:00:00+00,8200,5,199.15,138607.5,696,11184
+Whisky-Online Auctions,whisky-online-auctions,2016-06-01 00:00:00+00,25100,5,281.9,245250.5,870,11895
+Whisky-Online Auctions,whisky-online-auctions,2016-07-01 00:00:00+00,6200,4,150.05,118390.5,789,13446
+Whisky-Online Auctions,whisky-online-auctions,2016-08-01 00:00:00+00,14600,1,97.83,188228.75,1924,12259
+Whisky-Online Auctions,whisky-online-auctions,2016-09-01 00:00:00+00,10300,7,195.71,212733,1087,12877
+Whisky-Online Auctions,whisky-online-auctions,2016-10-01 00:00:00+00,15200,5,275.67,213921.5,776,14567
+Whisky-Online Auctions,whisky-online-auctions,2016-11-01 00:00:00+00,8200,1,156.34,296272,1895,16312
+Whisky-Online Auctions,whisky-online-auctions,2016-12-01 00:00:00+00,14300,5,333.46,319120.5,957,9915
+Whisky-Online Auctions,whisky-online-auctions,2017-01-01 00:00:00+00,21000,2,357.78,300539,840,13983
+Whisky-Online Auctions,whisky-online-auctions,2017-02-01 00:00:00+00,10700,10,285.21,264102.5,926,14096
+Whisky-Online Auctions,whisky-online-auctions,2017-03-01 00:00:00+00,65210,5,464.08,444589,958,14468
+Whisky-Online Auctions,whisky-online-auctions,2017-04-01 00:00:00+00,18600,1,203.35,293430.75,1443,17138
+Whisky-Online Auctions,whisky-online-auctions,2017-05-01 00:00:00+00,33000,3,312.81,317507,1015,15351
+Whisky-Online Auctions,whisky-online-auctions,2017-06-01 00:00:00+00,55900,4,409.32,347513,849,13228
+Whisky-Online Auctions,whisky-online-auctions,2017-07-01 00:00:00+00,15100,5,226.69,245508,1083,14562
+Whisky-Online Auctions,whisky-online-auctions,2017-08-01 00:00:00+00,7100,5,230.64,250244,1085,14386
+Whisky-Online Auctions,whisky-online-auctions,2017-09-01 00:00:00+00,90600,2,650.79,495899.5,762,15423
+Whisky-Online Auctions,whisky-online-auctions,2017-10-01 00:00:00+00,52100,5,298.4,306458,1027,18564
+Whisky-Online Auctions,whisky-online-auctions,2017-11-01 00:00:00+00,24200,1,155.73,340899,2189,21855
+Whisky-Online Auctions,whisky-online-auctions,2017-12-01 00:00:00+00,168300,3,666.8,632126.5,948,13669
+Whisky-Online Auctions,whisky-online-auctions,2018-01-01 00:00:00+00,242200,5,606.39,451153.5,744,15171
+Whisky-Online Auctions,whisky-online-auctions,2018-02-01 00:00:00+00,7100,5,238.85,217357,910,17815
+Whisky-Online Auctions,whisky-online-auctions,2018-03-01 00:00:00+00,11600,3,268.91,212706,791,16837
+Whisky-Online Auctions,whisky-online-auctions,2018-04-01 00:00:00+00,15100,10,269.02,252875,940,20978
+Whisky-Online Auctions,whisky-online-auctions,2018-05-01 00:00:00+00,12000,5,279.48,253765,908,18294
+Whisky-Online Auctions,whisky-online-auctions,2018-06-01 00:00:00+00,13000,1,192.05,230461,1200,16068
+Whisky-Online Auctions,whisky-online-auctions,2018-07-01 00:00:00+00,28000,1,148.7,274794.5,1848,19846
+Whisky-Online Auctions,whisky-online-auctions,2018-08-01 00:00:00+00,70200,5,557.27,396215.5,711,16684
+Whisky-Online Auctions,whisky-online-auctions,2018-09-01 00:00:00+00,41100,1,151.05,266460.5,1764,22553
+Whisky-Online Auctions,whisky-online-auctions,2018-10-01 00:00:00+00,90100,10,321.48,325662.5,1013,22291
+Whisky-Online Auctions,whisky-online-auctions,2018-11-01 00:00:00+00,49500,1,153.16,275997.25,1802,26493
+Whisky-Online Auctions,whisky-online-auctions,2018-12-01 00:00:00+00,45100,5,309.39,336308,1087,24365
+Whisky-Online Auctions,whisky-online-auctions,2019-02-01 00:00:00+00,12800,5,256.93,384619,1497,27105
+Whisky-Online Auctions,whisky-online-auctions,2019-03-01 00:00:00+00,13500,5,258.59,315483.5,1220,29921
+Whisky-Online Auctions,whisky-online-auctions,2019-04-01 00:00:00+00,98700,5,411.92,392151,952,27392
+Whisky-Online Auctions,whisky-online-auctions,2019-05-01 00:00:00+00,54500,1,158.67,250383.5,1578,25948
+Whisky-Online Auctions,whisky-online-auctions,2019-06-01 00:00:00+00,55000,3,406.71,299745,737,25303
+Whisky-Online Auctions,whisky-online-auctions,2019-07-01 00:00:00+00,50100,1,175.85,355917.5,2024,27617
+Whisky-Online Auctions,whisky-online-auctions,2019-08-01 00:00:00+00,51000,5,734.23,378864,516,23428
+Whisky-Online Auctions,whisky-online-auctions,2019-09-01 00:00:00+00,20100,5,266.21,210569,791,30169
+Whisky-Online Auctions,whisky-online-auctions,2019-10-01 00:00:00+00,7000,1,84.31,194261,2304,32793
+Whisky-Online Auctions,whisky-online-auctions,2019-11-01 00:00:00+00,25100,5,305.83,326014.5,1066,31723
+Whisky-Online Auctions,whisky-online-auctions,2019-12-01 00:00:00+00,90000,5,739.58,493298.5,667,31485
+Whisky-Online Auctions,whisky-online-auctions,2020-01-01 00:00:00+00,95000,6,991.99,424570.5,428,26222
+Whisky-Online Auctions,whisky-online-auctions,2020-02-01 00:00:00+00,125100,5,1035.6,449450,434,31326
+Whisky-Online Auctions,whisky-online-auctions,2020-03-01 00:00:00+00,740,1,15.3,16146.5,1055,22760
+Whisky-Online Auctions,whisky-online-auctions,2020-07-01 00:00:00+00,24000,4,318.41,289436,909,31656
+Whisky-Online Auctions,whisky-online-auctions,2020-08-01 00:00:00+00,25000,5,363.04,294424,811,34880
+Whisky-Online Auctions,whisky-online-auctions,2020-09-01 00:00:00+00,40000,3,315.51,266925.5,846,36287
+Whisky-Online Auctions,whisky-online-auctions,2020-10-01 00:00:00+00,49100,1,311.31,384463.5,1235,43036
+Whisky-Online Auctions,whisky-online-auctions,2020-11-01 00:00:00+00,17000,2,546.23,402569.5,737,45162
+Whisky-Online Auctions,whisky-online-auctions,2020-12-01 00:00:00+00,64000,5,720.96,506838,703,40691
+Whisky-Online Auctions,whisky-online-auctions,2021-02-01 00:00:00+00,54800,2,593,372407,628,35065
+Whisky-Online Auctions,whisky-online-auctions,2021-03-01 00:00:00+00,4100,1,281.21,136106.5,484,38735
+Whisky-Online Auctions,whisky-online-auctions,2021-04-01 00:00:00+00,3700,2,211.12,140185,664,43356
+Whisky-Online Auctions,whisky-online-auctions,2021-05-01 00:00:00+00,15800,5,189.88,168230.5,886,42530
+Whisky-Online Auctions,whisky-online-auctions,2021-06-01 00:00:00+00,12400,5,178.75,137996,772,37702
+Whisky-Online Auctions,whisky-online-auctions,2021-08-01 00:00:00+00,13200,3,211.73,98879,467,42409
+Whisky-Online Auctions,whisky-online-auctions,2021-09-01 00:00:00+00,3800,2,134.16,108534,809,38731
+Whisky-Online Auctions,whisky-online-auctions,2021-10-01 00:00:00+00,16200,3,198.36,155513.5,784,43367
+Whisky-Online Auctions,whisky-online-auctions,2021-11-01 00:00:00+00,6200,3,255.66,241596.5,945,50235
+Whisky-Online Auctions,whisky-online-auctions,2021-12-01 00:00:00+00,5100,6,232.21,266811.5,1149,44158
+Whisky-Online Auctions,whisky-online-auctions,2022-02-01 00:00:00+00,15100,5,353.15,331960,940,44602
+Whisky-Online Auctions,whisky-online-auctions,2022-03-01 00:00:00+00,9300,5,317.42,210769.5,664,46544
+Whisky-Online Auctions,whisky-online-auctions,2022-04-01 00:00:00+00,16900,5,431.28,296724,688,50951
+Whisky-Online Auctions,whisky-online-auctions,2022-05-01 00:00:00+00,7500,2,254.81,189326,743,45291
+Whisky-Online Auctions,whisky-online-auctions,2022-06-01 00:00:00+00,17500,4,342.87,257495.5,751,43553
+Whisky-Online Auctions,whisky-online-auctions,2022-08-01 00:00:00+00,7000,3,322.25,210751.5,654,40649
+Whisky-Online Auctions,whisky-online-auctions,2022-09-01 00:00:00+00,8100,5,336.58,296186.5,880,55429
+Whisky-Online Auctions,whisky-online-auctions,2022-10-01 00:00:00+00,13600,5,303.36,248450.5,819,49660
+Whisky-Online Auctions,whisky-online-auctions,2022-11-01 00:00:00+00,18100,5,214.59,197204,919,55340
+Whisky-Online Auctions,whisky-online-auctions,2023-01-01 00:00:00+00,20300,5,147.05,133963.5,911,39650
+Whisky-Online Auctions,whisky-online-auctions,2023-02-01 00:00:00+00,15000,5,298.9,168580,564,41735
+Whisky-Online Auctions,whisky-online-auctions,2023-03-01 00:00:00+00,46600,5,319.62,261131.5,817,51697
+Whisky-Online Auctions,whisky-online-auctions,2023-04-01 00:00:00+00,25000,5,245.54,209202.5,852,37629
+Whisky-Online Auctions,whisky-online-auctions,2023-05-01 00:00:00+00,15500,7,263.45,172557,655,44950
+Whisky-Online Auctions,whisky-online-auctions,2023-07-01 00:00:00+00,30000,8,567.79,288435.5,508,33595
+Whisky.Auction,whiskyauction,2015-04-01 00:00:00+00,7100,0.5,186.4,61511.5,330,7989
+Whisky.Auction,whiskyauction,2015-05-01 00:00:00+00,7100,0.5,216.67,82985,383,8625
+Whisky.Auction,whiskyauction,2015-06-01 00:00:00+00,3500,0.5,172.26,74588,433,8690
+Whisky.Auction,whiskyauction,2015-07-01 00:00:00+00,5500,0.5,183.42,72450,395,8822
+Whisky.Auction,whiskyauction,2015-08-01 00:00:00+00,5900,0.5,179.53,73427.5,409,9762
+Whisky.Auction,whiskyauction,2015-09-01 00:00:00+00,8600,2,161.38,74718.5,463,9126
+Whisky.Auction,whiskyauction,2015-10-01 00:00:00+00,9700,2,201.86,96491,478,10600
+Whisky.Auction,whiskyauction,2015-11-01 00:00:00+00,5600,2,176.81,117581.5,665,12620
+Whisky.Auction,whiskyauction,2015-12-01 00:00:00+00,3400,2,153.75,93789,610,7338
+Whisky.Auction,whiskyauction,2016-01-01 00:00:00+00,3000,3,194.3,106866,550,12604
+Whisky.Auction,whiskyauction,2016-02-01 00:00:00+00,4000,2,177.59,107799,607,11299
+Whisky.Auction,whiskyauction,2016-03-01 00:00:00+00,10400,2,197.47,102487.5,519,11297
+Whisky.Auction,whiskyauction,2016-04-01 00:00:00+00,4300,2,276.35,142043,514,11521
+Whisky.Auction,whiskyauction,2016-05-01 00:00:00+00,5000,2,334.23,215246,644,11184
+Whisky.Auction,whiskyauction,2016-06-01 00:00:00+00,5000,2,330.78,194827,589,11895
+Whisky.Auction,whiskyauction,2016-07-01 00:00:00+00,7600,2,363.28,221238.5,609,13446
+Whisky.Auction,whiskyauction,2016-08-01 00:00:00+00,7400,2,250.87,159052.5,634,12259
+Whisky.Auction,whiskyauction,2016-09-01 00:00:00+00,12600,2,286.26,191797.5,670,12877
+Whisky.Auction,whiskyauction,2016-10-01 00:00:00+00,62600,2,412.36,291536.5,707,14567
+Whisky.Auction,whiskyauction,2016-11-01 00:00:00+00,14100,2,252.25,236355,937,16312
+Whisky.Auction,whiskyauction,2017-01-01 00:00:00+00,41000,2,344.71,260254.5,755,13983
+Whisky.Auction,whiskyauction,2017-02-01 00:00:00+00,16700,2,329.37,349133,1060,14096
+Whisky.Auction,whiskyauction,2017-03-01 00:00:00+00,8100,2,230.69,155946.5,676,14468
+Whisky.Auction,whiskyauction,2017-04-01 00:00:00+00,12500,2,235.62,272611.5,1157,17138
+Whisky.Auction,whiskyauction,2017-05-01 00:00:00+00,8100,2,206.03,204997.5,995,15351
+Whisky.Auction,whiskyauction,2017-06-01 00:00:00+00,19500,2,193.68,187093,966,13228
+Whisky.Auction,whiskyauction,2017-07-01 00:00:00+00,23300,2,291.87,243712,835,14562
+Whisky.Auction,whiskyauction,2017-08-01 00:00:00+00,12600,2,248.17,207472,836,14386
+Whisky.Auction,whiskyauction,2017-09-01 00:00:00+00,11500,2,206.11,230429,1118,15423
+Whisky.Auction,whiskyauction,2017-10-01 00:00:00+00,15500,2,290.79,333541,1147,18564
+Whisky.Auction,whiskyauction,2017-11-01 00:00:00+00,8000,2,146.87,426656.5,2905,21855
+Whisky.Auction,whiskyauction,2018-01-01 00:00:00+00,625,2,21.78,25412,1167,15171
+Whisky.Auction,whiskyauction,2018-02-01 00:00:00+00,13600,2,249.47,442562,1774,17815
+Whisky.Auction,whiskyauction,2018-03-01 00:00:00+00,11100,2.5,199.34,267116.5,1340,16837
+Whisky.Auction,whiskyauction,2018-04-01 00:00:00+00,30000,2,158.1,371693.5,2351,20978
+Whisky.Auction,whiskyauction,2018-05-01 00:00:00+00,5100,4,195.92,318567,1626,18294
+Whisky.Auction,whiskyauction,2018-06-01 00:00:00+00,12000,5,228.74,301255,1317,16068
+Whisky.Auction,whiskyauction,2018-07-01 00:00:00+00,10900,2,129.43,317873,2456,19846
+Whisky.Auction,whiskyauction,2018-08-01 00:00:00+00,4200,7,285.64,211657,741,16684
+Whisky.Auction,whiskyauction,2018-09-01 00:00:00+00,56100,8,348.94,417685,1197,22553
+Whisky.Auction,whiskyauction,2018-10-01 00:00:00+00,36200,2,132.83,374323.5,2818,22291
+Whisky.Auction,whiskyauction,2018-11-01 00:00:00+00,100100,5,461.08,904634,1962,26493
+Whisky.Auction,whiskyauction,2018-12-01 00:00:00+00,15700,5,262.57,482348,1837,24365
+Whisky.Auction,whiskyauction,2019-01-01 00:00:00+00,1550,2,39.16,29994,766,18471
+Whisky.Auction,whiskyauction,2019-02-01 00:00:00+00,12100,5,176.55,457969,2594,27105
+Whisky.Auction,whiskyauction,2019-03-01 00:00:00+00,7900,5,260.25,383614,1474,29921
+Whisky.Auction,whiskyauction,2019-04-01 00:00:00+00,17000,2,146.97,497194,3383,27392
+Whisky.Auction,whiskyauction,2019-05-01 00:00:00+00,13100,5,227.46,341414,1501,25948
+Whisky.Auction,whiskyauction,2019-06-01 00:00:00+00,25000,5,276.02,359372,1302,25303
+Whisky.Auction,whiskyauction,2019-07-01 00:00:00+00,17600,2,127.45,344487,2703,27617
+Whisky.Auction,whiskyauction,2019-08-01 00:00:00+00,20500,5,285.6,367569,1287,23428
+Whisky.Auction,whiskyauction,2019-09-01 00:00:00+00,17200,5,259.31,322838,1245,30169
+Whisky.Auction,whiskyauction,2019-10-01 00:00:00+00,15200,2,138.38,325881,2355,32793
+Whisky.Auction,whiskyauction,2019-11-01 00:00:00+00,9600,5,220.68,374942,1699,31723
+Whisky.Auction,whiskyauction,2019-12-01 00:00:00+00,14000,5,292.34,478269,1636,31485
+Whisky.Auction,whiskyauction,2020-01-01 00:00:00+00,17000,2,156.38,420039,2686,26222
+Whisky.Auction,whiskyauction,2020-02-01 00:00:00+00,9400,5,203.5,265167,1303,31326
+Whisky.Auction,whiskyauction,2020-03-01 00:00:00+00,46500,5,234.06,414286,1770,22760
+Whisky.Auction,whiskyauction,2020-04-01 00:00:00+00,25000,2,102.71,385564,3754,17023
+Whisky.Auction,whiskyauction,2020-05-01 00:00:00+00,35000,7,326.77,272524,834,28558
+Whisky.Auction,whiskyauction,2020-06-01 00:00:00+00,21500,2,153.11,392876,2566,28829
+Whisky.Auction,whiskyauction,2020-07-01 00:00:00+00,31500,5,226.27,356607,1576,31656
+Whisky.Auction,whiskyauction,2020-08-01 00:00:00+00,9600,2,96.02,316105,3292,34880
+Whisky.Auction,whiskyauction,2020-09-01 00:00:00+00,14200,5,237.15,327744,1382,36287
+Whisky.Auction,whiskyauction,2020-10-01 00:00:00+00,16200,2,97.27,320499,3295,43036
+Whisky.Auction,whiskyauction,2020-11-01 00:00:00+00,9400,5,241.72,280150,1159,45162
+Whisky.Auction,whiskyauction,2020-12-01 00:00:00+00,11000,9,344.74,385071,1117,40691
+Whisky.Auction,whiskyauction,2021-01-01 00:00:00+00,44500,2,206.08,494186,2398,31995
+Whisky.Auction,whiskyauction,2021-02-01 00:00:00+00,58000,5,444.51,502736,1131,35065
+Whisky.Auction,whiskyauction,2021-03-01 00:00:00+00,52000,5,316.71,376889,1190,38735
+Whisky.Auction,whiskyauction,2021-04-01 00:00:00+00,9200,2,125.18,550520,4398,43356
+Whisky.Auction,whiskyauction,2021-05-01 00:00:00+00,16200,5,270.57,335506,1240,42530
+Whisky.Auction,whiskyauction,2021-06-01 00:00:00+00,10000,5,252.64,372146,1473,37702
+Whisky.Auction,whiskyauction,2021-07-01 00:00:00+00,10600,5,301.32,309760,1028,36170
+Whisky.Auction,whiskyauction,2021-08-01 00:00:00+00,6200,2,101.1,327044,3235,42409
+Whisky.Auction,whiskyauction,2021-09-01 00:00:00+00,52000,6,280.69,251776,897,38731
+Whisky.Auction,whiskyauction,2021-10-01 00:00:00+00,19000,2,131.41,313014,2382,43367
+Whisky.Auction,whiskyauction,2021-11-01 00:00:00+00,64000,5,288.07,427499,1484,50235
+Whisky.Auction,whiskyauction,2021-12-01 00:00:00+00,19000,5,259.25,478571,1846,44158
+Whisky.Auction,whiskyauction,2022-01-01 00:00:00+00,12600,2,134.77,309710,2298,37474
+Whisky.Auction,whiskyauction,2022-02-01 00:00:00+00,28000,5,361.35,483129,1337,44602
+Whisky.Auction,whiskyauction,2022-03-01 00:00:00+00,22000,5,263.77,307288,1165,46544
+Whisky.Auction,whiskyauction,2022-04-01 00:00:00+00,180000,2,207.1,657327,3174,50951
+Whisky.Auction,whiskyauction,2022-05-01 00:00:00+00,9400,5,229.93,209927,913,45291
+Whisky.Auction,whiskyauction,2022-06-01 00:00:00+00,24500,5,326,329582,1011,43553
+Whisky.Auction,whiskyauction,2022-07-01 00:00:00+00,18000,2,157.67,417656,2649,47042
+Whisky.Auction,whiskyauction,2022-08-01 00:00:00+00,12000,5,312.27,388154,1243,40649
+Whisky.Auction,whiskyauction,2022-09-01 00:00:00+00,11600,5,319.86,464754,1453,55429
+Whisky.Auction,whiskyauction,2022-10-01 00:00:00+00,21500,2,135.78,486514,3583,49660
+Whisky.Auction,whiskyauction,2022-11-01 00:00:00+00,12000,5,282.39,296514,1050,55340
+Whisky.Auction,whiskyauction,2022-12-01 00:00:00+00,27500,5,242.16,435639,1799,53794
+Whisky.Auction,whiskyauction,2023-01-01 00:00:00+00,21000,2,139.81,450063,3219,39650
+Whisky.Auction,whiskyauction,2023-02-01 00:00:00+00,9600,5,270.58,321992,1190,41735
+Whisky.Auction,whiskyauction,2023-03-01 00:00:00+00,20500,7,252.77,391039,1547,51697
+Whisky.Auction,whiskyauction,2023-04-01 00:00:00+00,5600,2,103.16,391716,3797,37629
+Whisky.Auction,whiskyauction,2023-05-01 00:00:00+00,19500,5,303.65,423290,1394,44950
+Whisky.Auction,whiskyauction,2023-06-01 00:00:00+00,8800,5,233.22,266333,1142,45412
+Whisky.Auction,whiskyauction,2023-07-01 00:00:00+00,17000,2,155.84,414391,2659,33595
+WhiskyAuction.com,whiskyauctioncom,2005-11-01 00:00:00+00,1293,1,45.37,35120,774,774
+WhiskyAuction.com,whiskyauctioncom,2005-12-01 00:00:00+00,1247,1,50.74,47492,936,936
+WhiskyAuction.com,whiskyauctioncom,2006-01-01 00:00:00+00,981,1,58.01,54179,934,934
+WhiskyAuction.com,whiskyauctioncom,2006-02-01 00:00:00+00,1194,1,44.11,42961,974,974
+WhiskyAuction.com,whiskyauctioncom,2006-03-01 00:00:00+00,830,1,47.07,36619,778,778
+WhiskyAuction.com,whiskyauctioncom,2006-04-01 00:00:00+00,503,1,49.04,44428,906,906
+WhiskyAuction.com,whiskyauctioncom,2006-05-01 00:00:00+00,1739,1,52.41,46175,881,881
+WhiskyAuction.com,whiskyauctioncom,2006-06-01 00:00:00+00,859,1,44.36,41478,935,935
+WhiskyAuction.com,whiskyauctioncom,2006-07-01 00:00:00+00,910,1,65.99,72057,1092,1092
+WhiskyAuction.com,whiskyauctioncom,2006-08-01 00:00:00+00,687,1,44.14,42070,953,953
+WhiskyAuction.com,whiskyauctioncom,2006-09-01 00:00:00+00,1020,1,58.84,51959,883,883
+WhiskyAuction.com,whiskyauctioncom,2006-10-01 00:00:00+00,823,1,58.29,68259,1171,1171
+WhiskyAuction.com,whiskyauctioncom,2006-11-01 00:00:00+00,1541,1,62.51,63077,1009,1009
+WhiskyAuction.com,whiskyauctioncom,2006-12-01 00:00:00+00,1023,1,52.07,45876,881,881
+WhiskyAuction.com,whiskyauctioncom,2007-01-01 00:00:00+00,672,1,57.94,57709,996,996
+WhiskyAuction.com,whiskyauctioncom,2007-02-01 00:00:00+00,665,1,51.03,48579,952,952
+WhiskyAuction.com,whiskyauctioncom,2007-03-01 00:00:00+00,678,1,46.58,40290,865,865
+WhiskyAuction.com,whiskyauctioncom,2007-04-01 00:00:00+00,1484,1,66.82,67417,1009,1009
+WhiskyAuction.com,whiskyauctioncom,2007-05-01 00:00:00+00,621,1,43.7,38849,889,889
+WhiskyAuction.com,whiskyauctioncom,2007-06-01 00:00:00+00,490,1,43.3,35639,823,823
+WhiskyAuction.com,whiskyauctioncom,2007-07-01 00:00:00+00,981,1,49.79,53921,1083,1083
+WhiskyAuction.com,whiskyauctioncom,2007-08-01 00:00:00+00,1173,1,55.77,56215,1008,1008
+WhiskyAuction.com,whiskyauctioncom,2007-09-01 00:00:00+00,1630,1,68.46,74069,1082,1082
+WhiskyAuction.com,whiskyauctioncom,2007-10-01 00:00:00+00,1050,1,70.48,99731,1415,1415
+WhiskyAuction.com,whiskyauctioncom,2007-11-01 00:00:00+00,720,1,60.54,71986,1189,1189
+WhiskyAuction.com,whiskyauctioncom,2007-12-01 00:00:00+00,1361,1,70.75,73863,1044,1044
+WhiskyAuction.com,whiskyauctioncom,2008-01-01 00:00:00+00,1084,1,75.57,102025,1350,1350
+WhiskyAuction.com,whiskyauctioncom,2008-02-01 00:00:00+00,1125,1,73.16,80765,1104,1104
+WhiskyAuction.com,whiskyauctioncom,2008-03-01 00:00:00+00,1194,1,67.6,66383,982,982
+WhiskyAuction.com,whiskyauctioncom,2008-04-01 00:00:00+00,830,1,80.18,86830,1083,1083
+WhiskyAuction.com,whiskyauctioncom,2008-05-01 00:00:00+00,1971,1,74.72,101913,1364,1364
+WhiskyAuction.com,whiskyauctioncom,2008-06-01 00:00:00+00,755,1,76.04,90938,1196,1196
+WhiskyAuction.com,whiskyauctioncom,2008-07-01 00:00:00+00,3009,1,76.53,117702,1538,1538
+WhiskyAuction.com,whiskyauctioncom,2008-08-01 00:00:00+00,1954,1,89.2,138353,1551,1551
+WhiskyAuction.com,whiskyauctioncom,2008-09-01 00:00:00+00,1627,1,81.43,137453,1688,1688
+WhiskyAuction.com,whiskyauctioncom,2008-10-01 00:00:00+00,2297,1,88.25,146323,1658,1658
+WhiskyAuction.com,whiskyauctioncom,2008-11-01 00:00:00+00,3860,1,85.41,162535,1903,2282
+WhiskyAuction.com,whiskyauctioncom,2008-12-01 00:00:00+00,1982,1,88.49,162029,1831,1831
+WhiskyAuction.com,whiskyauctioncom,2009-01-01 00:00:00+00,3067,1,137.81,224766,1631,1631
+WhiskyAuction.com,whiskyauctioncom,2009-02-01 00:00:00+00,3057,1,111.93,190509,1702,1702
+WhiskyAuction.com,whiskyauctioncom,2009-03-01 00:00:00+00,3097,1,112.83,156159,1384,1773
+WhiskyAuction.com,whiskyauctioncom,2009-04-01 00:00:00+00,3135,1,111.47,151822,1362,1362
+WhiskyAuction.com,whiskyauctioncom,2009-05-01 00:00:00+00,1885,1,99.29,174647,1759,1759
+WhiskyAuction.com,whiskyauctioncom,2009-06-01 00:00:00+00,1518,1,98.51,162343,1648,1988
+WhiskyAuction.com,whiskyauctioncom,2009-07-01 00:00:00+00,6947,1,99.85,187215,1875,1875
+WhiskyAuction.com,whiskyauctioncom,2009-08-01 00:00:00+00,1330,1,76.89,119489,1554,1671
+WhiskyAuction.com,whiskyauctioncom,2009-09-01 00:00:00+00,5558,1,100.01,132409,1324,1324
+WhiskyAuction.com,whiskyauctioncom,2009-10-01 00:00:00+00,3010,1,104.72,180323,1722,1722
+WhiskyAuction.com,whiskyauctioncom,2009-11-01 00:00:00+00,2239,1,98.56,180068,1827,2329
+WhiskyAuction.com,whiskyauctioncom,2009-12-01 00:00:00+00,1251,1,85.33,167237,1960,2559
+WhiskyAuction.com,whiskyauctioncom,2010-01-01 00:00:00+00,2660,1,117.85,272231,2310,2310
+WhiskyAuction.com,whiskyauctioncom,2010-02-01 00:00:00+00,1150,1,86.03,181015,2104,2104
+WhiskyAuction.com,whiskyauctioncom,2010-03-01 00:00:00+00,3087,1,88.97,136216,1531,1857
+WhiskyAuction.com,whiskyauctioncom,2010-04-01 00:00:00+00,1863,1,90.52,149714,1654,1654
+WhiskyAuction.com,whiskyauctioncom,2010-05-01 00:00:00+00,2093,1,88.45,148778,1682,1682
+WhiskyAuction.com,whiskyauctioncom,2010-06-01 00:00:00+00,2508,1,76.73,109191,1423,2197
+WhiskyAuction.com,whiskyauctioncom,2010-07-01 00:00:00+00,3704,1,94.87,172945,1823,1823
+WhiskyAuction.com,whiskyauctioncom,2010-08-01 00:00:00+00,1628,1,99.9,177024,1772,1876
+WhiskyAuction.com,whiskyauctioncom,2010-09-01 00:00:00+00,1749,1,83.86,142728,1702,1702
+WhiskyAuction.com,whiskyauctioncom,2010-10-01 00:00:00+00,1486,1,100.88,219304,2174,2174
+WhiskyAuction.com,whiskyauctioncom,2010-11-01 00:00:00+00,1304,1,92.42,175504,1899,2372
+WhiskyAuction.com,whiskyauctioncom,2010-12-01 00:00:00+00,2774,1,77.13,108207,1403,1663
+WhiskyAuction.com,whiskyauctioncom,2011-01-01 00:00:00+00,3017,1,110.97,457539,4123,4123
+WhiskyAuction.com,whiskyauctioncom,2011-02-01 00:00:00+00,2137,1,102.74,201171,1958,1958
+WhiskyAuction.com,whiskyauctioncom,2011-03-01 00:00:00+00,1703,1,101.78,187080,1838,2237
+WhiskyAuction.com,whiskyauctioncom,2011-04-01 00:00:00+00,1080,1,91.4,156572,1713,2108
+WhiskyAuction.com,whiskyauctioncom,2011-05-01 00:00:00+00,1520,1,108.08,218965,2026,2094
+WhiskyAuction.com,whiskyauctioncom,2011-06-01 00:00:00+00,1345,1,90.82,247493,2725,3060
+WhiskyAuction.com,whiskyauctioncom,2011-07-01 00:00:00+00,2267,1,89.62,195103,2177,2265
+WhiskyAuction.com,whiskyauctioncom,2011-08-01 00:00:00+00,1773,1,83.09,147233,1772,1987
+WhiskyAuction.com,whiskyauctioncom,2011-09-01 00:00:00+00,1106,1,83.77,162758,1943,2154
+WhiskyAuction.com,whiskyauctioncom,2011-10-01 00:00:00+00,2622,1,96.78,233039,2408,2933
+WhiskyAuction.com,whiskyauctioncom,2011-11-01 00:00:00+00,3505,1,103.22,251032,2432,2740
+WhiskyAuction.com,whiskyauctioncom,2011-12-01 00:00:00+00,1250,1,87.69,224741,2563,3421
+WhiskyAuction.com,whiskyauctioncom,2012-01-01 00:00:00+00,1913,1,101.79,337043,3311,3586
+WhiskyAuction.com,whiskyauctioncom,2012-02-01 00:00:00+00,3163,1,90.32,210090,2326,2683
+WhiskyAuction.com,whiskyauctioncom,2012-03-01 00:00:00+00,1883,1,151.16,297781,1970,2689
+WhiskyAuction.com,whiskyauctioncom,2012-04-01 00:00:00+00,1534,1,93.28,175918,1886,2409
+WhiskyAuction.com,whiskyauctioncom,2012-05-01 00:00:00+00,2447,1,92.65,213103,2300,3015
+WhiskyAuction.com,whiskyauctioncom,2012-06-01 00:00:00+00,2983,1,104.25,206304,1979,3154
+WhiskyAuction.com,whiskyauctioncom,2012-07-01 00:00:00+00,1886,1,98.4,209192,2126,2888
+WhiskyAuction.com,whiskyauctioncom,2012-08-01 00:00:00+00,3394,1,90.12,171852,1907,2782
+WhiskyAuction.com,whiskyauctioncom,2012-09-01 00:00:00+00,2485,1,108.52,159421,1469,2331
+WhiskyAuction.com,whiskyauctioncom,2012-10-01 00:00:00+00,1878,1,116.28,251740,2165,3718
+WhiskyAuction.com,whiskyauctioncom,2012-11-01 00:00:00+00,4164,1,116.42,313868,2696,3738
+WhiskyAuction.com,whiskyauctioncom,2012-12-01 00:00:00+00,3085,1,107.58,291959,2714,3901
+WhiskyAuction.com,whiskyauctioncom,2013-01-01 00:00:00+00,3040,1,94.37,390516,4138,5467
+WhiskyAuction.com,whiskyauctioncom,2013-02-01 00:00:00+00,3020,1,134.51,335198,2492,4084
+WhiskyAuction.com,whiskyauctioncom,2013-03-01 00:00:00+00,3632,1,147.88,238679,1614,3225
+WhiskyAuction.com,whiskyauctioncom,2013-04-01 00:00:00+00,3480,1,134.67,320648,2381,4402
+WhiskyAuction.com,whiskyauctioncom,2013-05-01 00:00:00+00,3381,1,119.45,264818,2217,3798
+WhiskyAuction.com,whiskyauctioncom,2013-06-01 00:00:00+00,3419,1,153.44,317765,2071,5024
+WhiskyAuction.com,whiskyauctioncom,2013-07-01 00:00:00+00,3815,1,137.74,390627,2836,4548
+WhiskyAuction.com,whiskyauctioncom,2013-08-01 00:00:00+00,3094,1,115.66,312755,2704,5223
+WhiskyAuction.com,whiskyauctioncom,2013-09-01 00:00:00+00,3505,1,132.52,403936,3048,5096
+WhiskyAuction.com,whiskyauctioncom,2013-10-01 00:00:00+00,2090,1,128.65,360467,2802,6108
+WhiskyAuction.com,whiskyauctioncom,2013-11-01 00:00:00+00,5294,1,136.59,458389,3356,6059
+WhiskyAuction.com,whiskyauctioncom,2013-12-01 00:00:00+00,4293,1,121.9,381294,3128,6365
+WhiskyAuction.com,whiskyauctioncom,2014-01-01 00:00:00+00,3691.3,0.8,149.77,454560.8,3035,6127
+WhiskyAuction.com,whiskyauctioncom,2014-02-01 00:00:00+00,2441.6,0.8,134.91,307317.1,2278,5556
+WhiskyAuction.com,whiskyauctioncom,2014-03-01 00:00:00+00,2467.1,0.8,129.91,256954.9,1978,6224
+WhiskyAuction.com,whiskyauctioncom,2014-04-01 00:00:00+00,3000.2,0.8,148.41,361964.5,2439,7415
+WhiskyAuction.com,whiskyauctioncom,2014-05-01 00:00:00+00,5058.2,0.8,110.22,255262.6,2316,5546
+WhiskyAuction.com,whiskyauctioncom,2014-06-01 00:00:00+00,3907.9,0.8,113.85,294193.4,2584,7191
+WhiskyAuction.com,whiskyauctioncom,2014-07-01 00:00:00+00,2084.5,0.8,111.79,274780.7,2458,5679
+WhiskyAuction.com,whiskyauctioncom,2014-08-01 00:00:00+00,3254,0.8,132.58,431426.5,3254,7168
+WhiskyAuction.com,whiskyauctioncom,2014-09-01 00:00:00+00,6328.8,0.8,159.4,467687.4,2934,6194
+WhiskyAuction.com,whiskyauctioncom,2014-10-01 00:00:00+00,3504.6,0.8,170.51,533510.8,3129,8884
+WhiskyAuction.com,whiskyauctioncom,2014-11-01 00:00:00+00,4898,0.8,177.19,495430.4,2796,8392
+WhiskyAuction.com,whiskyauctioncom,2014-12-01 00:00:00+00,4874.6,0.8,192.29,588204.3,3059,8401
+WhiskyAuction.com,whiskyauctioncom,2015-01-01 00:00:00+00,4738.7,1.6,194.67,537685.5,2762,6418
+WhiskyAuction.com,whiskyauctioncom,2015-02-01 00:00:00+00,5419,0.8,200.47,458070.4,2285,7589
+WhiskyAuction.com,whiskyauctioncom,2015-03-01 00:00:00+00,5453.9,0.7,181.84,569354.8,3131,8920
+WhiskyAuction.com,whiskyauctioncom,2015-04-01 00:00:00+00,6302.4,0.7,149.48,418556.9,2800,7989
+WhiskyAuction.com,whiskyauctioncom,2015-05-01 00:00:00+00,10226.5,0.7,265.54,710577.2,2676,8625
+WhiskyAuction.com,whiskyauctioncom,2015-06-01 00:00:00+00,10395.7,0.7,190.94,497578.8,2606,8690
+WhiskyAuction.com,whiskyauctioncom,2015-07-01 00:00:00+00,10649,0.7,190.32,547357.2,2876,8822
+WhiskyAuction.com,whiskyauctioncom,2015-08-01 00:00:00+00,11720.7,0.7,145.17,480063.2,3307,9762
+WhiskyAuction.com,whiskyauctioncom,2015-09-01 00:00:00+00,7381.7,0.7,192.51,736551.1,3826,9126
+WhiskyAuction.com,whiskyauctioncom,2015-10-01 00:00:00+00,7463.6,0.7,178.4,627596.5,3518,10600
+WhiskyAuction.com,whiskyauctioncom,2015-11-01 00:00:00+00,7097.2,0.7,204.31,627021.9,3069,12620
+WhiskyAuction.com,whiskyauctioncom,2016-01-01 00:00:00+00,6449.8,0.7,188.47,745975.5,3958,12604
+WhiskyAuction.com,whiskyauctioncom,2016-02-01 00:00:00+00,4985.7,0.8,204.83,553450.5,2702,11299
+WhiskyAuction.com,whiskyauctioncom,2016-03-01 00:00:00+00,5528.4,0.8,172.05,481904.7,2801,11297
+WhiskyAuction.com,whiskyauctioncom,2016-04-01 00:00:00+00,5811.7,0.8,183.26,675140.6,3684,11521
+WhiskyAuction.com,whiskyauctioncom,2016-05-01 00:00:00+00,6684.8,0.8,153.91,469746.4,3052,11184
+WhiskyAuction.com,whiskyauctioncom,2016-06-01 00:00:00+00,6842.3,0.8,189.69,631479.1,3329,11895
+WhiskyAuction.com,whiskyauctioncom,2016-07-01 00:00:00+00,5503.3,0.8,191.03,637265.2,3336,13446
+WhiskyAuction.com,whiskyauctioncom,2016-08-01 00:00:00+00,3882.8,0.8,211.07,611477.5,2897,12259
+WhiskyAuction.com,whiskyauctioncom,2016-09-01 00:00:00+00,6163.1,0.8,215.55,809396.8,3755,12877
+WhiskyAuction.com,whiskyauctioncom,2016-10-01 00:00:00+00,8225.6,0.9,230.47,820924.9,3562,14567
+WhiskyAuction.com,whiskyauctioncom,2016-11-01 00:00:00+00,11659,0.9,262.35,1044428.4,3981,16312
+WhiskyAuction.com,whiskyauctioncom,2017-01-01 00:00:00+00,8607.3,0.9,209.25,896866.8,4286,13983
+WhiskyAuction.com,whiskyauctioncom,2017-02-01 00:00:00+00,6048.9,0.9,174.13,588034.8,3377,14096
+WhiskyAuction.com,whiskyauctioncom,2017-03-01 00:00:00+00,12056.5,0.9,212.11,662640.5,3124,14468
+WhiskyAuction.com,whiskyauctioncom,2017-04-01 00:00:00+00,8141,0.9,266.65,788470.8,2957,17138
+WhiskyAuction.com,whiskyauctioncom,2017-05-01 00:00:00+00,6962.3,0.8,244.69,676067,2763,15351
+WhiskyAuction.com,whiskyauctioncom,2017-06-01 00:00:00+00,6245.6,0.9,219.47,536610.7,2445,13228
+WhiskyAuction.com,whiskyauctioncom,2017-07-01 00:00:00+00,7521.6,0.9,222.43,593448.6,2668,14562
+WhiskyAuction.com,whiskyauctioncom,2017-08-01 00:00:00+00,3946.9,0.9,231.92,743751.6,3207,14386
+WhiskyAuction.com,whiskyauctioncom,2017-09-01 00:00:00+00,11595.8,0.9,249.31,840687.9,3372,15423
+WhiskyAuction.com,whiskyauctioncom,2017-10-01 00:00:00+00,8741.3,0.9,197.8,707344.9,3576,18564
+WhiskyAuction.com,whiskyauctioncom,2017-11-01 00:00:00+00,8418.8,0.9,229.94,940011.6,4088,21855
+WhiskyAuction.com,whiskyauctioncom,2018-01-01 00:00:00+00,14228.3,0.9,265.5,1081126.8,4072,15171
+WhiskyAuction.com,whiskyauctioncom,2018-02-01 00:00:00+00,24289.8,0.9,256,731905.1,2859,17815
+WhiskyAuction.com,whiskyauctioncom,2018-03-01 00:00:00+00,12806.1,0.9,216.99,604742.7,2787,16837
+WhiskyAuction.com,whiskyauctioncom,2018-04-01 00:00:00+00,13596.3,0.9,265.45,850503.2,3204,20978
+WhiskyAuction.com,whiskyauctioncom,2018-05-01 00:00:00+00,10738.7,0.9,247.72,632185.7,2552,18294
+WhiskyAuction.com,whiskyauctioncom,2018-06-01 00:00:00+00,16622.1,0.9,234.94,661134.2,2814,16068
+WhiskyAuction.com,whiskyauctioncom,2018-07-01 00:00:00+00,8184.2,0.9,233.36,564957.1,2421,19846
+WhiskyAuction.com,whiskyauctioncom,2018-08-01 00:00:00+00,17336.4,0.9,224.47,618861.6,2757,16684
+WhiskyAuction.com,whiskyauctioncom,2018-09-01 00:00:00+00,22417,0.9,215.38,556103.5,2582,22553
+WhiskyAuction.com,whiskyauctioncom,2018-10-01 00:00:00+00,16024.5,0.9,234.79,754849.6,3215,22291
+WhiskyAuction.com,whiskyauctioncom,2018-11-01 00:00:00+00,9752.6,0.9,259.09,936341.8,3614,26493
+WhiskyAuction.com,whiskyauctioncom,2018-12-01 00:00:00+00,14360.1,0.9,236.88,980426.5,4139,24365
+WhiskyAuction.com,whiskyauctioncom,2019-01-01 00:00:00+00,13148.3,0.9,212.58,901572.8,4241,18471
+WhiskyAuction.com,whiskyauctioncom,2019-02-01 00:00:00+00,4584.3,0.9,170.67,445607.2,2611,27105
+WhiskyAuction.com,whiskyauctioncom,2019-03-01 00:00:00+00,14365.7,0.9,167.94,542279.2,3229,29921
+WhiskyAuction.com,whiskyauctioncom,2019-04-01 00:00:00+00,8204.3,0.9,143.23,553309.3,3863,27392
+WhiskyAuction.com,whiskyauctioncom,2019-05-01 00:00:00+00,6453.5,0.9,160.06,627280.9,3919,25948
+WhiskyAuction.com,whiskyauctioncom,2019-06-01 00:00:00+00,18452.8,0.9,192.29,712629.2,3706,25303
+WhiskyAuction.com,whiskyauctioncom,2019-07-01 00:00:00+00,11280.2,0.9,179.16,739194,4126,27617
+WhiskyAuction.com,whiskyauctioncom,2019-08-01 00:00:00+00,15492.7,0.9,166.06,543020.4,3270,23428
+WhiskyAuction.com,whiskyauctioncom,2019-09-01 00:00:00+00,9350.9,0.9,171.77,817103,4757,30169
+WhiskyAuction.com,whiskyauctioncom,2019-10-01 00:00:00+00,25358,0.9,175.96,978175.5,5559,32793
+WhiskyAuction.com,whiskyauctioncom,2019-11-01 00:00:00+00,18537.3,0.9,195.52,1069684.7,5471,31723
+WhiskyAuction.com,whiskyauctioncom,2019-12-01 00:00:00+00,25158.9,0.9,206.35,1115965.8,5408,31485
+WhiskyAuction.com,whiskyauctioncom,2020-01-01 00:00:00+00,11432.2,0.8,177.43,1006918,5675,26222
+WhiskyAuction.com,whiskyauctioncom,2020-02-01 00:00:00+00,13908.8,0.8,137.89,589487.8,4275,31326
+WhiskyAuction.com,whiskyauctioncom,2020-03-01 00:00:00+00,10844.2,0.9,169.01,743642.9,4400,22760
+WhiskyAuction.com,whiskyauctioncom,2020-04-01 00:00:00+00,10267.8,0.9,169.01,929234,5498,17023
+WhiskyAuction.com,whiskyauctioncom,2020-05-01 00:00:00+00,17837.3,0.9,173.02,735143.3,4249,28558
+WhiskyAuction.com,whiskyauctioncom,2020-06-01 00:00:00+00,5947,0.9,165.6,656457.3,3964,28829
+WhiskyAuction.com,whiskyauctioncom,2020-07-01 00:00:00+00,11727.6,0.9,169.45,896707.5,5292,31656
+WhiskyAuction.com,whiskyauctioncom,2020-08-01 00:00:00+00,13506.8,0.9,158.41,813421.4,5135,34880
+WhiskyAuction.com,whiskyauctioncom,2020-09-01 00:00:00+00,16383.4,0.9,215.18,1276886.5,5934,36287
+WhiskyAuction.com,whiskyauctioncom,2020-10-01 00:00:00+00,13390.1,0.9,222.11,1220923.8,5497,43036
+WhiskyAuction.com,whiskyauctioncom,2020-11-01 00:00:00+00,13960,0.9,199.7,1121895.9,5618,45162
+WhiskyAuction.com,whiskyauctioncom,2020-12-01 00:00:00+00,11693.5,0.9,198.85,1315962.6,6618,40691
+WhiskyAuction.com,whiskyauctioncom,2021-01-01 00:00:00+00,14955.1,0.9,179.91,1070267.5,5949,31995
+WhiskyAuction.com,whiskyauctioncom,2021-02-01 00:00:00+00,8830.6,0.9,146.79,523147.5,3564,35065
+WhiskyAuction.com,whiskyauctioncom,2021-03-01 00:00:00+00,18264.8,0.9,181.59,1055745.4,5814,38735
+WhiskyAuction.com,whiskyauctioncom,2021-04-01 00:00:00+00,8939.4,0.9,166.71,977949.8,5866,43356
+WhiskyAuction.com,whiskyauctioncom,2021-05-01 00:00:00+00,18369.6,0.9,176.4,970726.2,5503,42530
+WhiskyAuction.com,whiskyauctioncom,2021-06-01 00:00:00+00,8723.7,0.9,166.15,906194.9,5454,37702
+WhiskyAuction.com,whiskyauctioncom,2021-07-01 00:00:00+00,10765.3,0.9,152.76,893970.5,5852,36170
+WhiskyAuction.com,whiskyauctioncom,2021-08-01 00:00:00+00,13404.9,0.9,142.76,862960,6045,42409
+WhiskyAuction.com,whiskyauctioncom,2021-09-01 00:00:00+00,18256.5,0.9,162.75,998654.9,6136,38731
+WhiskyAuction.com,whiskyauctioncom,2021-10-01 00:00:00+00,11187.8,0.9,162.24,872703,5379,43367
+WhiskyAuction.com,whiskyauctioncom,2021-11-01 00:00:00+00,16229,0.8,181.2,989360.3,5460,50235
+WhiskyAuction.com,whiskyauctioncom,2021-12-01 00:00:00+00,15448.1,0.9,172.53,1132499.2,6564,44158
+WhiskyAuction.com,whiskyauctioncom,2022-01-01 00:00:00+00,18509.9,0.8,193.68,1192690,6158,37474
+WhiskyAuction.com,whiskyauctioncom,2022-02-01 00:00:00+00,16917.9,0.8,144.09,660381.6,4583,44602
+WhiskyAuction.com,whiskyauctioncom,2022-03-01 00:00:00+00,14837.5,0.8,164.69,846811.9,5142,46544
+WhiskyAuction.com,whiskyauctioncom,2022-04-01 00:00:00+00,13473.6,0.8,188.25,1010688.8,5369,50951
+WhiskyAuction.com,whiskyauctioncom,2022-05-01 00:00:00+00,12756.6,0.9,189.72,905721.7,4774,45291
+WhiskyAuction.com,whiskyauctioncom,2022-06-01 00:00:00+00,23130,0.9,248.04,1345139.1,5423,43553
+WhiskyAuction.com,whiskyauctioncom,2022-07-01 00:00:00+00,15077.2,0.9,190.53,1099577.4,5771,47042
+WhiskyAuction.com,whiskyauctioncom,2022-08-01 00:00:00+00,8046.3,0.8,176.54,993575.1,5628,40649
+WhiskyAuction.com,whiskyauctioncom,2022-09-01 00:00:00+00,12545.1,0.9,182.75,1436790.2,7862,55429
+WhiskyAuction.com,whiskyauctioncom,2022-10-01 00:00:00+00,21335.7,0.9,193.6,1231470.9,6361,49660
+WhiskyAuction.com,whiskyauctioncom,2022-11-01 00:00:00+00,7398,0.9,173.86,1066790.9,6136,55340
+WhiskyAuction.com,whiskyauctioncom,2022-12-01 00:00:00+00,15555.4,0.9,192.07,1307993.5,6810,53794
+WhiskyAuction.com,whiskyauctioncom,2023-01-01 00:00:00+00,11933.9,0.9,161.27,988575.6,6130,39650
+WhiskyAuction.com,whiskyauctioncom,2023-02-01 00:00:00+00,8912.3,0.9,161.81,730885.1,4517,41735
+WhiskyAuction.com,whiskyauctioncom,2023-03-01 00:00:00+00,14942.9,0.9,188.6,1254197.4,6650,51697
+WhiskyAuction.com,whiskyauctioncom,2023-04-01 00:00:00+00,9414.6,0.9,179.79,916196.4,5096,37629
+WhiskyAuction.com,whiskyauctioncom,2023-05-01 00:00:00+00,14488.5,1.8,211.13,1278834.6,6057,44950
+WhiskyAuction.com,whiskyauctioncom,2023-06-01 00:00:00+00,34855.2,0.9,195.41,1321364.9,6762,45412
+WhiskyAuction.com,whiskyauctioncom,2023-07-01 00:00:00+00,5968.1,0.9,172.78,1005379.8,5819,33595

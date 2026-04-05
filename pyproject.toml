@@ -11,7 +11,7 @@ authors = [
 
 dependencies = [
     # Web Framework
-    "fastapi>=0.109.0,<0.115.0",
+    "fastapi>=0.109.0",
     "uvicorn[standard]>=0.27.0",
     "python-multipart>=0.0.6",
     "jinja2>=3.1.0",
@@ -59,9 +59,6 @@ dependencies = [
 
     # AI Services
     "perplexityai>=0.23.0",
-
-    # Rate Limiting
-    "slowapi>=0.1.9",
 
     # Utilities
     "python-dateutil>=2.8.2",

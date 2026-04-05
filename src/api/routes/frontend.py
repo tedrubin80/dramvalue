@@ -4,10 +4,9 @@ Frontend template routes.
 Serves HTML templates using Jinja2 for server-side rendering.
 """
 
-import re
 from datetime import datetime, timedelta
 
-from fastapi import APIRouter, Depends, Query, Request
+from fastapi import APIRouter, Depends, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from pathlib import Path
@@ -19,11 +18,6 @@ from src.db.session import get_db
 from src.models.bottle import Bottle
 from src.models.price import Price
 from src.models.user import User
-
-
-def _escape_like(s: str) -> str:
-    """Escape LIKE/ILIKE special characters (%, _, \\) in user input."""
-    return re.sub(r"([%_\\])", r"\\\1", s)
 
 # Configure templates
 templates_dir = Path(__file__).parent.parent.parent.parent / "templates"
@@ -288,7 +282,7 @@ async def brands_page(
     db: AsyncSession = Depends(get_db),
     category: str = None,
     q: str = None,
-    page: int = Query(1, ge=1),
+    page: int = 1,
 ):
     """Browse whisky brands."""
     from src.models.bottle import SpiritCategory
@@ -308,9 +302,9 @@ async def brands_page(
             pass
     context["selected_category"] = category
 
-    # Search filter — escape LIKE wildcards in user input
+    # Search filter
     if q:
-        query = query.where(Bottle.name.ilike(f"%{_escape_like(q)}%"))
+        query = query.where(Bottle.name.ilike(f"%{q}%"))
     context["search_query"] = q
 
     # Total count
@@ -459,8 +453,8 @@ async def search_results(
         context["error"] = "Please enter at least 2 characters to search"
         return templates.TemplateResponse("search.html", context)
 
-    # Search bottles — escape LIKE wildcards
-    search_term = f"%{_escape_like(q.lower())}%"
+    # Search bottles
+    search_term = f"%{q.lower()}%"
     result = await db.execute(
         select(
             Bottle.id,
@@ -505,7 +499,7 @@ async def bottles_list(
     db: AsyncSession = Depends(get_db),
     q: str = None,
     category: str = None,
-    page: int = Query(1, ge=1),
+    page: int = 1,
 ):
     """Bottle search and browse page."""
     context = await get_template_context(request, db)
@@ -513,9 +507,9 @@ async def bottles_list(
     # Build query
     query = select(Bottle).where(Bottle.is_active == True)
 
-    # Search filter — escape LIKE wildcards
+    # Search filter
     if q:
-        query = query.where(Bottle.name.ilike(f"%{_escape_like(q)}%"))
+        query = query.where(Bottle.name.ilike(f"%{q}%"))
         context["search_query"] = q
 
     # Category filter
@@ -790,26 +784,20 @@ async def reddit_callback(
     """
     context = await get_template_context(request)
 
-    from html import escape as html_escape
-
     if error:
-        # Escape user-controlled input to prevent XSS
-        safe_error = html_escape(str(error))
-        context["error"] = f"Reddit authorization failed: {safe_error}"
+        context["error"] = f"Reddit authorization failed: {error}"
         context["success"] = False
     elif code:
+        # Store the authorization code for token exchange
+        # In production, exchange this for access/refresh tokens
         context["success"] = True
         context["message"] = "Reddit authorization successful! You can close this window."
+        context["code"] = code[:10] + "..."  # Show partial code for debugging
     else:
         context["error"] = "No authorization code received"
         context["success"] = False
 
-    # Simple HTML response for the callback — all dynamic content is escaped
-    if context.get("success"):
-        status_html = "<p class='success'>Authorization successful!</p>"
-    else:
-        status_html = "<p class='error'>" + html_escape(context.get("error", "Unknown error")) + "</p>"
-
+    # Simple HTML response for the callback
     html_content = f"""
     <!DOCTYPE html>
     <html>
@@ -841,7 +829,7 @@ async def reddit_callback(
     <body>
         <div class="container">
             <h1>DramValue</h1>
-            {status_html}
+            {"<p class='success'>Authorization successful!</p>" if context.get("success") else f"<p class='error'>{context.get('error', 'Unknown error')}</p>"}
             <p style="color: #9ca3af; margin-top: 1rem;">You can close this window.</p>
         </div>
     </body>

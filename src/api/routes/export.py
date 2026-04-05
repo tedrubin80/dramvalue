@@ -2,7 +2,6 @@
 Data export endpoints.
 
 Allows users to export price data in various formats.
-Rate-limited to prevent bulk scraping.
 """
 
 import csv
@@ -11,24 +10,21 @@ import json
 from datetime import datetime
 from typing import Literal
 
-from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from fastapi.responses import StreamingResponse
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.api.deps import get_current_user
 from src.api.response import success_response
 from src.db.session import get_db
 from src.models.bottle import Bottle, SpiritCategory
 from src.models.price import Price
-from src.models.user import User
 
 router = APIRouter()
 
 
 @router.get("/prices/csv")
 async def export_prices_csv(
-    request: Request,
     bottle_id: int | None = Query(None, description="Filter by bottle ID"),
     category: SpiritCategory | None = Query(None, description="Filter by category"),
     min_price: float | None = Query(None, ge=0, description="Minimum price USD"),
@@ -36,11 +32,11 @@ async def export_prices_csv(
     days: int = Query(365, ge=1, le=1825, description="Days of history"),
     db: AsyncSession = Depends(get_db),
 ):
-    """Export price data as CSV."""
-    # Rate limit: 5 exports per hour per IP
-    from src.main import limiter
-    await limiter.check("5/hour", request)
+    """
+    Export price data as CSV.
 
+    Returns a downloadable CSV file with price history.
+    """
     # Build query
     query = (
         select(
@@ -90,11 +86,22 @@ async def export_prices_csv(
 
     # Header
     writer.writerow([
-        "Price ID", "Date", "Bottle Name", "Category", "Distillery",
-        "Price", "Currency", "Price USD", "Source", "Source Name",
-        "Auction House", "Sold", "URL",
+        "Price ID",
+        "Date",
+        "Bottle Name",
+        "Category",
+        "Distillery",
+        "Price",
+        "Currency",
+        "Price USD",
+        "Source",
+        "Source Name",
+        "Auction House",
+        "Sold",
+        "URL",
     ])
 
+    # Data rows
     for row in rows:
         writer.writerow([
             row.id,
@@ -113,6 +120,8 @@ async def export_prices_csv(
         ])
 
     output.seek(0)
+
+    # Generate filename
     filename = f"wtracker_prices_{datetime.utcnow().strftime('%Y%m%d')}.csv"
 
     return StreamingResponse(
@@ -124,7 +133,6 @@ async def export_prices_csv(
 
 @router.get("/prices/json")
 async def export_prices_json(
-    request: Request,
     bottle_id: int | None = Query(None, description="Filter by bottle ID"),
     category: SpiritCategory | None = Query(None, description="Filter by category"),
     min_price: float | None = Query(None, ge=0, description="Minimum price USD"),
@@ -132,10 +140,12 @@ async def export_prices_json(
     days: int = Query(365, ge=1, le=1825, description="Days of history"),
     db: AsyncSession = Depends(get_db),
 ):
-    """Export price data as JSON."""
-    from src.main import limiter
-    await limiter.check("5/hour", request)
+    """
+    Export price data as JSON.
 
+    Returns a downloadable JSON file with price history.
+    """
+    # Build query
     query = (
         select(
             Price.id,
@@ -157,6 +167,7 @@ async def export_prices_json(
         .order_by(Price.transaction_date.desc())
     )
 
+    # Apply filters
     if bottle_id:
         query = query.where(Price.bottle_id == bottle_id)
     if category:
@@ -166,14 +177,18 @@ async def export_prices_json(
     if max_price is not None:
         query = query.where(Price.price_usd <= max_price)
 
+    # Date filter
     from datetime import timedelta
     cutoff = datetime.utcnow() - timedelta(days=days)
     query = query.where(Price.transaction_date >= cutoff)
+
+    # Limit
     query = query.limit(10000)
 
     result = await db.execute(query)
     rows = result.fetchall()
 
+    # Build JSON
     data = {
         "exported_at": datetime.utcnow().isoformat(),
         "filters": {
@@ -205,6 +220,7 @@ async def export_prices_json(
         ],
     }
 
+    # Generate filename
     filename = f"wtracker_prices_{datetime.utcnow().strftime('%Y%m%d')}.json"
 
     return StreamingResponse(
@@ -216,15 +232,13 @@ async def export_prices_json(
 
 @router.get("/bottles/csv")
 async def export_bottles_csv(
-    request: Request,
     category: SpiritCategory | None = Query(None, description="Filter by category"),
     has_prices: bool = Query(True, description="Only bottles with prices"),
     db: AsyncSession = Depends(get_db),
 ):
-    """Export bottle catalog as CSV with price statistics."""
-    from src.main import limiter
-    await limiter.check("5/hour", request)
-
+    """
+    Export bottle catalog as CSV with price statistics.
+    """
     query = (
         select(
             Bottle.id,
@@ -254,13 +268,22 @@ async def export_bottles_csv(
     result = await db.execute(query)
     rows = result.fetchall()
 
+    # Create CSV
     output = io.StringIO()
     writer = csv.writer(output)
 
     writer.writerow([
-        "Bottle ID", "Name", "Category", "Distillery", "Age",
-        "Size (ml)", "Price Count", "Avg Price USD", "Min Price USD",
-        "Max Price USD", "Last Sale",
+        "Bottle ID",
+        "Name",
+        "Category",
+        "Distillery",
+        "Age",
+        "Size (ml)",
+        "Price Count",
+        "Avg Price USD",
+        "Min Price USD",
+        "Max Price USD",
+        "Last Sale",
     ])
 
     for row in rows:
@@ -291,18 +314,16 @@ async def export_bottles_csv(
 @router.get("/collection/{collection_id}/csv")
 async def export_collection_csv(
     collection_id: int,
-    current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
     """
     Export a user's collection with current valuations.
-    Requires authentication and ownership.
     """
     from src.models.collection import Collection, CollectionItem
 
-    # Get collection and verify ownership
+    # Get collection
     collection = await db.get(Collection, collection_id)
-    if not collection or collection.user_id != current_user.id:
+    if not collection:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Collection not found",
@@ -333,13 +354,23 @@ async def export_collection_csv(
     result = await db.execute(query)
     rows = result.fetchall()
 
+    # Create CSV
     output = io.StringIO()
     writer = csv.writer(output)
 
     writer.writerow([
-        "Item ID", "Bottle ID", "Name", "Category", "Distillery",
-        "Quantity", "Purchase Price", "Purchase Date",
-        "Current Value (avg)", "Gain/Loss", "Price Data Points", "Notes",
+        "Item ID",
+        "Bottle ID",
+        "Name",
+        "Category",
+        "Distillery",
+        "Quantity",
+        "Purchase Price",
+        "Purchase Date",
+        "Current Value (avg)",
+        "Gain/Loss",
+        "Price Data Points",
+        "Notes",
     ])
 
     for row in rows:

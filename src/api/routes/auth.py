@@ -2,9 +2,7 @@
 Authentication endpoints.
 """
 
-from datetime import datetime, timezone
-
-from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 from fastapi.responses import RedirectResponse
 from pydantic import BaseModel, EmailStr, Field
 from sqlalchemy import select
@@ -33,7 +31,7 @@ class UserRegister(BaseModel):
     """User registration request."""
     display_name: str = Field(..., min_length=3, max_length=50)
     email: EmailStr
-    password: str = Field(..., min_length=8, max_length=128)
+    password: str = Field(..., min_length=8)
 
 
 class UserLogin(BaseModel):
@@ -45,6 +43,7 @@ class UserLogin(BaseModel):
 class TokenResponse(BaseModel):
     """Authentication token response."""
     access_token: str
+    refresh_token: str
     token_type: str = "bearer"
 
 
@@ -70,27 +69,28 @@ class MessageResponse(BaseModel):
 
 
 @router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
-async def register(request: Request, data: UserRegister, db: AsyncSession = Depends(get_db)):
+async def register(data: UserRegister, db: AsyncSession = Depends(get_db)):
     """
     Register a new pseudonymous account.
-    """
-    # Rate limit: 3 registrations per hour per IP
-    from src.main import limiter
-    await limiter.check("3/hour", request)
 
-    # Check if email or display name already taken — generic error to prevent enumeration
+    - Display name is public
+    - Email is admin-only (for verification)
+    - Returns user info (no tokens until email verified for submissions)
+    """
+    # Check if email exists
     result = await db.execute(select(User).where(User.email == data.email))
     if result.scalar_one_or_none():
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="An account with this email or display name already exists",
+            detail="Email already registered",
         )
 
+    # Check if display name exists
     result = await db.execute(select(User).where(User.display_name == data.display_name))
     if result.scalar_one_or_none():
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="An account with this email or display name already exists",
+            detail="Display name already taken",
         )
 
     # Create user
@@ -103,24 +103,19 @@ async def register(request: Request, data: UserRegister, db: AsyncSession = Depe
     await db.commit()
     await db.refresh(user)
 
+    # TODO: Send verification email
+    # verification_token = create_email_verification_token(data.email)
+    # await send_verification_email(data.email, verification_token)
+
     return user
 
 
 @router.post("/login", response_model=TokenResponse)
-async def login(
-    request: Request,
-    data: UserLogin,
-    response: Response,
-    db: AsyncSession = Depends(get_db),
-):
+async def login(data: UserLogin, response: Response, db: AsyncSession = Depends(get_db)):
     """
     Authenticate and receive tokens.
     Also sets HTTP-only cookie for server-side auth.
     """
-    # Rate limit: 5 login attempts per minute per IP
-    from src.main import limiter
-    await limiter.check("5/minute", request)
-
     settings = get_settings()
 
     # Find user
@@ -142,48 +137,43 @@ async def login(
     if user.is_banned:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Account has been suspended. Contact support for details.",
+            detail=f"Account is banned: {user.ban_reason or 'No reason provided'}",
         )
-
-    # Update last login timestamp
-    user.last_login_at = datetime.now(timezone.utc)
-    await db.commit()
 
     # Generate tokens
     access_token = create_access_token(subject=user.id)
+    refresh_token = create_refresh_token(subject=user.id)
 
     # Set HTTP-only cookie for server-side auth
     response.set_cookie(
         key="access_token",
         value=access_token,
         httponly=True,
-        secure=not settings.is_development,
+        secure=not settings.is_development,  # Secure in production
         samesite="lax",
         max_age=settings.jwt_access_token_expire_minutes * 60,
     )
 
-    return TokenResponse(access_token=access_token)
+    return TokenResponse(
+        access_token=access_token,
+        refresh_token=refresh_token,
+    )
 
 
 @router.post("/logout")
 async def logout(response: Response):
-    """Logout by clearing the auth cookie."""
+    """
+    Logout by clearing the auth cookie.
+    """
     response.delete_cookie(key="access_token")
     return {"message": "Logged out successfully"}
 
 
 @router.get("/logout")
-async def logout_redirect(request: Request):
+async def logout_redirect():
     """
-    Logout and redirect to home (for navigation links).
-    Only allows same-origin requests via Referer check.
+    Logout and redirect to home (for form/link logout).
     """
-    referer = request.headers.get("referer", "")
-    host = request.headers.get("host", "")
-    # Basic same-origin check — block cross-site logout via <img> tags
-    if referer and host and host not in referer:
-        raise HTTPException(status_code=403, detail="Forbidden")
-
     response = RedirectResponse(url="/", status_code=302)
     response.delete_cookie(key="access_token")
     return response
@@ -191,7 +181,9 @@ async def logout_redirect(request: Request):
 
 @router.post("/verify-email", response_model=MessageResponse)
 async def verify_email(token: str, db: AsyncSession = Depends(get_db)):
-    """Verify email address with token from verification email."""
+    """
+    Verify email address with token from verification email.
+    """
     from src.core.security import verify_email_token
 
     email = verify_email_token(token)

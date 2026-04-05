@@ -51,9 +51,7 @@ def normalize_bottle_name(name: str) -> str:
     return name
 
 # Database setup
-DATABASE_URL = os.getenv("DATABASE_URL")
-if not DATABASE_URL:
-    raise RuntimeError("DATABASE_URL environment variable is required")
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+asyncpg://wtracker:wtracker_dev_password_2024@localhost:5434/wtracker")
 engine = create_async_engine(DATABASE_URL, echo=False)
 async_session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
