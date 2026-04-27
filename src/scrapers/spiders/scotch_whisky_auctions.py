@@ -56,14 +56,7 @@ class ScotchWhiskyAuctionsSpider(BaseAuctionSpider):
             yield scrapy.Request(
                 url,
                 callback=self.parse,
-                meta={
-                    "playwright": True,
-                    "playwright_include_page": False,
-                    "playwright_page_goto_kwargs": {
-                        "wait_until": "networkidle",
-                        "timeout": 30000,
-                    },
-                },
+                meta={},
                 errback=self.handle_error,
             )
 
@@ -102,14 +95,7 @@ class ScotchWhiskyAuctionsSpider(BaseAuctionSpider):
             yield scrapy.Request(
                 full_url,
                 callback=self.parse_auction,
-                meta={
-                    "playwright": True,
-                    "playwright_include_page": False,
-                    "playwright_page_goto_kwargs": {
-                        "wait_until": "networkidle",
-                        "timeout": 30000,
-                    },
-                },
+                meta={},
                 errback=self.handle_error,
             )
 
@@ -120,14 +106,7 @@ class ScotchWhiskyAuctionsSpider(BaseAuctionSpider):
             yield scrapy.Request(
                 urljoin(response.url, next_page),
                 callback=self.parse,
-                meta={
-                    "playwright": True,
-                    "playwright_include_page": False,
-                    "playwright_page_goto_kwargs": {
-                        "wait_until": "networkidle",
-                        "timeout": 30000,
-                    },
-                },
+                meta={},
                 errback=self.handle_error,
             )
 
@@ -169,12 +148,6 @@ class ScotchWhiskyAuctionsSpider(BaseAuctionSpider):
                 full_url,
                 callback=self.parse_lot,
                 meta={
-                    "playwright": True,
-                    "playwright_include_page": False,
-                    "playwright_page_goto_kwargs": {
-                        "wait_until": "networkidle",
-                        "timeout": 30000,
-                    },
                     "auction_name": auction_name,
                     "auction_date": auction_date,
                 },
@@ -187,14 +160,7 @@ class ScotchWhiskyAuctionsSpider(BaseAuctionSpider):
             yield scrapy.Request(
                 urljoin(response.url, next_page),
                 callback=self.parse_auction,
-                meta={
-                    "playwright": True,
-                    "playwright_include_page": False,
-                    "playwright_page_goto_kwargs": {
-                        "wait_until": "networkidle",
-                        "timeout": 30000,
-                    },
-                },
+                meta={},
                 errback=self.handle_error,
             )
 

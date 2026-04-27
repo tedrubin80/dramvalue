@@ -88,9 +88,6 @@ class DatabasePipeline:
 
         logger.info(f"Database pipeline stats: {self._stats}")
 
-        # Update spider stats
-        spider.items_new = self._stats["new_prices"]
-
     def process_item(self, item, spider):
         """
         Persist item to database.
@@ -112,7 +109,6 @@ class DatabasePipeline:
             # Check for existing price in database
             if self._price_exists(session, item):
                 self._stats["duplicates"] += 1
-                spider.items_updated += 1
                 raise DropItem(f"Already in database: {item.get('source_id')}")
 
             # Get or create bottle
