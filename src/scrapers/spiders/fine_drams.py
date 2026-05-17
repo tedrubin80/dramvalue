@@ -61,12 +61,8 @@ class FineDramsSpider(scrapy.Spider):
 
     def parse(self, response: Response) -> Generator[Any, None, None]:
         """Parse product listing page."""
-        # Extract products from the page
-        products = response.css("div.product-item, article.product")
-
-        if not products:
-            # Try alternative selectors
-            products = response.css("div[class*='product']")
+        # Site structure: <li><a class="product" href="/...">...</a></li>
+        products = response.css("a.product")
 
         logger.info(f"Found {len(products)} products on page {self.current_page}")
 
@@ -93,83 +89,66 @@ class FineDramsSpider(scrapy.Spider):
                 yield response.follow(next_page, callback=self.parse)
 
     def parse_product(self, response: Response, product) -> RetailPriceItem | None:
-        """Parse a single product from the listing."""
-        try:
-            # Extract product URL and name
-            link = product.css("a::attr(href)").get()
-            title = product.css("h2::text, h3::text, .product-title::text, a::text").get()
+        """Parse a single product from the listing.
 
-            if not title:
-                title = product.css("a::attr(title)").get()
+        Site HTML: <a class="product" href="/slug.html">
+          <div class="details"><h5 class="name">Title</h5><span class="name_extra">70 cl, 43%</span></div>
+          <div class="price">36,00 €<div class="price_before">41,00 €</div></div>
+        </a>
+        """
+        try:
+            link = product.attrib.get("href")
+            title = product.css("h5.name::text").get()
 
             if not title or not link:
                 return None
 
             title = title.strip()
 
-            # Extract price
-            price_text = product.css(".price::text, .product-price::text, span[class*='price']::text").get()
+            # Price is the direct text node of div.price (excludes child div.price_before)
+            price_text = product.css("div.price::text").get()
             price = None
             original_price = None
 
             if price_text:
-                # Parse price like "36,00 €" or "€36.00"
-                price_match = re.search(r"([\d,\.]+)\s*€|€\s*([\d,\.]+)", price_text)
+                price_match = re.search(r"([\d]+[,.][\d]+)", price_text)
                 if price_match:
-                    price_str = price_match.group(1) or price_match.group(2)
-                    price_str = price_str.replace(",", ".")
-                    price = float(price_str)
+                    price = float(price_match.group(1).replace(",", "."))
 
-            # Check for original/sale price
-            original_text = product.css(".original-price::text, .was-price::text, del::text").get()
+            # Original/before-sale price
+            original_text = product.css("div.price_before::text").get()
             if original_text:
-                orig_match = re.search(r"([\d,\.]+)\s*€|€\s*([\d,\.]+)", original_text)
+                orig_match = re.search(r"([\d]+[,.][\d]+)", original_text)
                 if orig_match:
-                    orig_str = orig_match.group(1) or orig_match.group(2)
-                    orig_str = orig_str.replace(",", ".")
-                    original_price = float(orig_str)
+                    original_price = float(orig_match.group(1).replace(",", "."))
 
-            # Extract ABV and volume from title or separate fields
-            abv_text = product.css(".abv::text, [class*='alcohol']::text").get()
-            vol_text = product.css(".volume::text, [class*='volume']::text").get()
-
+            # Size and ABV come from "name_extra" span: e.g. "70 cl, 43%"
+            name_extra = product.css("span.name_extra::text").get() or ""
             abv = None
             size_ml = None
 
-            if abv_text:
-                abv_match = re.search(r"([\d\.]+)\s*%", abv_text)
-                if abv_match:
-                    abv = float(abv_match.group(1))
+            vol_match = re.search(r"(\d+)\s*cl", name_extra, re.I)
+            if vol_match:
+                size_ml = int(vol_match.group(1)) * 10
+            abv_match = re.search(r"([\d.]+)\s*%", name_extra)
+            if abv_match:
+                abv = float(abv_match.group(1))
 
-            if vol_text:
-                vol_match = re.search(r"(\d+)\s*cl", vol_text, re.I)
-                if vol_match:
-                    size_ml = int(vol_match.group(1)) * 10
-                else:
-                    vol_match = re.search(r"(\d+)\s*ml", vol_text, re.I)
-                    if vol_match:
-                        size_ml = int(vol_match.group(1))
-
-            # If not found in separate fields, extract from title
             if not abv:
                 abv = extract_abv(title)
             if not size_ml:
                 size_ml = extract_size_ml(title) or 700
 
-            # Check stock status
-            in_stock = True
-            stock_text = product.css(".stock::text, .availability::text").get()
-            if stock_text and ("out of stock" in stock_text.lower() or "sold out" in stock_text.lower()):
-                in_stock = False
+            # Stock: div.quantity text is "In stock" or similar
+            quantity_text = product.css("div.quantity::text").get() or ""
+            in_stock = "out of stock" not in quantity_text.lower() and "sold out" not in quantity_text.lower()
 
-            # Get image
-            image_url = product.css("img::attr(src), img::attr(data-src)").get()
+            image_url = product.css("img::attr(src)").get()
 
-            # Extract source ID from URL
-            source_id = link.split("/")[-1] if link else None
+            # Source ID: slug from URL (strip .html extension)
+            source_id = link.rstrip("/").split("/")[-1].replace(".html", "")
 
-            # Build full URL
-            full_url = response.urljoin(link) if link else response.url
+            full_url = response.urljoin(link)
 
             # Create item
             item = RetailPriceItem()

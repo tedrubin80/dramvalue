@@ -47,8 +47,10 @@ class ScotchWhiskyAuctionsSpider(BaseAuctionSpider):
         "PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT": 30000,
     }
 
-    # Default buyer's premium for Scotch Whisky Auctions
     DEFAULT_BUYERS_PREMIUM = 15.0  # 15%
+
+    # Limit to recent auctions to avoid timing out (181 total auctions × hundreds of lots = too slow)
+    MAX_RECENT_AUCTIONS = 3
 
     def start_requests(self):
         """Generate initial requests with Playwright enabled."""
@@ -86,8 +88,13 @@ class ScotchWhiskyAuctionsSpider(BaseAuctionSpider):
             if len(parts) == 2 and parts[0] == 'auctions' and re.match(r'\d+-', parts[1]):
                 filtered_links.append(link)
 
-        auction_links = filtered_links
-        logger.info(f"Found {len(auction_links)} auction links")
+        # Sort by auction ID (highest = most recent) and limit to avoid timeouts
+        def auction_id(link):
+            m = re.match(r'/auctions/(\d+)-', link)
+            return int(m.group(1)) if m else 0
+
+        auction_links = sorted(filtered_links, key=auction_id, reverse=True)[:self.MAX_RECENT_AUCTIONS]
+        logger.info(f"Found {len(auction_links)} recent auction links (limited to {self.MAX_RECENT_AUCTIONS})")
 
         # Follow each auction
         for auction_url in auction_links:

@@ -38,8 +38,8 @@ class WhiskyAuctioneerSpider(BaseAuctionSpider):
     auction_house = "WHISKY_AUCTIONEER"
     allowed_domains = ["whiskyauctioneer.com", "www.whiskyauctioneer.com"]
 
-    # Start with past auctions page to get auction listings
-    start_urls = ["https://www.whiskyauctioneer.com/auctions?status=past"]
+    # Start with auction results page
+    start_urls = ["https://www.whiskyauctioneer.com/auction-results"]
 
     # Spider-specific settings (increased timeouts for Tor proxy)
     custom_settings = {
@@ -58,7 +58,14 @@ class WhiskyAuctioneerSpider(BaseAuctionSpider):
             yield scrapy.Request(
                 url,
                 callback=self.parse,
-                meta={},
+                meta={
+                    "playwright": True,
+                    "playwright_include_page": False,
+                    "playwright_page_goto_kwargs": {
+                        "wait_until": "networkidle",
+                        "timeout": 90000,
+                    },
+                },
                 errback=self.handle_error,
             )
 
@@ -87,7 +94,14 @@ class WhiskyAuctioneerSpider(BaseAuctionSpider):
             yield scrapy.Request(
                 full_url,
                 callback=self.parse_auction,
-                meta={},
+                meta={
+                    "playwright": True,
+                    "playwright_include_page": False,
+                    "playwright_page_goto_kwargs": {
+                        "wait_until": "networkidle",
+                        "timeout": 90000,
+                    },
+                },
                 errback=self.handle_error,
             )
 
@@ -103,7 +117,14 @@ class WhiskyAuctioneerSpider(BaseAuctionSpider):
             yield scrapy.Request(
                 urljoin(response.url, next_page),
                 callback=self.parse,
-                meta={},
+                meta={
+                    "playwright": True,
+                    "playwright_include_page": False,
+                    "playwright_page_goto_kwargs": {
+                        "wait_until": "networkidle",
+                        "timeout": 90000,
+                    },
+                },
                 errback=self.handle_error,
             )
 
@@ -151,7 +172,14 @@ class WhiskyAuctioneerSpider(BaseAuctionSpider):
             yield scrapy.Request(
                 urljoin(response.url, next_page),
                 callback=self.parse_auction,
-                meta={},
+                meta={
+                    "playwright": True,
+                    "playwright_include_page": False,
+                    "playwright_page_goto_kwargs": {
+                        "wait_until": "networkidle",
+                        "timeout": 90000,
+                    },
+                },
                 errback=self.handle_error,
             )
 

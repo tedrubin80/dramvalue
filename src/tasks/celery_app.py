@@ -106,21 +106,11 @@ celery_app.conf.beat_schedule = {
         "options": {"queue": "scraping"},
     },
 
-    # WhiskyStats - daily
-    "scrape-whiskystats": {
-        "task": "src.tasks.scraping.scrape_source",
-        "schedule": crontab(hour="6", minute="0"),
-        "args": ["whiskystats"],
-        "options": {"queue": "scraping"},
-    },
+    # WhiskyStats - DISABLED (site DNS failure as of May 2026)
+    # "scrape-whiskystats": { ... }
 
-    # Rare Whisky 101 - daily
-    "scrape-rare-whisky-101": {
-        "task": "src.tasks.scraping.scrape_source",
-        "schedule": crontab(hour="7", minute="0"),
-        "args": ["rare_whisky_101"],
-        "options": {"queue": "scraping"},
-    },
+    # Rare Whisky 101 - DISABLED (full JS SPA, selectors broken as of May 2026)
+    # "scrape-rare-whisky-101": { ... }
 
     # ==========================================================================
     # RETAIL/MARKETPLACE SCRAPERS (listing prices)
@@ -142,37 +132,17 @@ celery_app.conf.beat_schedule = {
         "options": {"queue": "scraping"},
     },
 
-    # Whiskybase Market - every 12 hours
-    "scrape-whiskybase": {
-        "task": "src.tasks.scraping.scrape_source",
-        "schedule": crontab(hour="3,15", minute="0"),
-        "args": ["whiskybase"],
-        "options": {"queue": "scraping"},
-    },
+    # Whiskybase Market - DISABLED (403 blocking as of May 2026)
+    # "scrape-whiskybase": { ... }
 
-    # Wine-Searcher - daily (large site, be respectful)
-    "scrape-wine-searcher": {
-        "task": "src.tasks.scraping.scrape_source",
-        "schedule": crontab(hour="8", minute="0"),
-        "args": ["wine_searcher"],
-        "options": {"queue": "scraping"},
-    },
+    # Wine-Searcher - DISABLED (403 blocking as of May 2026)
+    # "scrape-wine-searcher": { ... }
 
-    # BoozApp - daily
-    "scrape-boozapp": {
-        "task": "src.tasks.scraping.scrape_source",
-        "schedule": crontab(hour="9", minute="0"),
-        "args": ["boozapp"],
-        "options": {"queue": "scraping"},
-    },
+    # BoozApp - DISABLED (site redirects to /lander, defunct as of May 2026)
+    # "scrape-boozapp": { ... }
 
-    # WhiskyFindr - daily (US bourbon focus)
-    "scrape-whiskyfindr": {
-        "task": "src.tasks.scraping.scrape_source",
-        "schedule": crontab(hour="10", minute="0"),
-        "args": ["whiskyfindr"],
-        "options": {"queue": "scraping"},
-    },
+    # WhiskyFindr - DISABLED (JS-only SPA, selectors broken as of May 2026)
+    # "scrape-whiskyfindr": { ... }
 
     # Bottle Blue Book - daily (auction valuations)
     "scrape-bottle-blue-book": {
@@ -182,14 +152,38 @@ celery_app.conf.beat_schedule = {
         "options": {"queue": "scraping"},
     },
 
+    # Whisky Hammer - every 12 hours (UK auction, real hammer prices)
+    "scrape-whisky-hammer": {
+        "task": "src.tasks.scraping.scrape_source",
+        "schedule": crontab(hour="5,17", minute="0"),
+        "args": ["whisky_hammer"],
+        "options": {"queue": "scraping"},
+    },
+
+    # CaskCartel - daily (US Shopify retailer, bourbon/whiskey focus)
+    "scrape-cask-cartel": {
+        "task": "src.tasks.scraping.scrape_source",
+        "schedule": crontab(hour="12", minute="0"),
+        "args": ["cask_cartel"],
+        "options": {"queue": "scraping"},
+    },
+
+    # Fine Drams - every 12 hours (European retailer, static HTML, ~1500 products)
+    "scrape-fine-drams": {
+        "task": "src.tasks.scraping.scrape_source",
+        "schedule": crontab(hour="6,18", minute="30"),
+        "args": ["fine_drams"],
+        "options": {"queue": "scraping"},
+    },
+
     # ==========================================================================
     # MAINTENANCE TASKS
     # ==========================================================================
 
-    # Refresh bottle statistics every 15 minutes
+    # Refresh bottle statistics daily at 2 AM UTC
     "refresh-bottle-stats": {
         "task": "src.tasks.maintenance.refresh_bottle_stats",
-        "schedule": crontab(minute="*/15"),
+        "schedule": crontab(hour="2", minute="0"),
         "options": {"queue": "maintenance"},
     },
 

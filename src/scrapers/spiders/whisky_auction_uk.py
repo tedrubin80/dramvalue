@@ -38,7 +38,7 @@ class WhiskyAuctionUKSpider(BaseAuctionSpider):
     allowed_domains = ["whisky.auction", "www.whisky.auction"]
 
     start_urls = [
-        "https://www.whisky.auction/past-auctions",
+        "https://www.whisky.auction/auctions",
     ]
 
     custom_settings = {

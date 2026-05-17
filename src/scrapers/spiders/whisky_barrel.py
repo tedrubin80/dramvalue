@@ -73,17 +73,10 @@ class WhiskyBarrelSpider(scrapy.Spider):
             logger.info(f"Found {len(products)} products on page {self.current_page}")
 
             for product in products:
-                # Filter for whisky products
-                product_type = product.get("product_type", "").lower()
-                tags = [t.lower() for t in product.get("tags", [])]
-
-                # Include if it's whisky-related
-                if any(kw in product_type for kw in ["whisky", "whiskey", "bourbon", "scotch"]) or \
-                   any(kw in " ".join(tags) for kw in ["whisky", "whiskey", "bourbon", "scotch", "single malt"]):
-                    item = self.parse_product(product)
-                    if item:
-                        self.items_scraped += 1
-                        yield item
+                item = self.parse_product(product)
+                if item:
+                    self.items_scraped += 1
+                    yield item
 
             # Paginate if more products
             if len(products) == 250 and self.current_page < self.max_pages:

@@ -198,12 +198,10 @@ class WhiskyHunterSpider(BaseAuctionSpider):
         auction_slug = auction_info.get("slug", "unknown")
         source_id = f"wh-{auction_slug}-{dt_str or 'na'}"
 
-        # Get trading data
-        lots_traded = entry.get("lots_traded", 0)
-        trading_volume = entry.get("trading_volume", 0)
-        winning_bid_avg = entry.get("winning_bid_avg", 0)
-        winning_bid_min = entry.get("winning_bid_min")
-        winning_bid_max = entry.get("winning_bid_max")
+        # Get trading data (API v2 field names)
+        lots_traded = entry.get("auction_lots_count", 0)
+        trading_volume = entry.get("auction_trading_volume", 0)
+        winning_bid_avg = entry.get("winning_bid_mean", 0)
 
         if not lots_traded or not trading_volume:
             return None
@@ -226,8 +224,8 @@ class WhiskyHunterSpider(BaseAuctionSpider):
         item["hammer_price"] = float(winning_bid_avg) if winning_bid_avg else None
         item["total_price"] = float(winning_bid_avg) if winning_bid_avg else None
         item["currency"] = "GBP"
-        item["estimate_low"] = float(winning_bid_min) if winning_bid_min else None
-        item["estimate_high"] = float(winning_bid_max) if winning_bid_max else None
+        item["estimate_low"] = None
+        item["estimate_high"] = None
 
         # Date
         item["auction_date"] = auction_date
@@ -271,10 +269,10 @@ class WhiskyHunterSpider(BaseAuctionSpider):
         distillery_slug = distillery_info.get("slug", "unknown")
         source_id = f"wh-dist-{distillery_slug}-{dt_str or 'na'}"
 
-        # Get trading data
-        lots_traded = entry.get("lots_traded", 0)
+        # Get trading data (distillery endpoint uses lots_count, winning_bid_mean)
+        lots_traded = entry.get("lots_count", 0)
         trading_volume = entry.get("trading_volume", 0)
-        winning_bid_avg = entry.get("winning_bid_avg", 0)
+        winning_bid_avg = entry.get("winning_bid_mean", 0)
 
         if not lots_traded or not winning_bid_avg:
             return None

@@ -50,14 +50,26 @@ class BottleBlueBookSpider(BaseAuctionSpider):
         "DOWNLOAD_DELAY": 4.0,
         "CONCURRENT_REQUESTS": 1,
         "ROBOTSTXT_OBEY": True,
+        "PLAYWRIGHT_BROWSER_TYPE": "chromium",
+        "PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT": 60000,
+    }
+
+    PLAYWRIGHT_META = {
+        "playwright": True,
+        "playwright_include_page": False,
+        "playwright_page_goto_kwargs": {
+            "wait_until": "networkidle",
+            "timeout": 60000,
+        },
     }
 
     def start_requests(self):
-        """Generate initial requests."""
+        """Generate initial requests with Playwright for AngularJS rendering."""
         for url in self.start_urls:
             yield scrapy.Request(
                 url,
                 callback=self.parse,
+                meta=dict(self.PLAYWRIGHT_META),
                 errback=self.handle_error,
             )
 
@@ -75,6 +87,7 @@ class BottleBlueBookSpider(BaseAuctionSpider):
             yield scrapy.Request(
                 full_url,
                 callback=self.parse_bottle,
+                meta=dict(self.PLAYWRIGHT_META),
                 errback=self.handle_error,
             )
 
@@ -84,6 +97,7 @@ class BottleBlueBookSpider(BaseAuctionSpider):
             yield scrapy.Request(
                 urljoin(response.url, next_page),
                 callback=self.parse,
+                meta=dict(self.PLAYWRIGHT_META),
                 errback=self.handle_error,
             )
 
@@ -112,28 +126,30 @@ class BottleBlueBookSpider(BaseAuctionSpider):
             response.css(".bottle-description *::text, .details *::text").getall()
         ).strip()
 
-        # Extract sales history
-        # Site shows "Latest Recorded Sales" with price and date
-        sales_rows = response.css(".sale-record, .transaction-row, .price-history tr")
+        # Extract sales history from "Recent Recorded Transactions"
+        # Structure: <ul class="recent_trans"><li><span class="rt_text"><strong>Sold: </strong>$275 on <i>10/12/2025</i></span>
+        sales_rows = response.css("ul.recent_trans li")
+
+        url_parts = response.url.rstrip("/").split("/")
+        bottle_id = url_parts[-2] if len(url_parts) >= 2 else "0"
+        bottle_slug = url_parts[-1][:20]
 
         if sales_rows:
             for idx, row in enumerate(sales_rows):
-                price_text = row.css(".price::text, .sale-price::text, td:nth-child(2)::text").get()
-                if not price_text:
+                rt_text = " ".join(row.css("span.rt_text::text, span.rt_text *::text").getall())
+                price_match = re.search(r"\$([\d,]+(?:\.\d{2})?)", rt_text)
+                if not price_match:
                     continue
-
-                price = parse_price(price_text)
+                price = parse_price(price_match.group(1))
                 if not price or price <= 0:
                     continue
 
-                # Extract date
-                date_text = row.css(".date::text, .sale-date::text, td:first-child::text").get()
+                date_text = row.css("span.rt_text i::text").get()
                 auction_date = self._parse_date(date_text) if date_text else None
 
-                # Extract source/venue
-                source_text = row.css(".source::text, .venue::text, td:nth-child(3)::text").get()
+                source_text = row.css("div.rt_source::text").get()
 
-                source_id = f"bbb-{response.url.split('/')[-1][:30]}-{idx}"
+                source_id = f"bbb-{bottle_id}-{bottle_slug}-{idx}"
 
                 item = self.create_item(
                     response=response,
@@ -155,7 +171,7 @@ class BottleBlueBookSpider(BaseAuctionSpider):
             # Try to extract average/current value
             avg_price = self._extract_average_price(response)
             if avg_price:
-                source_id = f"bbb-{response.url.split('/')[-1][:30]}-avg"
+                source_id = f"bbb-{bottle_id}-{bottle_slug}-avg"
 
                 item = self.create_item(
                     response=response,

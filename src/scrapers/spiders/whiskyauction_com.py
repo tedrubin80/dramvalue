@@ -35,7 +35,7 @@ class WhiskyAuctionComSpider(BaseAuctionSpider):
     allowed_domains = ["whiskyauction.com", "www.whiskyauction.com"]
 
     start_urls = [
-        "https://www.whiskyauction.com/archive",
+        "https://www.whiskyauction.com/wac/auctionBrowser",
     ]
 
     custom_settings = {
@@ -65,11 +65,12 @@ class WhiskyAuctionComSpider(BaseAuctionSpider):
             )
 
     def parse(self, response: Response) -> Generator[Any, None, None]:
-        """Parse archive/auction listing page."""
-        logger.info(f"Parsing archive: {response.url}")
+        """Parse auction browser page."""
+        logger.info(f"Parsing auction browser: {response.url}")
 
-        # Extract auction links
-        auction_links = response.css("a[href*='/auction/']::attr(href)").getall()
+        # whiskyauction.com (Drupal) exposes auctions as /node/{id} links
+        auction_links = response.css("a[href*='/node/']::attr(href)").getall()
+        auction_links += response.css("a[href*='/auction/']::attr(href)").getall()
         auction_links += response.css("a[href*='auction_id=']::attr(href)").getall()
 
         logger.info(f"Found {len(auction_links)} auction links")
