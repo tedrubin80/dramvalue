@@ -5,82 +5,78 @@
 {% block content %}
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <!-- Header -->
-    <div class="mb-8">
-        <h1 class="text-3xl font-bold text-white mb-2">Whisky Brands</h1>
-        <p class="text-gray-400">Browse {{ total }} brands from distilleries worldwide</p>
+    <div class="mb-7">
+        <h1 class="heading-serif text-3xl dv-text mb-1">Whisky Brands</h1>
+        <p class="dv-text-muted">{{ total }} brands from distilleries worldwide</p>
     </div>
 
-    <!-- Filters -->
-    <div class="flex flex-wrap gap-3 mb-6">
+    <!-- Category filters -->
+    <div class="flex flex-wrap gap-2 mb-5">
         <a href="/brands"
-           class="px-4 py-2 rounded-lg text-sm font-medium transition {% if not selected_category %}bg-yellow-600 text-gray-900{% else %}bg-gray-800 text-gray-300 hover:bg-gray-700{% endif %}">
+           class="dv-pill {% if not selected_category %}dv-pill-active{% endif %}">
             All ({{ total }})
         </a>
         {% for cat in categories %}
         <a href="/brands?category={{ cat.value }}"
-           class="px-4 py-2 rounded-lg text-sm font-medium transition {% if selected_category == cat.value %}bg-yellow-600 text-gray-900{% else %}bg-gray-800 text-gray-300 hover:bg-gray-700{% endif %}">
+           class="dv-pill {% if selected_category == cat.value %}dv-pill-active{% endif %}">
             {{ cat.label }} ({{ cat.count }})
         </a>
         {% endfor %}
     </div>
 
     <!-- Search -->
-    <div class="mb-6">
+    <div class="mb-7">
         <form action="/brands" method="GET" class="flex gap-2">
             {% if selected_category %}
             <input type="hidden" name="category" value="{{ selected_category }}">
             {% endif %}
             <input type="text" name="q" value="{{ search_query or '' }}"
                    placeholder="Search brands..."
-                   class="flex-1 max-w-md px-4 py-2 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-yellow-500">
-            <button type="submit" class="px-6 py-2 bg-yellow-600 hover:bg-yellow-500 text-gray-900 font-medium rounded-lg transition">
+                   class="dv-input flex-1 max-w-sm px-4 py-2 text-sm rounded-lg">
+            <button type="submit" class="dv-accent-bg px-5 py-2 rounded-lg text-sm font-medium">
                 Search
             </button>
+            {% if search_query %}
+            <a href="/brands{% if selected_category %}?category={{ selected_category }}{% endif %}"
+               class="dv-btn-ghost px-4 py-2 rounded-lg">Clear</a>
+            {% endif %}
         </form>
     </div>
 
-    <!-- Brand Grid -->
     {% if brands %}
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
         {% for brand in brands %}
         <a href="/bottles/{{ brand.id }}"
-           class="bg-gray-800/50 border border-gray-700 rounded-lg p-4 hover:border-yellow-600/50 transition block group">
-            <h3 class="text-white font-medium group-hover:text-yellow-500 transition truncate">{{ brand.name }}</h3>
-            <div class="flex items-center justify-between mt-2">
-                <span class="text-xs px-2 py-0.5 rounded bg-gray-700 text-gray-300">
-                    {{ brand.category | replace('_', ' ') | title }}
-                </span>
+           class="dv-card dv-card-hover rounded-lg p-4 block">
+            <h3 class="card-heading font-medium truncate mb-2">{{ brand.name }}</h3>
+            <div class="flex items-center justify-between">
+                <span class="dv-badge">{{ brand.category | replace('_', ' ') | title }}</span>
                 {% if brand.price_count > 0 %}
-                <span class="text-xs text-green-400">{{ brand.price_count }} prices</span>
+                <span class="text-xs dv-price font-medium">{{ brand.price_count }} prices</span>
                 {% endif %}
             </div>
         </a>
         {% endfor %}
     </div>
 
-    <!-- Pagination -->
     {% if total_pages > 1 %}
     <div class="flex justify-center gap-2 mt-8">
         {% if page > 1 %}
         <a href="/brands?page={{ page - 1 }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}"
-           class="px-4 py-2 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700 transition">
-            Prev
-        </a>
+           class="dv-btn-ghost px-4 py-2 rounded-lg">Prev</a>
         {% endif %}
-        <span class="px-4 py-2 text-gray-400">Page {{ page }} of {{ total_pages }}</span>
+        <span class="px-4 py-2 text-sm dv-text-muted">Page {{ page }} of {{ total_pages }}</span>
         {% if page < total_pages %}
         <a href="/brands?page={{ page + 1 }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}"
-           class="px-4 py-2 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700 transition">
-            Next
-        </a>
+           class="dv-btn-ghost px-4 py-2 rounded-lg">Next</a>
         {% endif %}
     </div>
     {% endif %}
 
     {% else %}
-    <div class="text-center py-16 bg-gray-800/30 rounded-lg border border-gray-700">
-        <h2 class="text-2xl font-semibold text-white mb-2">No brands found</h2>
-        <p class="text-gray-400">Try a different search or category</p>
+    <div class="text-center py-16 dv-card rounded-lg">
+        <h2 class="text-xl font-semibold dv-text mb-2">No brands found</h2>
+        <p class="dv-text-muted">Try a different search or category</p>
     </div>
     {% endif %}
 </div>

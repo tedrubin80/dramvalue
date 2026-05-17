@@ -5,69 +5,56 @@
 {% block content %}
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <!-- Header -->
-    <div class="mb-8">
-        <h1 class="text-3xl font-bold text-white mb-2">Market Overview</h1>
-        <p class="text-gray-400">Whisky auction market trends across {{ auction_count }} auction houses ({{ date_range }})</p>
+    <div class="mb-6">
+        <h1 class="heading-serif text-3xl dv-text mb-2">Market Overview</h1>
+        <p class="dv-text-muted">
+            Whisky auction data across {{ auction_count }} auction houses
+        </p>
     </div>
 
-    <!-- Summary Cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <div class="bg-gray-800/50 border border-gray-700 rounded-lg p-5 text-center">
-            <div class="text-3xl font-bold text-white">{{ total_volume }}</div>
-            <div class="text-sm text-gray-400 mt-1">Total Trading Volume</div>
-        </div>
-        <div class="bg-gray-800/50 border border-gray-700 rounded-lg p-5 text-center">
-            <div class="text-3xl font-bold text-green-400">{{ total_lots }}</div>
-            <div class="text-sm text-gray-400 mt-1">Total Lots Sold</div>
-        </div>
-        <div class="bg-gray-800/50 border border-gray-700 rounded-lg p-5 text-center">
-            <div class="text-3xl font-bold text-yellow-400">{{ auction_count }}</div>
-            <div class="text-sm text-gray-400 mt-1">Auction Houses</div>
-        </div>
-        <div class="bg-gray-800/50 border border-gray-700 rounded-lg p-5 text-center">
-            <div class="text-3xl font-bold text-blue-400">{{ months_tracked }}</div>
-            <div class="text-sm text-gray-400 mt-1">Months of Data</div>
-        </div>
+    <!-- Staleness notice -->
+    <div class="dv-notice-amber mb-8">
+        Historical data only: Nov 2005 &ndash; Jul 2023. Live auction results are scraped separately and shown on individual bottle pages.
     </div>
 
-    <!-- Market Volume Chart -->
-    <div class="bg-gray-800/50 border border-gray-700 rounded-lg p-6 mb-8">
-        <h2 class="text-xl font-semibold text-white mb-4">Monthly Trading Volume</h2>
+    <!-- Volume Chart -->
+    <div class="dv-card rounded-lg p-6 mb-6">
+        <h2 class="heading-serif text-xl dv-text mb-4">Monthly Trading Volume</h2>
         <canvas id="volumeChart" height="100"></canvas>
     </div>
 
     <!-- Average Price Chart -->
-    <div class="bg-gray-800/50 border border-gray-700 rounded-lg p-6 mb-8">
-        <h2 class="text-xl font-semibold text-white mb-4">Average Winning Bid Over Time</h2>
+    <div class="dv-card rounded-lg p-6 mb-6">
+        <h2 class="heading-serif text-xl dv-text mb-4">Average Winning Bid Over Time</h2>
         <canvas id="priceChart" height="100"></canvas>
     </div>
 
-    <!-- Top Auction Houses Table -->
-    <div class="bg-gray-800/50 border border-gray-700 rounded-lg p-6 mb-8">
-        <h2 class="text-xl font-semibold text-white mb-4">Auction Houses by Trading Volume</h2>
+    <!-- Auction Houses Table -->
+    <div class="dv-card rounded-lg p-6 mb-6">
+        <h2 class="heading-serif text-xl dv-text mb-5">Auction Houses by Trading Volume</h2>
         <div class="overflow-x-auto">
-            <table class="w-full text-sm text-left">
-                <thead class="text-xs text-gray-400 uppercase border-b border-gray-700">
+            <table class="w-full text-sm">
+                <thead style="border-bottom: 2px solid oklch(87% 0.022 55);">
                     <tr>
-                        <th class="px-4 py-3">#</th>
-                        <th class="px-4 py-3">Auction House</th>
-                        <th class="px-4 py-3 text-right">Total Volume</th>
-                        <th class="px-4 py-3 text-right">Total Lots</th>
-                        <th class="px-4 py-3 text-right">Avg Winning Bid</th>
-                        <th class="px-4 py-3 text-right">Max Bid</th>
-                        <th class="px-4 py-3 text-right">Months Active</th>
+                        <th class="dv-th text-left">#</th>
+                        <th class="dv-th text-left">Auction House</th>
+                        <th class="dv-th text-right">Total Volume</th>
+                        <th class="dv-th text-right">Total Lots</th>
+                        <th class="dv-th text-right">Avg Bid</th>
+                        <th class="dv-th text-right">Max Bid</th>
+                        <th class="dv-th text-right">Months</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for house in auction_houses %}
-                    <tr class="border-b border-gray-700/50 hover:bg-gray-700/20 transition">
-                        <td class="px-4 py-3 text-gray-400">{{ loop.index }}</td>
-                        <td class="px-4 py-3 text-white font-medium">{{ house.name }}</td>
-                        <td class="px-4 py-3 text-right text-green-400 font-mono">${{ house.total_volume }}</td>
-                        <td class="px-4 py-3 text-right text-gray-300 font-mono">{{ house.total_lots }}</td>
-                        <td class="px-4 py-3 text-right text-yellow-400 font-mono">${{ house.avg_bid }}</td>
-                        <td class="px-4 py-3 text-right text-gray-300 font-mono">${{ house.max_bid }}</td>
-                        <td class="px-4 py-3 text-right text-gray-400">{{ house.months }}</td>
+                    <tr class="dv-tr">
+                        <td class="dv-td dv-text-faint">{{ loop.index }}</td>
+                        <td class="dv-td font-medium dv-text">{{ house.name }}</td>
+                        <td class="dv-td text-right dv-price dv-mono">${{ house.total_volume }}</td>
+                        <td class="dv-td text-right dv-text-muted dv-mono">{{ house.total_lots }}</td>
+                        <td class="dv-td text-right dv-accent-text dv-mono font-medium">${{ house.avg_bid }}</td>
+                        <td class="dv-td text-right dv-text-muted dv-mono">${{ house.max_bid }}</td>
+                        <td class="dv-td text-right dv-text-faint">{{ house.months }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -76,23 +63,22 @@
     </div>
 
     <!-- Lots Count Chart -->
-    <div class="bg-gray-800/50 border border-gray-700 rounded-lg p-6">
-        <h2 class="text-xl font-semibold text-white mb-4">Monthly Lots Count</h2>
+    <div class="dv-card rounded-lg p-6">
+        <h2 class="heading-serif text-xl dv-text mb-4">Monthly Lots Count</h2>
         <canvas id="lotsChart" height="100"></canvas>
     </div>
 </div>
 
 <script>
-    // Chart.js defaults for dark theme
-    Chart.defaults.color = '#9ca3af';
-    Chart.defaults.borderColor = 'rgba(75, 85, 99, 0.3)';
+    Chart.defaults.color = '#7a6650';
+    Chart.defaults.borderColor = 'rgba(160, 130, 95, 0.18)';
 
     const chartLabels = {{ chart_labels | tojson }};
     const volumeData = {{ chart_volume | tojson }};
     const priceData = {{ chart_price | tojson }};
     const lotsData = {{ chart_lots | tojson }};
 
-    // Volume Chart
+    // Volume
     new Chart(document.getElementById('volumeChart'), {
         type: 'bar',
         data: {
@@ -100,8 +86,8 @@
             datasets: [{
                 label: 'Trading Volume',
                 data: volumeData,
-                backgroundColor: 'rgba(74, 222, 128, 0.4)',
-                borderColor: 'rgba(74, 222, 128, 0.8)',
+                backgroundColor: 'rgba(190, 120, 45, 0.45)',
+                borderColor: 'rgba(190, 120, 45, 0.85)',
                 borderWidth: 1,
             }]
         },
@@ -110,6 +96,11 @@
             plugins: {
                 legend: { display: false },
                 tooltip: {
+                    backgroundColor: '#faf8f4',
+                    titleColor: '#2a1f18',
+                    bodyColor: '#2a7a2a',
+                    borderColor: 'rgba(160, 130, 95, 0.3)',
+                    borderWidth: 1,
                     callbacks: {
                         label: ctx => '$' + ctx.parsed.y.toLocaleString(undefined, {maximumFractionDigits: 0})
                     }
@@ -117,15 +108,13 @@
             },
             scales: {
                 y: {
-                    ticks: {
-                        callback: v => '$' + (v / 1000000).toFixed(1) + 'M'
-                    }
+                    ticks: { callback: v => '$' + (v / 1000000).toFixed(1) + 'M' }
                 }
             }
         }
     });
 
-    // Price Chart
+    // Price
     new Chart(document.getElementById('priceChart'), {
         type: 'line',
         data: {
@@ -133,8 +122,8 @@
             datasets: [{
                 label: 'Avg Winning Bid',
                 data: priceData,
-                borderColor: '#eab308',
-                backgroundColor: 'rgba(234, 179, 8, 0.1)',
+                borderColor: '#bf7a32',
+                backgroundColor: 'rgba(191, 122, 50, 0.08)',
                 fill: true,
                 tension: 0.3,
                 pointRadius: 1,
@@ -145,22 +134,23 @@
             plugins: {
                 legend: { display: false },
                 tooltip: {
+                    backgroundColor: '#faf8f4',
+                    titleColor: '#2a1f18',
+                    bodyColor: '#bf7a32',
+                    borderColor: 'rgba(160, 130, 95, 0.3)',
+                    borderWidth: 1,
                     callbacks: {
                         label: ctx => '$' + ctx.parsed.y.toLocaleString(undefined, {maximumFractionDigits: 0})
                     }
                 }
             },
             scales: {
-                y: {
-                    ticks: {
-                        callback: v => '$' + v.toLocaleString()
-                    }
-                }
+                y: { ticks: { callback: v => '$' + v.toLocaleString() } }
             }
         }
     });
 
-    // Lots Chart
+    // Lots
     new Chart(document.getElementById('lotsChart'), {
         type: 'bar',
         data: {
@@ -168,8 +158,8 @@
             datasets: [{
                 label: 'Lots Count',
                 data: lotsData,
-                backgroundColor: 'rgba(96, 165, 250, 0.4)',
-                borderColor: 'rgba(96, 165, 250, 0.8)',
+                backgroundColor: 'rgba(80, 135, 80, 0.45)',
+                borderColor: 'rgba(80, 135, 80, 0.85)',
                 borderWidth: 1,
             }]
         },
@@ -178,17 +168,18 @@
             plugins: {
                 legend: { display: false },
                 tooltip: {
+                    backgroundColor: '#faf8f4',
+                    titleColor: '#2a1f18',
+                    bodyColor: '#2a7a2a',
+                    borderColor: 'rgba(160, 130, 95, 0.3)',
+                    borderWidth: 1,
                     callbacks: {
                         label: ctx => ctx.parsed.y.toLocaleString() + ' lots'
                     }
                 }
             },
             scales: {
-                y: {
-                    ticks: {
-                        callback: v => (v / 1000).toFixed(0) + 'k'
-                    }
-                }
+                y: { ticks: { callback: v => (v / 1000).toFixed(0) + 'k' } }
             }
         }
     });

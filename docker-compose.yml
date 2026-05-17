@@ -13,7 +13,7 @@ services:
       target: development
     container_name: wtracker-api
     ports:
-      - "8001:8000"
+      - "8002:8000"
     volumes:
       # Mount source code for hot reload
       - ./src:/app/src
@@ -21,6 +21,12 @@ services:
       - ./alembic:/app/alembic
       - ./alembic.ini:/app/alembic.ini
       - ./templates:/app/templates
+      - ./scripts:/app/scripts
+      - ./dramvalue_bottles.csv:/app/dramvalue_bottles.csv
+      - ./dramvalue_prices.csv:/app/dramvalue_prices.csv
+      - ./whisky_bottles.csv:/app/whisky_bottles.csv
+      - ./whisky_prices.csv:/app/whisky_prices.csv
+      - ./whisky_market_stats.csv:/app/whisky_market_stats.csv
     env_file:
       - .env
     environment:
@@ -120,7 +126,6 @@ services:
     command: celery -A src.tasks.celery_app worker --loglevel=info --concurrency=2 -Q scraping,maintenance,celery
     networks:
       - wtracker-network
-      - yarntrack_default  # Access to Tor proxy
     restart: unless-stopped
 
   # ---------------------------------------------------------------------------
@@ -173,8 +178,6 @@ services:
 networks:
   wtracker-network:
     driver: bridge
-  yarntrack_default:
-    external: true  # Tor proxy is on this network
 
 # -----------------------------------------------------------------------------
 # Volumes

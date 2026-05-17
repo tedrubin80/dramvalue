@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Privacy Policy - DramValue{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <h1 class="heading-serif text-4xl dv-accent-text mb-3">Privacy Policy</h1>
+    <p class="dv-text-faint text-sm mb-10">Last updated: May 2026</p>
+
+    <div class="space-y-8 dv-text-muted">
+        <section>
+            <h2 class="heading-serif text-xl dv-text mb-3">What We Collect</h2>
+            <p class="mb-3">For visitors browsing without an account, we collect no personal information. Standard server logs (IP address, browser type, pages visited) may be retained temporarily for security and performance purposes.</p>
+            <p>For registered accounts, we collect your email address and a hashed password. We do not collect payment information.</p>
+        </section>
+
+        <section>
+            <h2 class="heading-serif text-xl dv-text mb-3">How We Use It</h2>
+            <ul class="space-y-1.5 list-disc list-inside">
+                <li>Email: to send price alert notifications you explicitly request</li>
+                <li>Account data: to maintain your saved collections and alerts</li>
+                <li>We do not sell your data to third parties</li>
+                <li>We do not use your data for advertising</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2 class="heading-serif text-xl dv-text mb-3">Cookies</h2>
+            <p>We use a session cookie to keep you logged in. No third-party tracking cookies. No analytics cookies beyond our own server logs.</p>
+        </section>
+
+        <section>
+            <h2 class="heading-serif text-xl dv-text mb-3">Data Retention</h2>
+            <p>Account data is retained as long as your account is active. You can request deletion by contacting us (see the <a href="/about" class="dv-accent-text hover:underline">About page</a>). Server logs are rotated within 90 days.</p>
+        </section>
+
+        <section>
+            <h2 class="heading-serif text-xl dv-text mb-3">Third-Party Data</h2>
+            <p>Price data shown on this site is aggregated from public auction and retail sources. DramValue does not share your personal data with those sources.</p>
+        </section>
+
+        <section>
+            <h2 class="heading-serif text-xl dv-text mb-3">Changes</h2>
+            <p>We may update this policy. Material changes will be noted on this page with an updated date.</p>
+        </section>
+    </div>
+</div>
+{% endblock %}

@@ -5,47 +5,46 @@
 {% block content %}
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <!-- Header -->
-    <div class="mb-8">
-        <h1 class="text-3xl font-bold text-white mb-2">Trending Bottles</h1>
-        <p class="text-gray-400">Most active bottles in the last 30 days based on auction sales</p>
+    <div class="mb-7">
+        <h1 class="heading-serif text-3xl dv-text mb-1">Most Recorded</h1>
+        <p class="dv-text-muted">Bottles with the most recorded auction sales</p>
     </div>
 
     {% if trending_bottles %}
-    <!-- Trending Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {% for bottle in trending_bottles %}
-        <a
-            href="/bottles/{{ bottle.id }}"
-            class="bg-gray-800/50 border border-gray-700 rounded-lg p-5 hover:border-yellow-600/50 transition block group relative"
-        >
-            <!-- Rank Badge -->
-            <div class="absolute -top-2 -left-2 w-8 h-8 bg-yellow-600 rounded-full flex items-center justify-center text-gray-900 font-bold text-sm">
+        <a href="/bottles/{{ bottle.id }}"
+           class="dv-card dv-card-hover rounded-lg p-5 block relative">
+            <!-- Rank -->
+            <div class="absolute -top-2.5 -left-2.5 w-8 h-8 dv-accent-bg rounded-full flex items-center justify-center text-white font-bold text-sm shadow-sm">
                 {{ loop.index }}
             </div>
 
-            <div class="ml-4">
-                <span class="inline-block px-2 py-0.5 text-xs rounded bg-gray-700 text-gray-300 mb-2">
-                    {{ bottle.category | replace('_', ' ') | title }}
-                </span>
-                <h3 class="text-lg font-semibold text-white group-hover:text-yellow-500 transition line-clamp-2 mb-1">
-                    {{ bottle.name }}
-                </h3>
+            <div class="ml-5">
+                <span class="dv-badge mb-2">{{ bottle.category | replace('_', ' ') | title }}</span>
+                <h3 class="card-heading font-semibold line-clamp-2 mb-1 text-sm leading-snug">{{ bottle.name }}</h3>
                 {% if bottle.distillery %}
-                <p class="text-sm text-gray-400 mb-3">{{ bottle.distillery }}</p>
+                <p class="text-xs dv-text-muted mb-3">{{ bottle.distillery }}</p>
+                {% else %}
+                <div class="mb-3"></div>
                 {% endif %}
 
-                <div class="grid grid-cols-3 gap-2 pt-3 border-t border-gray-700/50 text-center">
+                <div class="grid grid-cols-3 gap-2 pt-3 border-t dv-divider text-center">
                     <div>
-                        <div class="text-green-400 font-semibold">${{ "{:,.0f}".format(bottle.avg_price) if bottle.avg_price else '-' }}</div>
-                        <div class="text-xs text-gray-500">Avg</div>
+                        <div class="dv-price font-semibold text-sm dv-mono">
+                            ${{ "{:,.0f}".format(bottle.avg_price) if bottle.avg_price else '-' }}
+                        </div>
+                        <div class="text-xs dv-text-faint mt-0.5">Avg</div>
                     </div>
                     <div>
-                        <div class="text-white font-semibold">{{ bottle.recent_sales }}</div>
-                        <div class="text-xs text-gray-500">Sales</div>
+                        <div class="dv-text font-semibold text-sm dv-mono">{{ bottle.recent_sales }}</div>
+                        <div class="text-xs dv-text-faint mt-0.5">Sales</div>
                     </div>
                     <div>
-                        <div class="text-gray-300 font-semibold">${{ "{:,.0f}".format(bottle.max_price) if bottle.max_price else '-' }}</div>
-                        <div class="text-xs text-gray-500">High</div>
+                        <div class="dv-text-muted font-semibold text-sm dv-mono">
+                            ${{ "{:,.0f}".format(bottle.max_price) if bottle.max_price else '-' }}
+                        </div>
+                        <div class="text-xs dv-text-faint mt-0.5">High</div>
                     </div>
                 </div>
             </div>
@@ -54,11 +53,10 @@
     </div>
 
     {% else %}
-    <!-- No Data -->
-    <div class="text-center py-16 bg-gray-800/30 rounded-lg border border-gray-700">
-        <div class="text-6xl mb-4">&#128200;</div>
-        <h2 class="text-2xl font-semibold text-white mb-2">No trending data yet</h2>
-        <p class="text-gray-400">Check back soon as we gather more auction data</p>
+    <div class="text-center py-16 dv-card rounded-lg">
+        <p class="text-5xl mb-4" aria-hidden="true">&#128200;</p>
+        <h2 class="text-xl font-semibold dv-text mb-2">No data yet</h2>
+        <p class="dv-text-muted">Check back soon as we gather more auction data</p>
     </div>
     {% endif %}
 </div>

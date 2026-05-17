@@ -53,7 +53,7 @@ server {
 
     # API proxy
     location /api/ {
-        proxy_pass http://127.0.0.1:8001;
+        proxy_pass http://127.0.0.1:8002;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
@@ -65,7 +65,7 @@ server {
 
     # Health check endpoint
     location /health {
-        proxy_pass http://127.0.0.1:8001;
+        proxy_pass http://127.0.0.1:8002;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
         access_log off;
@@ -73,7 +73,7 @@ server {
 
     # OpenAPI docs
     location /docs {
-        proxy_pass http://127.0.0.1:8001;
+        proxy_pass http://127.0.0.1:8002;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
@@ -82,20 +82,20 @@ server {
     }
 
     location /openapi.json {
-        proxy_pass http://127.0.0.1:8001;
+        proxy_pass http://127.0.0.1:8002;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
     }
 
     location /redoc {
-        proxy_pass http://127.0.0.1:8001;
+        proxy_pass http://127.0.0.1:8002;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
     }
 
     # Homepage - proxy to FastAPI app
     location = / {
-        proxy_pass http://127.0.0.1:8001;
+        proxy_pass http://127.0.0.1:8002;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
@@ -104,8 +104,8 @@ server {
     }
 
     # Frontend routes - proxy to FastAPI app
-    location ~ ^/(bottles|trending|auth|search|collection) {
-        proxy_pass http://127.0.0.1:8001;
+    location ~ ^/(bottles|trending|auth|search|collection|market|brands|profile|alerts|about) {
+        proxy_pass http://127.0.0.1:8002;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;

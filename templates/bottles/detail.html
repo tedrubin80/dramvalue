@@ -6,12 +6,12 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <!-- Breadcrumb -->
     <nav class="text-sm mb-6">
-        <ol class="flex items-center space-x-2 text-gray-400">
-            <li><a href="/" class="hover:text-white">Home</a></li>
-            <li><span>/</span></li>
-            <li><a href="/bottles" class="hover:text-white">Bottles</a></li>
-            <li><span>/</span></li>
-            <li class="text-white">{{ bottle.name[:50] }}{% if bottle.name|length > 50 %}...{% endif %}</li>
+        <ol class="flex items-center gap-2 dv-text-faint">
+            <li><a href="/" class="hover:dv-text transition-colors" style="transition: color 0.15s;">Home</a></li>
+            <li>/</li>
+            <li><a href="/bottles" class="hover:dv-text transition-colors" style="transition: color 0.15s;">Bottles</a></li>
+            <li>/</li>
+            <li class="dv-text-muted truncate max-w-xs">{{ bottle.name[:50] }}{% if bottle.name|length > 50 %}...{% endif %}</li>
         </ol>
     </nav>
 
@@ -19,96 +19,98 @@
         <!-- Main Content -->
         <div class="lg:col-span-2">
             <!-- Bottle Header -->
-            <div class="bg-gray-800/50 rounded-lg border border-gray-700 p-6 mb-6">
-                <div class="flex justify-between items-start mb-4">
-                    <div>
-                        <span class="inline-block px-2 py-1 text-xs rounded bg-yellow-600/20 text-yellow-500 mb-2">
+            <div class="dv-card rounded-lg p-6 mb-6">
+                <div class="flex justify-between items-start mb-5">
+                    <div class="flex-1 pr-4">
+                        <span class="dv-badge mb-3">
                             {{ bottle.category.value | replace('_', ' ') | title if bottle.category else 'Spirits' }}
                         </span>
-                        <h1 class="text-3xl font-bold text-white mb-2">{{ bottle.name }}</h1>
+                        <h1 class="heading-serif text-3xl dv-text mt-2 mb-1">{{ bottle.name }}</h1>
                         {% if bottle.distillery %}
-                        <p class="text-gray-400">{{ bottle.distillery }}</p>
+                        <p class="dv-text-muted">{{ bottle.distillery }}</p>
                         {% endif %}
                     </div>
                     {% if stats.latest %}
-                    <div class="text-right">
-                        <div class="text-3xl font-bold text-green-400">${{ "{:,.0f}".format(stats.latest) }}</div>
-                        <div class="text-sm text-gray-400">Latest Price</div>
+                    <div class="text-right shrink-0">
+                        <div class="dv-price text-3xl font-bold dv-mono">${{ "{:,.0f}".format(stats.latest) }}</div>
+                        <div class="text-xs dv-text-faint mt-1">Latest Price</div>
                     </div>
                     {% endif %}
                 </div>
 
                 <!-- Quick Stats -->
-                <div class="grid grid-cols-4 gap-4 pt-4 border-t border-gray-700">
+                <div class="grid grid-cols-4 gap-4 pt-5 border-t dv-divider">
                     <div class="text-center">
-                        <div class="text-xl font-bold text-white">{{ stats.count }}</div>
-                        <div class="text-xs text-gray-400">Sales</div>
+                        <div class="text-xl font-bold dv-text dv-mono">{{ stats.count }}</div>
+                        <div class="text-xs dv-text-faint mt-0.5">Sales</div>
                     </div>
                     <div class="text-center">
-                        <div class="text-xl font-bold text-white">${{ "{:,.0f}".format(stats.avg) }}</div>
-                        <div class="text-xs text-gray-400">Avg Price</div>
+                        <div class="text-xl font-bold dv-price dv-mono">${{ "{:,.0f}".format(stats.avg) }}</div>
+                        <div class="text-xs dv-text-faint mt-0.5">Avg</div>
                     </div>
                     <div class="text-center">
-                        <div class="text-xl font-bold text-white">${{ "{:,.0f}".format(stats.min) }}</div>
-                        <div class="text-xs text-gray-400">Min</div>
+                        <div class="text-xl font-bold dv-text-muted dv-mono">${{ "{:,.0f}".format(stats.min) }}</div>
+                        <div class="text-xs dv-text-faint mt-0.5">Min</div>
                     </div>
                     <div class="text-center">
-                        <div class="text-xl font-bold text-white">${{ "{:,.0f}".format(stats.max) }}</div>
-                        <div class="text-xs text-gray-400">Max</div>
+                        <div class="text-xl font-bold dv-text dv-mono">${{ "{:,.0f}".format(stats.max) }}</div>
+                        <div class="text-xs dv-text-faint mt-0.5">Max</div>
                     </div>
                 </div>
             </div>
 
             <!-- Price Chart -->
-            <div class="bg-gray-800/50 rounded-lg border border-gray-700 p-6 mb-6">
-                <h2 class="text-xl font-semibold text-white mb-4">Price History</h2>
+            <div class="dv-card rounded-lg p-6 mb-6">
+                <h2 class="heading-serif text-xl dv-text mb-4">Price History</h2>
                 {% if prices %}
                 <div class="h-64">
                     <canvas id="priceChart"></canvas>
                 </div>
                 {% else %}
-                <div class="text-center py-12 text-gray-400">
+                <div class="text-center py-12 dv-text-faint">
                     <p>No price history available yet.</p>
                 </div>
                 {% endif %}
             </div>
 
             <!-- Recent Sales -->
-            <div class="bg-gray-800/50 rounded-lg border border-gray-700 p-6">
-                <h2 class="text-xl font-semibold text-white mb-4">Recent Sales</h2>
+            <div class="dv-card rounded-lg p-6">
+                <h2 class="heading-serif text-xl dv-text mb-4">Recent Sales</h2>
                 {% if prices %}
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm">
-                        <thead>
-                            <tr class="text-left text-gray-400 border-b border-gray-700">
-                                <th class="pb-3">Date</th>
-                                <th class="pb-3">Price</th>
-                                <th class="pb-3">Source</th>
+                        <thead style="border-bottom: 2px solid oklch(87% 0.022 55);">
+                            <tr>
+                                <th class="dv-th text-left">Date</th>
+                                <th class="dv-th text-left">Price</th>
+                                <th class="dv-th text-left">Source</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for price in prices[:20] %}
-                            <tr class="border-b border-gray-700/50 hover:bg-gray-700/30">
-                                <td class="py-3 text-gray-300">
+                            <tr class="dv-tr">
+                                <td class="dv-td dv-text-muted">
                                     {{ price.transaction_date.strftime('%b %d, %Y') if price.transaction_date else 'N/A' }}
                                 </td>
-                                <td class="py-3">
-                                    <span class="text-green-400 font-semibold">${{ "{:,.0f}".format(price.price_usd) if price.price_usd else 'N/A' }}</span>
+                                <td class="dv-td">
+                                    <span class="dv-price font-semibold dv-mono">
+                                        ${{ "{:,.0f}".format(price.price_usd) if price.price_usd else 'N/A' }}
+                                    </span>
                                     {% if price.currency != 'USD' %}
-                                    <span class="text-gray-500 text-xs">({{ price.currency }})</span>
+                                    <span class="dv-text-faint text-xs ml-1">({{ price.currency }})</span>
                                     {% endif %}
                                 </td>
-                                <td class="py-3 text-gray-400">{{ price.source_name or 'Auction' }}</td>
+                                <td class="dv-td dv-text-muted">{{ price.source_name or 'Auction' }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
                 {% if prices|length > 20 %}
-                <p class="text-center text-gray-400 text-sm mt-4">Showing 20 of {{ prices|length }} sales</p>
+                <p class="text-center dv-text-faint text-sm mt-4">Showing 20 of {{ prices|length }} sales</p>
                 {% endif %}
                 {% else %}
-                <div class="text-center py-8 text-gray-400">
+                <div class="text-center py-8 dv-text-faint">
                     <p>No sales recorded yet.</p>
                 </div>
                 {% endif %}
@@ -118,44 +120,44 @@
         <!-- Sidebar -->
         <div class="lg:col-span-1">
             <!-- Bottle Details -->
-            <div class="bg-gray-800/50 rounded-lg border border-gray-700 p-6 mb-6">
-                <h2 class="text-lg font-semibold text-white mb-4">Details</h2>
+            <div class="dv-card rounded-lg p-6 mb-6">
+                <h2 class="text-base font-semibold dv-text mb-4">Details</h2>
                 <dl class="space-y-3 text-sm">
                     {% if bottle.age_statement %}
                     <div class="flex justify-between">
-                        <dt class="text-gray-400">Age Statement</dt>
-                        <dd class="text-white">{{ bottle.age_statement }} years</dd>
+                        <dt class="dv-text-muted">Age Statement</dt>
+                        <dd class="dv-text font-medium">{{ bottle.age_statement }} years</dd>
                     </div>
                     {% endif %}
                     {% if bottle.proof %}
                     <div class="flex justify-between">
-                        <dt class="text-gray-400">Proof</dt>
-                        <dd class="text-white">{{ bottle.proof }}</dd>
+                        <dt class="dv-text-muted">Proof</dt>
+                        <dd class="dv-text font-medium">{{ bottle.proof }}</dd>
                     </div>
                     {% endif %}
                     {% if bottle.size %}
                     <div class="flex justify-between">
-                        <dt class="text-gray-400">Size</dt>
-                        <dd class="text-white">{{ bottle.size.value if bottle.size else 'Standard' }}</dd>
+                        <dt class="dv-text-muted">Size</dt>
+                        <dd class="dv-text font-medium">{{ bottle.size.value if bottle.size else 'Standard' }}</dd>
                     </div>
                     {% endif %}
                     {% if bottle.release_year %}
                     <div class="flex justify-between">
-                        <dt class="text-gray-400">Release Year</dt>
-                        <dd class="text-white">{{ bottle.release_year }}</dd>
+                        <dt class="dv-text-muted">Release Year</dt>
+                        <dd class="dv-text font-medium">{{ bottle.release_year }}</dd>
                     </div>
                     {% endif %}
                     {% if bottle.is_limited_release %}
                     <div class="flex justify-between">
-                        <dt class="text-gray-400">Limited Release</dt>
-                        <dd class="text-yellow-500">Yes</dd>
+                        <dt class="dv-text-muted">Limited Release</dt>
+                        <dd class="dv-accent-text font-medium">Yes</dd>
                     </div>
                     {% endif %}
                 </dl>
             </div>
 
             <!-- Actions -->
-            <div class="bg-gray-800/50 rounded-lg border border-gray-700 p-6 mb-6"
+            <div class="dv-card rounded-lg p-6 mb-6"
                  x-data="{
                     showAlertModal: false,
                     showCollectionModal: false,
@@ -170,173 +172,110 @@
 
                     async loadCollections() {
                         try {
-                            const response = await fetch('/api/v1/collections', {
-                                credentials: 'include'
-                            });
-                            if (response.ok) {
-                                this.collections = await response.json();
-                            }
+                            const r = await fetch('/api/v1/collections', { credentials: 'include' });
+                            if (r.ok) this.collections = await r.json();
                         } catch (e) {}
                     },
 
                     async addToCollection() {
-                        this.loading = true;
-                        this.error = '';
+                        this.loading = true; this.error = '';
                         try {
-                            let collectionId = this.selectedCollection;
-
-                            // Create new collection if needed
+                            let cid = this.selectedCollection;
                             if (this.selectedCollection === 'new' && this.newCollectionName) {
-                                const createResp = await fetch('/api/v1/collections', {
-                                    method: 'POST',
-                                    credentials: 'include',
+                                const cr = await fetch('/api/v1/collections', {
+                                    method: 'POST', credentials: 'include',
                                     headers: { 'Content-Type': 'application/json' },
                                     body: JSON.stringify({ name: this.newCollectionName })
                                 });
-                                if (createResp.ok) {
-                                    const newColl = await createResp.json();
-                                    collectionId = newColl.id;
-                                } else {
-                                    if (createResp.status === 401) {
-                                        window.location.href = '/auth/login?redirect=/bottles/{{ bottle.id }}';
-                                        return;
-                                    }
-                                    this.error = 'Failed to create collection';
-                                    this.loading = false;
-                                    return;
+                                if (cr.ok) { cid = (await cr.json()).id; }
+                                else {
+                                    if (cr.status === 401) { window.location.href = '/auth/login?redirect=/bottles/{{ bottle.id }}'; return; }
+                                    this.error = 'Failed to create collection'; this.loading = false; return;
                                 }
                             }
-
-                            // Add bottle to collection
-                            const response = await fetch(`/api/v1/collections/${collectionId}/items`, {
-                                method: 'POST',
-                                credentials: 'include',
+                            const r = await fetch(`/api/v1/collections/${cid}/items`, {
+                                method: 'POST', credentials: 'include',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({ bottle_id: {{ bottle.id }} })
                             });
-
-                            if (response.ok) {
+                            if (r.ok) {
                                 this.success = true;
-                                setTimeout(() => {
-                                    this.showCollectionModal = false;
-                                    this.success = false;
-                                }, 2000);
+                                setTimeout(() => { this.showCollectionModal = false; this.success = false; }, 2000);
                             } else {
-                                if (response.status === 401) {
-                                    window.location.href = '/auth/login?redirect=/bottles/{{ bottle.id }}';
-                                    return;
-                                }
-                                const data = await response.json();
-                                this.error = data.detail || 'Failed to add bottle';
+                                if (r.status === 401) { window.location.href = '/auth/login?redirect=/bottles/{{ bottle.id }}'; return; }
+                                this.error = (await r.json()).detail || 'Failed to add bottle';
                             }
-                        } catch (e) {
-                            this.error = 'Network error';
-                        }
+                        } catch (e) { this.error = 'Network error'; }
                         this.loading = false;
                     },
 
                     async createAlert() {
-                        this.loading = true;
-                        this.error = '';
+                        this.loading = true; this.error = '';
                         try {
-                            const response = await fetch('/api/v1/alerts', {
-                                method: 'POST',
-                                credentials: 'include',
+                            const r = await fetch('/api/v1/alerts', {
+                                method: 'POST', credentials: 'include',
                                 headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({
-                                    bottle_id: {{ bottle.id }},
-                                    alert_type: this.alertType,
-                                    target_price: parseFloat(this.targetPrice)
-                                })
+                                body: JSON.stringify({ bottle_id: {{ bottle.id }}, alert_type: this.alertType, target_price: parseFloat(this.targetPrice) })
                             });
-
-                            if (response.ok) {
+                            if (r.ok) {
                                 this.success = true;
-                                setTimeout(() => {
-                                    this.showAlertModal = false;
-                                    this.success = false;
-                                }, 2000);
+                                setTimeout(() => { this.showAlertModal = false; this.success = false; }, 2000);
                             } else {
-                                const data = await response.json();
-                                this.error = data.detail || 'Failed to create alert';
+                                this.error = (await r.json()).detail || 'Failed to create alert';
                             }
-                        } catch (e) {
-                            this.error = 'Network error. Please try again.';
-                        }
+                        } catch (e) { this.error = 'Network error. Please try again.'; }
                         this.loading = false;
                     }
                  }">
-                <h2 class="text-lg font-semibold text-white mb-4">Actions</h2>
-                <div class="space-y-3">
+                <h2 class="text-base font-semibold dv-text mb-4">Actions</h2>
+                <div class="space-y-2">
                     {% if current_user %}
-                    <button
-                        @click="showCollectionModal = true; loadCollections()"
-                        class="w-full px-4 py-2 bg-yellow-600 hover:bg-yellow-500 text-gray-900 rounded-md font-medium transition"
-                    >
+                    <button @click="showCollectionModal = true; loadCollections()"
+                            class="w-full px-4 py-2.5 dv-accent-bg rounded-md font-medium text-sm text-center">
                         Add to Collection
                     </button>
-                    <button
-                        @click="showAlertModal = true"
-                        class="w-full px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-md font-medium transition"
-                    >
+                    <button @click="showAlertModal = true"
+                            class="w-full px-4 py-2.5 dv-btn-ghost rounded-md text-sm text-center">
                         Set Price Alert
                     </button>
                     {% else %}
-                    <a href="/auth/login?redirect=/bottles/{{ bottle.id }}" class="block w-full px-4 py-2 bg-yellow-600 hover:bg-yellow-500 text-gray-900 rounded-md font-medium transition text-center">
+                    <a href="/auth/login?redirect=/bottles/{{ bottle.id }}"
+                       class="block w-full px-4 py-2.5 dv-accent-bg rounded-md font-medium text-sm text-center">
                         Login to Track
                     </a>
                     {% endif %}
-                    <a href="/api/v1/prices/bottle/{{ bottle.id }}/history" target="_blank" class="block w-full px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-md font-medium transition text-center">
-                        View API Data
-                    </a>
                 </div>
 
                 <!-- Alert Modal -->
                 <div x-show="showAlertModal" x-transition class="fixed inset-0 z-50 flex items-center justify-center p-4" style="display: none;">
-                    <div class="fixed inset-0 bg-black/70" @click="showAlertModal = false"></div>
-                    <div class="relative bg-gray-800 rounded-lg border border-gray-700 p-6 w-full max-w-md">
-                        <h3 class="text-xl font-semibold text-white mb-4">Set Price Alert</h3>
-                        <p class="text-gray-400 text-sm mb-4">{{ bottle.name }}</p>
+                    <div class="fixed inset-0 bg-black/60" @click="showAlertModal = false"></div>
+                    <div class="relative dv-modal p-6 w-full max-w-md shadow-2xl">
+                        <h3 class="text-lg font-semibold dv-modal-heading mb-1">Set Price Alert</h3>
+                        <p class="dv-modal-subtext mb-4">{{ bottle.name }}</p>
 
-                        <div x-show="success" class="mb-4 p-3 bg-green-900/50 border border-green-700 rounded-md">
-                            <p class="text-green-200">Alert created successfully!</p>
+                        <div x-show="success" class="mb-4 p-3 dv-notice-green">
+                            <p>Alert created successfully!</p>
                         </div>
-
-                        <div x-show="error" class="mb-4 p-3 bg-red-900/50 border border-red-700 rounded-md">
-                            <p class="text-red-200" x-text="error"></p>
+                        <div x-show="error" class="mb-4 p-3 dv-notice-red">
+                            <p x-text="error"></p>
                         </div>
 
                         <div class="space-y-4" x-show="!success">
                             <div>
-                                <label class="block text-sm text-gray-300 mb-2">Alert Type</label>
-                                <select x-model="alertType" class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white">
+                                <label class="block text-sm dv-modal-label mb-1.5">Alert Type</label>
+                                <select x-model="alertType" class="dv-modal-select">
                                     <option value="price_below">Price Below</option>
                                     <option value="price_above">Price Above</option>
                                 </select>
                             </div>
-
                             <div>
-                                <label class="block text-sm text-gray-300 mb-2">Target Price (USD)</label>
-                                <input
-                                    type="number"
-                                    x-model="targetPrice"
-                                    min="1"
-                                    class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white"
-                                >
+                                <label class="block text-sm dv-modal-label mb-1.5">Target Price (USD)</label>
+                                <input type="number" x-model="targetPrice" min="1" class="dv-modal-input">
                             </div>
-
-                            <div class="flex gap-3 pt-4">
-                                <button
-                                    @click="showAlertModal = false"
-                                    class="flex-1 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-md transition"
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    @click="createAlert()"
-                                    :disabled="loading"
-                                    class="flex-1 px-4 py-2 bg-yellow-600 hover:bg-yellow-500 text-gray-900 rounded-md font-medium transition disabled:opacity-50"
-                                >
+                            <div class="flex gap-3 pt-2">
+                                <button @click="showAlertModal = false" class="flex-1 dv-modal-btn-cancel text-sm">Cancel</button>
+                                <button @click="createAlert()" :disabled="loading"
+                                        class="flex-1 px-4 py-2 dv-accent-bg rounded-md font-medium text-sm disabled:opacity-50">
                                     <span x-text="loading ? 'Creating...' : 'Create Alert'"></span>
                                 </button>
                             </div>
@@ -346,23 +285,22 @@
 
                 <!-- Collection Modal -->
                 <div x-show="showCollectionModal" x-transition class="fixed inset-0 z-50 flex items-center justify-center p-4" style="display: none;">
-                    <div class="fixed inset-0 bg-black/70" @click="showCollectionModal = false"></div>
-                    <div class="relative bg-gray-800 rounded-lg border border-gray-700 p-6 w-full max-w-md">
-                        <h3 class="text-xl font-semibold text-white mb-4">Add to Collection</h3>
-                        <p class="text-gray-400 text-sm mb-4">{{ bottle.name }}</p>
+                    <div class="fixed inset-0 bg-black/60" @click="showCollectionModal = false"></div>
+                    <div class="relative dv-modal p-6 w-full max-w-md shadow-2xl">
+                        <h3 class="text-lg font-semibold dv-modal-heading mb-1">Add to Collection</h3>
+                        <p class="dv-modal-subtext mb-4">{{ bottle.name }}</p>
 
-                        <div x-show="success" class="mb-4 p-3 bg-green-900/50 border border-green-700 rounded-md">
-                            <p class="text-green-200">Added to collection!</p>
+                        <div x-show="success" class="mb-4 p-3 dv-notice-green">
+                            <p>Added to collection!</p>
                         </div>
-
-                        <div x-show="error" class="mb-4 p-3 bg-red-900/50 border border-red-700 rounded-md">
-                            <p class="text-red-200" x-text="error"></p>
+                        <div x-show="error" class="mb-4 p-3 dv-notice-red">
+                            <p x-text="error"></p>
                         </div>
 
                         <div class="space-y-4" x-show="!success">
                             <div>
-                                <label class="block text-sm text-gray-300 mb-2">Select Collection</label>
-                                <select x-model="selectedCollection" class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white">
+                                <label class="block text-sm dv-modal-label mb-1.5">Select Collection</label>
+                                <select x-model="selectedCollection" class="dv-modal-select">
                                     <option value="">Choose a collection...</option>
                                     <template x-for="coll in collections" :key="coll.id">
                                         <option :value="coll.id" x-text="coll.name"></option>
@@ -370,29 +308,16 @@
                                     <option value="new">+ Create New Collection</option>
                                 </select>
                             </div>
-
                             <div x-show="selectedCollection === 'new'">
-                                <label class="block text-sm text-gray-300 mb-2">New Collection Name</label>
-                                <input
-                                    type="text"
-                                    x-model="newCollectionName"
-                                    placeholder="e.g., My Cellar"
-                                    class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400"
-                                >
+                                <label class="block text-sm dv-modal-label mb-1.5">Collection Name</label>
+                                <input type="text" x-model="newCollectionName" placeholder="e.g., My Cellar"
+                                       class="dv-modal-input">
                             </div>
-
-                            <div class="flex gap-3 pt-4">
-                                <button
-                                    @click="showCollectionModal = false"
-                                    class="flex-1 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-md transition"
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    @click="addToCollection()"
-                                    :disabled="loading || (!selectedCollection || (selectedCollection === 'new' && !newCollectionName))"
-                                    class="flex-1 px-4 py-2 bg-yellow-600 hover:bg-yellow-500 text-gray-900 rounded-md font-medium transition disabled:opacity-50"
-                                >
+                            <div class="flex gap-3 pt-2">
+                                <button @click="showCollectionModal = false" class="flex-1 dv-modal-btn-cancel text-sm">Cancel</button>
+                                <button @click="addToCollection()"
+                                        :disabled="loading || (!selectedCollection || (selectedCollection === 'new' && !newCollectionName))"
+                                        class="flex-1 px-4 py-2 dv-accent-bg rounded-md font-medium text-sm disabled:opacity-50">
                                     <span x-text="loading ? 'Adding...' : 'Add'"></span>
                                 </button>
                             </div>
@@ -403,14 +328,18 @@
 
             <!-- Similar Bottles -->
             {% if similar_bottles %}
-            <div class="bg-gray-800/50 rounded-lg border border-gray-700 p-6">
-                <h2 class="text-lg font-semibold text-white mb-4">Similar Bottles</h2>
-                <div class="space-y-3">
+            <div class="dv-card rounded-lg p-6">
+                <h2 class="text-base font-semibold dv-text mb-4">Similar Bottles</h2>
+                <div class="space-y-2">
                     {% for similar in similar_bottles[:5] %}
-                    <a href="/bottles/{{ similar.id }}" class="block p-3 bg-gray-700/30 hover:bg-gray-700/50 rounded-md transition">
-                        <div class="text-white text-sm font-medium line-clamp-2">{{ similar.name }}</div>
+                    <a href="/bottles/{{ similar.id }}"
+                       class="block p-3 rounded-md dv-card-hover"
+                       style="border: 1px solid transparent; transition: border-color 0.15s, background-color 0.15s;"
+                       onmouseover="this.style.borderColor='oklch(87% 0.022 55)'; this.style.backgroundColor='oklch(96% 0.012 58)';"
+                       onmouseout="this.style.borderColor='transparent'; this.style.backgroundColor='transparent';">
+                        <div class="text-sm font-medium dv-text line-clamp-2">{{ similar.name }}</div>
                         {% if similar.avg_price %}
-                        <div class="text-green-400 text-sm mt-1">${{ "{:,.0f}".format(similar.avg_price) }}</div>
+                        <div class="dv-price text-sm mt-1 dv-mono">${{ "{:,.0f}".format(similar.avg_price) }}</div>
                         {% endif %}
                     </a>
                     {% endfor %}
@@ -427,8 +356,6 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const ctx = document.getElementById('priceChart').getContext('2d');
-
-    // Prepared chart data from backend
     const priceData = {{ chart_data.prices | tojson }};
     const labels = {{ chart_data.dates | tojson }};
 
@@ -439,8 +366,8 @@ document.addEventListener('DOMContentLoaded', function() {
             datasets: [{
                 label: 'Price (USD)',
                 data: priceData,
-                borderColor: '#10b981',
-                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                borderColor: '#bf7a32',
+                backgroundColor: 'rgba(191, 122, 50, 0.07)',
                 fill: true,
                 tension: 0.3,
                 pointRadius: 3,
@@ -451,41 +378,28 @@ document.addEventListener('DOMContentLoaded', function() {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-                legend: {
-                    display: false
-                },
+                legend: { display: false },
                 tooltip: {
-                    backgroundColor: '#1f2937',
-                    titleColor: '#f9fafb',
-                    bodyColor: '#10b981',
-                    borderColor: '#374151',
+                    backgroundColor: '#faf8f4',
+                    titleColor: '#2a1f18',
+                    bodyColor: '#bf7a32',
+                    borderColor: 'rgba(160, 130, 95, 0.3)',
                     borderWidth: 1,
                     callbacks: {
-                        label: function(context) {
-                            return '$' + context.raw.toLocaleString();
-                        }
+                        label: ctx => '$' + ctx.raw.toLocaleString()
                     }
                 }
             },
             scales: {
                 x: {
-                    grid: {
-                        color: 'rgba(55, 65, 81, 0.5)'
-                    },
-                    ticks: {
-                        color: '#9ca3af',
-                        maxTicksLimit: 8
-                    }
+                    grid: { color: 'rgba(160, 130, 95, 0.15)' },
+                    ticks: { color: '#7a6650', maxTicksLimit: 8 }
                 },
                 y: {
-                    grid: {
-                        color: 'rgba(55, 65, 81, 0.5)'
-                    },
+                    grid: { color: 'rgba(160, 130, 95, 0.15)' },
                     ticks: {
-                        color: '#9ca3af',
-                        callback: function(value) {
-                            return '$' + value.toLocaleString();
-                        }
+                        color: '#7a6650',
+                        callback: v => '$' + v.toLocaleString()
                     }
                 }
             }

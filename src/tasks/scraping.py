@@ -32,6 +32,8 @@ SPIDER_REGISTRY = {
     "boozapp": "src.scrapers.spiders.boozapp.BoozAppSpider",
     "whiskyfindr": "src.scrapers.spiders.whiskyfindr.WhiskyFindrSpider",
     "bottle_blue_book": "src.scrapers.spiders.bottle_blue_book.BottleBlueBookSpider",
+    "whisky_hammer": "src.scrapers.spiders.whisky_hammer.WhiskyHammerSpider",
+    "cask_cartel": "src.scrapers.spiders.cask_cartel.CaskCartelSpider",
 }
 
 
@@ -133,14 +135,28 @@ process.start()
     except Exception as e:
         logger.error(f"Scrape failed for {source_name}: {e}")
 
-        # Update scrape run with error
         _update_scrape_run(
             scrape_run_id,
             status=ScrapeStatus.FAILED,
             errors=[{"error": str(e), "timestamp": datetime.utcnow().isoformat()}],
         )
 
-        # Retry with exponential backoff
+        # Notify admin when all retries are exhausted
+        if self.request.retries >= self.max_retries:
+            try:
+                from src.services.email_service import send_admin_notification
+                send_admin_notification(
+                    subject=f"[DramValue] Scraper failed: {source_name}",
+                    body_text=(
+                        f"Spider '{source_name}' has failed all {self.max_retries + 1} attempts.\n\n"
+                        f"Last error: {e}\n\n"
+                        f"Scrape run ID: {scrape_run_id}\n"
+                        f"Time: {datetime.utcnow().isoformat()}"
+                    ),
+                )
+            except Exception as notify_err:
+                logger.error(f"Failed to send admin notification: {notify_err}")
+
         raise self.retry(exc=e)
 
 

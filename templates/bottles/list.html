@@ -5,134 +5,105 @@
 {% block content %}
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <!-- Header -->
-    <div class="mb-8">
-        <h1 class="text-3xl font-bold text-white mb-2">Browse Bottles</h1>
-        <p class="text-gray-400">Search through {{ "{:,}".format(total) }} bottles in our database</p>
+    <div class="mb-7">
+        <h1 class="heading-serif text-3xl dv-text mb-1">Browse Bottles</h1>
+        <p class="dv-text-muted">{{ "{:,}".format(total) }} bottles in the database</p>
     </div>
 
     <!-- Search and Filters -->
-    <div class="bg-gray-800/50 rounded-lg border border-gray-700 p-4 mb-8">
-        <form action="/bottles" method="GET" class="flex flex-wrap gap-4">
-            <!-- Search -->
-            <div class="flex-1 min-w-64">
-                <input
-                    type="text"
-                    name="q"
-                    value="{{ search_query or '' }}"
-                    placeholder="Search bottles..."
-                    class="w-full px-4 py-2 bg-gray-700/50 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:border-yellow-500"
-                >
-            </div>
-
-            <!-- Category Filter -->
-            <div class="w-48">
-                <select
-                    name="category"
-                    class="w-full px-4 py-2 bg-gray-700/50 border border-gray-600 rounded-md text-white focus:outline-none focus:border-yellow-500"
-                >
-                    <option value="">All Categories</option>
-                    {% for cat in categories %}
-                    <option value="{{ cat }}" {% if selected_category == cat %}selected{% endif %}>
-                        {{ cat | replace('_', ' ') | title }}
-                    </option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <!-- Submit -->
-            <button
-                type="submit"
-                class="px-6 py-2 bg-yellow-600 hover:bg-yellow-500 text-gray-900 font-medium rounded-md transition"
+    <div class="dv-card rounded-lg p-4 mb-8">
+        <form action="/bottles" method="GET" class="flex flex-wrap gap-3 items-center">
+            <input
+                type="text"
+                name="q"
+                value="{{ search_query or '' }}"
+                placeholder="Search bottles..."
+                class="dv-input flex-1 min-w-48 px-4 py-2 text-sm rounded-md"
             >
-                Search
-            </button>
 
-            {% if search_query or selected_category %}
-            <a
-                href="/bottles"
-                class="px-6 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-md transition"
-            >
-                Clear
-            </a>
+            <select name="category" class="dv-select px-3 py-2 text-sm rounded-md w-44">
+                <option value="">All Categories</option>
+                {% for cat in categories %}
+                <option value="{{ cat }}" {% if selected_category == cat %}selected{% endif %}>
+                    {{ cat | replace('_', ' ') | title }}
+                </option>
+                {% endfor %}
+            </select>
+
+            <select name="sort" class="dv-select px-3 py-2 text-sm rounded-md w-40">
+                <option value="">Sort by</option>
+                <option value="name" {% if sort == 'name' %}selected{% endif %}>A to Z</option>
+                <option value="sales" {% if sort == 'sales' %}selected{% endif %}>Most Sales</option>
+                <option value="price_desc" {% if sort == 'price_desc' %}selected{% endif %}>Price: High to Low</option>
+                <option value="price_asc" {% if sort == 'price_asc' %}selected{% endif %}>Price: Low to High</option>
+            </select>
+
+            <label class="flex items-center gap-2 cursor-pointer select-none">
+                <input type="checkbox" name="has_price" value="1" {% if has_price_filter %}checked{% endif %}
+                    class="w-4 h-4 rounded">
+                <span class="text-sm dv-text-muted whitespace-nowrap">Has price data</span>
+            </label>
+
+            <button type="submit" class="dv-accent-bg px-5 py-2 rounded-md text-sm font-medium">Search</button>
+
+            {% if search_query or selected_category or sort or has_price_filter %}
+            <a href="/bottles" class="dv-btn-ghost px-4 py-2 rounded-md text-sm">Clear</a>
             {% endif %}
         </form>
     </div>
 
-    <!-- Results -->
     {% if bottles %}
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {% for bottle in bottles %}
-        <a
-            href="/bottles/{{ bottle.id }}"
-            class="bg-gray-800/50 border border-gray-700 rounded-lg p-4 hover:border-yellow-600/50 transition block group"
-        >
+        <a href="/bottles/{{ bottle.id }}"
+           class="dv-card dv-card-hover rounded-lg p-4 block">
             <div class="mb-2">
-                <span class="inline-block px-2 py-0.5 text-xs rounded bg-gray-700 text-gray-300">
+                <span class="dv-badge">
                     {{ bottle.category.value | replace('_', ' ') | title if bottle.category else 'Spirits' }}
                 </span>
             </div>
-            <h3 class="text-white font-medium group-hover:text-yellow-500 transition line-clamp-2 mb-2">
+            <h3 class="card-heading font-medium line-clamp-2 mb-2 text-sm leading-snug">
                 {{ bottle.name }}
             </h3>
             {% if bottle.distillery %}
-            <p class="text-sm text-gray-400 mb-2">{{ bottle.distillery }}</p>
+            <p class="text-xs dv-text-muted mb-2">{{ bottle.distillery }}</p>
             {% endif %}
-            <div class="flex justify-between items-center text-sm">
+            <div class="flex justify-between items-center text-sm pt-2 border-t dv-divider">
                 {% if bottle.avg_price %}
-                <span class="text-green-400 font-semibold">${{ "{:,.0f}".format(bottle.avg_price) }}</span>
+                <span class="dv-price font-semibold">${{ "{:,.0f}".format(bottle.avg_price) }}</span>
                 {% else %}
-                <span class="text-gray-500">No price data</span>
+                <span class="dv-text-faint text-xs">No price data</span>
                 {% endif %}
                 {% if bottle.price_count %}
-                <span class="text-gray-500">{{ bottle.price_count }} sales</span>
+                <span class="dv-text-faint text-xs">{{ bottle.price_count }} sales</span>
                 {% endif %}
             </div>
         </a>
         {% endfor %}
     </div>
 
-    <!-- Pagination -->
     {% if total_pages > 1 %}
-    <div class="flex justify-center items-center space-x-2 mt-8">
+    <div class="flex justify-center items-center gap-2 mt-8">
         {% if page > 1 %}
-        <a
-            href="/bottles?{% if search_query %}q={{ search_query }}&{% endif %}{% if selected_category %}category={{ selected_category }}&{% endif %}page={{ page - 1 }}"
-            class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-md transition"
-        >
-            Previous
-        </a>
+        <a href="/bottles?{% if search_query %}q={{ search_query }}&{% endif %}{% if selected_category %}category={{ selected_category }}&{% endif %}{% if sort %}sort={{ sort }}&{% endif %}page={{ page - 1 }}"
+           class="dv-btn-ghost px-4 py-2 rounded-md">Previous</a>
         {% endif %}
-
-        <span class="px-4 py-2 text-gray-400">
-            Page {{ page }} of {{ total_pages }}
-        </span>
-
+        <span class="px-4 py-2 text-sm dv-text-muted">Page {{ page }} of {{ total_pages }}</span>
         {% if page < total_pages %}
-        <a
-            href="/bottles?{% if search_query %}q={{ search_query }}&{% endif %}{% if selected_category %}category={{ selected_category }}&{% endif %}page={{ page + 1 }}"
-            class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-md transition"
-        >
-            Next
-        </a>
+        <a href="/bottles?{% if search_query %}q={{ search_query }}&{% endif %}{% if selected_category %}category={{ selected_category }}&{% endif %}{% if sort %}sort={{ sort }}&{% endif %}page={{ page + 1 }}"
+           class="dv-btn-ghost px-4 py-2 rounded-md">Next</a>
         {% endif %}
     </div>
     {% endif %}
 
     {% else %}
-    <!-- No Results -->
     <div class="text-center py-16">
-        <div class="text-5xl mb-4">&#128270;</div>
-        <h2 class="text-xl font-semibold text-white mb-2">No bottles found</h2>
-        <p class="text-gray-400 mb-6">
-            {% if search_query %}
-            No bottles match "{{ search_query }}"
-            {% else %}
-            No bottles in this category yet
-            {% endif %}
+        <p class="text-4xl mb-4" aria-hidden="true">&#128270;</p>
+        <h2 class="text-xl font-semibold dv-text mb-2">No bottles found</h2>
+        <p class="dv-text-muted mb-6">
+            {% if search_query %}No bottles match "{{ search_query }}"{% else %}No bottles in this category yet{% endif %}
         </p>
-        <a href="/bottles" class="px-6 py-2 bg-yellow-600 hover:bg-yellow-500 text-gray-900 font-medium rounded-md transition">
-            Browse All Bottles
-        </a>
+        <a href="/bottles" class="dv-accent-bg px-6 py-2.5 rounded-lg text-sm font-medium">Browse All Bottles</a>
     </div>
     {% endif %}
 </div>

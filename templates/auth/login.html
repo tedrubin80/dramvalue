@@ -3,153 +3,74 @@
 {% block title %}Login - DramValue{% endblock %}
 
 {% block content %}
-<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+<div class="min-h-[70vh] flex items-center justify-center py-12 px-4">
     <div class="max-w-md w-full">
-        <!-- Header -->
-        <div class="text-center mb-8">
-            <h2 class="logo-font text-4xl font-bold text-yellow-600 mb-2">Welcome Back</h2>
-            <p class="text-gray-400">Sign in to access your collections and track prices</p>
+        <div class="text-center mb-7">
+            <h1 class="heading-serif text-3xl dv-text mb-1">Welcome back</h1>
+            <p class="dv-text-muted text-sm">Sign in to access your collections and price alerts</p>
         </div>
 
-        <!-- Login Form -->
-        <div class="bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700 p-8">
-            <form
-                x-data="{
-                    email: '',
-                    password: '',
-                    loading: false,
-                    errors: {},
-
-                    async submitForm() {
-                        this.errors = {};
-                        this.loading = true;
-
-                        // Client-side validation
-                        if (!this.email) {
-                            this.errors.email = 'Email is required';
-                        } else if (!this.isValidEmail(this.email)) {
-                            this.errors.email = 'Please enter a valid email';
-                        }
-
-                        if (!this.password) {
-                            this.errors.password = 'Password is required';
-                        }
-
-                        if (Object.keys(this.errors).length > 0) {
-                            this.loading = false;
-                            return;
-                        }
-
-                        try {
-                            // Submit to API
-                            const response = await fetch('/api/v1/auth/login', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify({
-                                    email: this.email,
-                                    password: this.password
-                                })
-                            });
-
-                            const data = await response.json();
-
-                            if (response.ok) {
-                                // Store tokens
-                                localStorage.setItem('access_token', data.access_token);
-                                localStorage.setItem('refresh_token', data.refresh_token);
-
-                                // Redirect to dashboard or intended page
-                                const redirect = new URLSearchParams(window.location.search).get('redirect') || '/';
-                                window.location.href = redirect;
-                            } else {
-                                // Handle errors
-                                if (response.status === 401) {
-                                    this.errors.general = 'Invalid email or password';
-                                } else if (response.status === 403) {
-                                    this.errors.general = data.detail || 'Account is deactivated or banned';
-                                } else {
-                                    this.errors.general = data.detail || 'An error occurred. Please try again.';
-                                }
-                                this.loading = false;
-                            }
-                        } catch (error) {
-                            this.errors.general = 'Network error. Please check your connection.';
+        <div class="dv-card rounded-xl p-8">
+            <form x-data="{
+                email: '',
+                password: '',
+                loading: false,
+                errors: {},
+                async submitForm() {
+                    this.errors = {};
+                    this.loading = true;
+                    if (!this.email) this.errors.email = 'Email is required';
+                    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email)) this.errors.email = 'Enter a valid email';
+                    if (!this.password) this.errors.password = 'Password is required';
+                    if (Object.keys(this.errors).length > 0) { this.loading = false; return; }
+                    try {
+                        const r = await fetch('/api/v1/auth/login', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email: this.email, password: this.password })
+                        });
+                        const data = await r.json();
+                        if (r.ok) {
+                            localStorage.setItem('access_token', data.access_token);
+                            localStorage.setItem('refresh_token', data.refresh_token);
+                            const redirect = new URLSearchParams(window.location.search).get('redirect') || '/';
+                            window.location.href = redirect;
+                        } else {
+                            this.errors.general = r.status === 401 ? 'Invalid email or password'
+                                : (data.detail || 'Something went wrong.');
                             this.loading = false;
                         }
-                    },
+                    } catch (e) { this.errors.general = 'Network error. Please try again.'; this.loading = false; }
+                }
+            }" @submit.prevent="submitForm()">
 
-                    isValidEmail(email) {
-                        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-                    }
-                }"
-                @submit.prevent="submitForm()"
-            >
-                <!-- General error message -->
-                <div x-show="errors.general" x-transition class="mb-4 p-3 bg-red-900/50 border border-red-700 rounded-md">
-                    <p class="text-sm text-red-200" x-text="errors.general"></p>
+                <div x-show="errors.general" x-transition class="dv-notice-red mb-4">
+                    <p class="text-sm" x-text="errors.general"></p>
                 </div>
 
-                <!-- Email field -->
                 <div class="mb-4">
-                    <label for="email" class="block text-sm font-medium text-gray-300 mb-2">
-                        Email Address
-                    </label>
-                    <input
-                        type="email"
-                        id="email"
-                        x-model="email"
-                        :class="errors.email ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-600 focus:border-yellow-500 focus:ring-yellow-500'"
-                        class="w-full px-4 py-2 bg-gray-700/50 border rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 transition"
-                        placeholder="you@example.com"
-                        autocomplete="email"
-                    >
-                    <p x-show="errors.email" x-text="errors.email" class="mt-1 text-sm text-red-400"></p>
+                    <label for="email" class="block text-sm dv-text-muted mb-1.5">Email</label>
+                    <input type="email" id="email" x-model="email"
+                           class="dv-input w-full px-4 py-2.5 text-sm rounded-lg"
+                           placeholder="you@example.com" autocomplete="email">
+                    <p x-show="errors.email" x-text="errors.email" class="mt-1 text-xs" style="color: oklch(50% 0.15 25);"></p>
                 </div>
 
-                <!-- Password field -->
-                <div class="mb-6">
-                    <label for="password" class="block text-sm font-medium text-gray-300 mb-2">
-                        Password
-                    </label>
-                    <input
-                        type="password"
-                        id="password"
-                        x-model="password"
-                        :class="errors.password ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-600 focus:border-yellow-500 focus:ring-yellow-500'"
-                        class="w-full px-4 py-2 bg-gray-700/50 border rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 transition"
-                        placeholder="Enter your password"
-                        autocomplete="current-password"
-                    >
-                    <p x-show="errors.password" x-text="errors.password" class="mt-1 text-sm text-red-400"></p>
+                <div class="mb-5">
+                    <label for="password" class="block text-sm dv-text-muted mb-1.5">Password</label>
+                    <input type="password" id="password" x-model="password"
+                           class="dv-input w-full px-4 py-2.5 text-sm rounded-lg"
+                           placeholder="Enter your password" autocomplete="current-password">
+                    <p x-show="errors.password" x-text="errors.password" class="mt-1 text-xs" style="color: oklch(50% 0.15 25);"></p>
                 </div>
 
-                <!-- Remember me & Forgot password -->
-                <div class="flex items-center justify-between mb-6">
-                    <div class="flex items-center">
-                        <input
-                            type="checkbox"
-                            id="remember"
-                            class="h-4 w-4 text-yellow-600 focus:ring-yellow-500 border-gray-600 rounded bg-gray-700"
-                        >
-                        <label for="remember" class="ml-2 block text-sm text-gray-300">
-                            Remember me
-                        </label>
-                    </div>
-                    <a href="/auth/forgot-password" class="text-sm text-yellow-600 hover:text-yellow-500">
-                        Forgot password?
-                    </a>
+                <div class="flex justify-end mb-5">
+                    <a href="/auth/forgot-password" class="text-xs dv-accent-text hover:underline">Forgot password?</a>
                 </div>
 
-                <!-- Submit button -->
-                <button
-                    type="submit"
-                    :disabled="loading"
-                    :class="loading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-yellow-500'"
-                    class="w-full bg-yellow-600 text-gray-900 px-4 py-3 rounded-md font-medium transition flex items-center justify-center"
-                >
-                    <svg x-show="loading" class="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-900" fill="none" viewBox="0 0 24 24">
+                <button type="submit" :disabled="loading"
+                        class="w-full dv-accent-bg py-2.5 rounded-lg text-sm font-medium flex items-center justify-center disabled:opacity-50">
+                    <svg x-show="loading" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
@@ -157,30 +78,17 @@
                 </button>
             </form>
 
-            <!-- Divider -->
-            <div class="mt-6 relative">
-                <div class="absolute inset-0 flex items-center">
-                    <div class="w-full border-t border-gray-600"></div>
-                </div>
-                <div class="relative flex justify-center text-sm">
-                    <span class="px-2 bg-gray-800 text-gray-400">New to DramValue?</span>
-                </div>
-            </div>
-
-            <!-- Sign up link -->
-            <div class="mt-6 text-center">
-                <a href="/auth/register" class="text-yellow-600 hover:text-yellow-500 font-medium">
-                    Create an account
-                </a>
+            <div class="mt-5 pt-5 border-t dv-divider text-center">
+                <span class="text-sm dv-text-muted">New to DramValue? </span>
+                <a href="/auth/register" class="text-sm dv-accent-text font-medium hover:underline">Create an account</a>
             </div>
         </div>
 
-        <!-- Terms notice -->
-        <p class="mt-6 text-center text-xs text-gray-500">
+        <p class="mt-5 text-center text-xs dv-text-faint">
             By signing in, you agree to our
-            <a href="/terms" class="text-yellow-600 hover:text-yellow-500">Terms of Service</a>
+            <a href="/terms" class="dv-accent-text hover:underline">Terms</a>
             and
-            <a href="/privacy" class="text-yellow-600 hover:text-yellow-500">Privacy Policy</a>
+            <a href="/privacy" class="dv-accent-text hover:underline">Privacy Policy</a>
         </p>
     </div>
 </div>

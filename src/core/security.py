@@ -139,3 +139,25 @@ def verify_email_token(token: str) -> str | None:
     if payload and payload.get("type") == "email_verification":
         return payload.get("sub")
     return None
+
+
+def create_password_reset_token(email: str) -> str:
+    """Create a short-lived token for password reset (1 hour)."""
+    return create_access_token(
+        subject=email,
+        expires_delta=timedelta(hours=1),
+        extra_claims={"type": "password_reset"},
+    )
+
+
+def verify_password_reset_token(token: str) -> str | None:
+    """
+    Verify a password reset token.
+
+    Returns:
+        The email address if valid, None otherwise
+    """
+    payload = decode_token(token)
+    if payload and payload.get("type") == "password_reset":
+        return payload.get("sub")
+    return None

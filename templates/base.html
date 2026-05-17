@@ -5,112 +5,313 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}DramValue - Whisky Price Intelligence{% endblock %}</title>
 
-    <!-- Tailwind CSS CDN (for MVP - will bundle later) -->
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Alpine.js for interactivity -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-    <!-- Chart.js for visualizations -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
-    <!-- Custom styles -->
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600&display=swap');
 
+        /* ── Base ── */
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: oklch(97% 0.01 60);
+            color: oklch(18% 0.02 30);
+        }
+        .logo-font, .heading-serif {
+            font-family: 'DM Serif Display', Georgia, serif;
         }
 
-        .logo-font {
-            font-family: 'Playfair Display', serif;
+        /* ── Navigation ── */
+        .dv-nav {
+            background-color: oklch(20% 0.015 30);
+            border-bottom: 1px solid oklch(28% 0.018 32);
+        }
+        .dv-nav-link {
+            color: oklch(72% 0.018 55);
+            font-size: 0.875rem;
+            font-weight: 500;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.375rem;
+            transition: color 0.15s;
+            display: inline-block;
+        }
+        .dv-nav-link:hover { color: oklch(96% 0.006 55); }
+        .dv-nav-dropdown {
+            background-color: oklch(24% 0.018 32);
+            border: 1px solid oklch(32% 0.02 35);
+            border-radius: 0.375rem;
+        }
+        .dv-nav-dropdown-item {
+            color: oklch(72% 0.018 55);
+            font-size: 0.875rem;
+            padding: 0.5rem 1rem;
+            display: block;
+            transition: background-color 0.1s, color 0.1s;
+        }
+        .dv-nav-dropdown-item:hover {
+            background-color: oklch(28% 0.018 33);
+            color: oklch(96% 0.006 55);
         }
 
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
+        /* ── Footer ── */
+        .dv-footer { background-color: oklch(20% 0.015 30); border-top: 1px solid oklch(28% 0.018 32); }
+        .dv-footer-text { color: oklch(60% 0.018 50); }
+        .dv-footer-link { color: oklch(60% 0.018 50); transition: color 0.15s; }
+        .dv-footer-link:hover { color: oklch(80% 0.015 55); }
+        .dv-footer-heading { color: oklch(85% 0.015 60); font-weight: 600; font-size: 0.875rem; }
+
+        /* ── Surfaces ── */
+        .dv-surface     { background-color: oklch(97% 0.01 60); }
+        .dv-surface-alt { background-color: oklch(93.5% 0.016 57); }
+        .dv-surface-raised { background-color: oklch(99.5% 0.003 58); }
+
+        /* ── Text ── */
+        .dv-text        { color: oklch(18% 0.02 30); }
+        .dv-text-muted  { color: oklch(44% 0.025 40); }
+        .dv-text-faint  { color: oklch(62% 0.015 50); }
+        .dv-accent-text { color: oklch(52% 0.14 48); }
+
+        /* ── Accent button ── */
+        .dv-accent-bg {
+            background-color: oklch(52% 0.14 48);
+            color: white;
+            transition: background-color 0.15s;
+            display: inline-block;
+        }
+        .dv-accent-bg:hover { background-color: oklch(45% 0.16 46); }
+
+        /* ── Ghost button ── */
+        .dv-btn-ghost {
+            border: 1px solid oklch(87% 0.022 55);
+            color: oklch(44% 0.025 40);
+            border-radius: 0.375rem;
+            padding: 0.5rem 1.25rem;
+            background: transparent;
+            transition: background-color 0.15s, border-color 0.15s;
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: inline-block;
+        }
+        .dv-btn-ghost:hover { background-color: oklch(93% 0.018 58); }
+
+        /* ── Cards ── */
+        .dv-card { background: oklch(99.5% 0.003 58); border: 1px solid oklch(87% 0.022 55); }
+        .dv-card-hover { transition: border-color 0.15s; }
+        .dv-card-hover:hover { border-color: oklch(52% 0.14 48); }
+        .dv-card-hover:hover .card-heading { color: oklch(52% 0.14 48); }
+        .card-heading { color: oklch(18% 0.02 30); transition: color 0.15s; }
+
+        /* ── Inputs ── */
+        .dv-input {
+            background: white;
+            border: 1px solid oklch(87% 0.022 55);
+            color: oklch(18% 0.02 30);
+            border-radius: 0.375rem;
+            padding: 0.5rem 1rem;
+        }
+        .dv-input::placeholder { color: oklch(62% 0.015 50); }
+        .dv-input:focus {
+            outline: none;
+            border-color: oklch(52% 0.14 48);
+            box-shadow: 0 0 0 3px oklch(52% 0.14 48 / 0.15);
+        }
+        .dv-select {
+            background: white;
+            border: 1px solid oklch(87% 0.022 55);
+            color: oklch(18% 0.02 30);
+            border-radius: 0.375rem;
+            padding: 0.5rem 1rem;
+            appearance: auto;
+        }
+        .dv-select:focus {
+            outline: none;
+            border-color: oklch(52% 0.14 48);
+            box-shadow: 0 0 0 3px oklch(52% 0.14 48 / 0.15);
         }
 
-        ::-webkit-scrollbar-track {
-            background: #1a1a2e;
+        /* ── Prices / data ── */
+        .dv-price { color: oklch(42% 0.13 145); font-variant-numeric: tabular-nums; }
+        .dv-mono  { font-variant-numeric: tabular-nums; }
+
+        /* ── Badges ── */
+        .dv-badge {
+            background: oklch(92% 0.025 65);
+            color: oklch(35% 0.04 48);
+            font-size: 0.75rem;
+            padding: 0.125rem 0.5rem;
+            border-radius: 0.25rem;
+            font-weight: 500;
+            display: inline-block;
         }
 
-        ::-webkit-scrollbar-thumb {
-            background: #d4a574;
-            border-radius: 4px;
+        /* ── Filter pills ── */
+        .dv-pill {
+            padding: 0.375rem 0.875rem;
+            border-radius: 9999px;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            border: 1px solid oklch(87% 0.022 55);
+            color: oklch(44% 0.025 40);
+            background: transparent;
+            transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+            display: inline-block;
+        }
+        .dv-pill:hover {
+            background-color: oklch(93% 0.018 58);
+            border-color: oklch(78% 0.03 52);
+        }
+        .dv-pill-active {
+            background-color: oklch(52% 0.14 48);
+            border-color: oklch(52% 0.14 48);
+            color: white;
+        }
+        .dv-pill-active:hover {
+            background-color: oklch(45% 0.16 46);
+            border-color: oklch(45% 0.16 46);
+            color: white;
         }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: #e0b68a;
+        /* ── Notices ── */
+        .dv-notice-amber {
+            background: oklch(95% 0.04 80);
+            border: 1px solid oklch(78% 0.08 78);
+            color: oklch(38% 0.07 55);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
         }
+        .dv-notice-red {
+            background: oklch(96% 0.02 20);
+            border: 1px solid oklch(75% 0.08 20);
+            color: oklch(42% 0.1 22);
+            border-radius: 0.5rem;
+            padding: 1rem;
+        }
+        .dv-notice-green {
+            background: oklch(96% 0.025 145);
+            border: 1px solid oklch(75% 0.08 145);
+            color: oklch(35% 0.1 145);
+            border-radius: 0.5rem;
+            padding: 1rem;
+        }
+        .dv-notice-blue {
+            background: oklch(96% 0.02 240);
+            border: 1px solid oklch(75% 0.08 240);
+            color: oklch(38% 0.1 240);
+            border-radius: 0.5rem;
+            padding: 1rem;
+        }
+
+        /* ── Tables ── */
+        .dv-th {
+            color: oklch(44% 0.025 40);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.75rem 1rem;
+        }
+        .dv-tr { border-bottom: 1px solid oklch(90% 0.018 57); transition: background-color 0.1s; }
+        .dv-tr:hover { background-color: oklch(95% 0.012 58); }
+        .dv-td { padding: 0.75rem 1rem; color: oklch(28% 0.02 35); }
+
+        /* ── Divider ── */
+        .dv-divider { border-color: oklch(87% 0.022 55); }
+
+        /* ── Modals (dark, for contrast) ── */
+        .dv-modal {
+            background-color: oklch(20% 0.015 30);
+            border: 1px solid oklch(32% 0.02 35);
+            border-radius: 0.5rem;
+        }
+        .dv-modal-label { color: oklch(72% 0.018 55); font-size: 0.875rem; }
+        .dv-modal-input {
+            background: oklch(26% 0.016 32);
+            border: 1px solid oklch(36% 0.02 36);
+            color: oklch(90% 0.01 55);
+            border-radius: 0.375rem;
+            padding: 0.5rem 0.75rem;
+            width: 100%;
+        }
+        .dv-modal-input:focus {
+            outline: none;
+            border-color: oklch(52% 0.14 48);
+        }
+        .dv-modal-input::placeholder { color: oklch(55% 0.018 50); }
+        .dv-modal-select {
+            background: oklch(26% 0.016 32);
+            border: 1px solid oklch(36% 0.02 36);
+            color: oklch(90% 0.01 55);
+            border-radius: 0.375rem;
+            padding: 0.5rem 0.75rem;
+            width: 100%;
+        }
+        .dv-modal-heading { color: oklch(92% 0.01 55); font-weight: 600; }
+        .dv-modal-subtext { color: oklch(62% 0.018 50); font-size: 0.875rem; }
+        .dv-modal-btn-cancel {
+            background: oklch(28% 0.018 33);
+            color: oklch(72% 0.018 55);
+            border-radius: 0.375rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            transition: background-color 0.15s;
+        }
+        .dv-modal-btn-cancel:hover { background: oklch(32% 0.018 33); }
+
+        /* ── Scrollbar ── */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: oklch(93% 0.018 58); }
+        ::-webkit-scrollbar-thumb { background: oklch(72% 0.05 55); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: oklch(60% 0.07 52); }
     </style>
 
     {% block extra_head %}{% endblock %}
 </head>
-<body class="h-full bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-gray-100">
+<body class="h-full flex flex-col">
     <!-- Navigation -->
-    <nav class="bg-gray-900/50 backdrop-blur-sm border-b border-gray-700/50 sticky top-0 z-50">
+    <nav class="dv-nav sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
-                <!-- Logo -->
                 <div class="flex items-center">
-                    <a href="/" class="logo-font text-2xl font-bold text-yellow-600 hover:text-yellow-500 transition">
+                    <a href="/" class="logo-font text-2xl font-bold dv-accent-text hover:opacity-80 transition">
                         DramValue
                     </a>
                 </div>
 
-                <!-- Desktop Navigation -->
-                <div class="hidden md:flex md:items-center md:space-x-6">
-                    <a href="/bottles" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">
-                        Browse Bottles
-                    </a>
-                    <a href="/trending" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">
-                        Trending
-                    </a>
-                    <a href="/brands" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">
-                        Brands
-                    </a>
-                    <a href="/market" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">
-                        Market
-                    </a>
+                <div class="hidden md:flex md:items-center md:space-x-1">
+                    <a href="/bottles" class="dv-nav-link">Browse Bottles</a>
+                    <a href="/trending" class="dv-nav-link">Trending</a>
+                    <a href="/brands" class="dv-nav-link">Brands</a>
+                    <a href="/market" class="dv-nav-link">Market</a>
 
                     {% if current_user %}
-                    <!-- Logged in user menu -->
-                    <div x-data="{ open: false }" class="relative">
-                        <button @click="open = !open" class="flex items-center space-x-2 text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">
+                    <div x-data="{ open: false }" class="relative ml-2">
+                        <button @click="open = !open" class="dv-nav-link flex items-center gap-1">
                             <span>{{ current_user.display_name }}</span>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                             </svg>
                         </button>
-
-                        <!-- Dropdown menu -->
-                        <div x-show="open" @click.away="open = false" x-transition class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg py-1 border border-gray-700">
-                            <a href="/collections" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">My Collections</a>
-                            <a href="/profile" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Profile</a>
+                        <div x-show="open" @click.away="open = false" x-transition
+                             class="absolute right-0 mt-2 w-48 dv-nav-dropdown shadow-lg py-1">
+                            <a href="/collections" class="dv-nav-dropdown-item">My Collections</a>
+                            <a href="/profile" class="dv-nav-dropdown-item">Profile</a>
                             {% if current_user.is_admin %}
-                            <a href="/admin/moderation" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Admin</a>
+                            <a href="/admin/moderation" class="dv-nav-dropdown-item">Admin</a>
                             {% endif %}
-                            <hr class="my-1 border-gray-700">
-                            <a href="/api/v1/auth/logout" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">
-                                Logout
-                            </a>
+                            <hr class="my-1" style="border-color: oklch(32% 0.02 35);">
+                            <a href="/api/v1/auth/logout" class="dv-nav-dropdown-item">Logout</a>
                         </div>
                     </div>
                     {% else %}
-                    <!-- Guest user links -->
-                    <a href="/auth/login" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">
-                        Login
-                    </a>
-                    <a href="/auth/register" class="bg-yellow-600 hover:bg-yellow-500 text-gray-900 px-4 py-2 rounded-md text-sm font-medium transition">
-                        Sign Up
-                    </a>
+                    <a href="/auth/login" class="dv-nav-link ml-2">Login</a>
+                    <a href="/auth/register" class="ml-2 px-4 py-2 dv-accent-bg rounded-md text-sm font-medium">Sign Up</a>
                     {% endif %}
                 </div>
 
-                <!-- Mobile menu button -->
                 <div class="flex items-center md:hidden">
-                    <button x-data @click="$dispatch('toggle-mobile-menu')" class="text-gray-400 hover:text-white">
+                    <button x-data @click="$dispatch('toggle-mobile-menu')" class="dv-nav-link">
                         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
@@ -119,57 +320,36 @@
             </div>
         </div>
 
-        <!-- Mobile menu -->
-        <div x-data="{ open: false }" @toggle-mobile-menu.window="open = !open" x-show="open" x-transition class="md:hidden bg-gray-800/95 backdrop-blur-sm border-t border-gray-700">
+        <div x-data="{ open: false }" @toggle-mobile-menu.window="open = !open" x-show="open" x-transition
+             class="md:hidden" style="background-color: oklch(22% 0.016 31); border-top: 1px solid oklch(30% 0.02 34);">
             <div class="px-2 pt-2 pb-3 space-y-1">
-                <a href="/bottles" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">
-                    Browse Bottles
-                </a>
-                <a href="/trending" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">
-                    Trending
-                </a>
-                <a href="/brands" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">
-                    Brands
-                </a>
-                <a href="/market" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">
-                    Market
-                </a>
-
+                <a href="/bottles" class="dv-nav-dropdown-item rounded-md">Browse Bottles</a>
+                <a href="/trending" class="dv-nav-dropdown-item rounded-md">Trending</a>
+                <a href="/brands" class="dv-nav-dropdown-item rounded-md">Brands</a>
+                <a href="/market" class="dv-nav-dropdown-item rounded-md">Market</a>
                 {% if current_user %}
-                <a href="/collections" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">
-                    My Collections
-                </a>
-                <a href="/profile" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">
-                    Profile
-                </a>
+                <a href="/collections" class="dv-nav-dropdown-item rounded-md">My Collections</a>
+                <a href="/profile" class="dv-nav-dropdown-item rounded-md">Profile</a>
                 {% if current_user.is_admin %}
-                <a href="/admin/moderation" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">
-                    Admin
-                </a>
+                <a href="/admin/moderation" class="dv-nav-dropdown-item rounded-md">Admin</a>
                 {% endif %}
-                <a href="/api/v1/auth/logout" class="block mt-2 px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">
-                    Logout
-                </a>
+                <a href="/api/v1/auth/logout" class="dv-nav-dropdown-item rounded-md">Logout</a>
                 {% else %}
-                <a href="/auth/login" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">
-                    Login
-                </a>
-                <a href="/auth/register" class="block px-3 py-2 rounded-md text-base font-medium bg-yellow-600 hover:bg-yellow-500 text-gray-900">
-                    Sign Up
-                </a>
+                <a href="/auth/login" class="dv-nav-dropdown-item rounded-md">Login</a>
+                <a href="/auth/register" class="block px-3 py-2 rounded-md text-sm font-medium dv-accent-bg mt-2">Sign Up</a>
                 {% endif %}
             </div>
         </div>
     </nav>
 
-    <!-- Flash messages -->
     {% if messages %}
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 w-full">
         {% for category, message in messages %}
-        <div x-data="{ show: true }" x-show="show" x-transition class="rounded-md p-4 mb-4 {% if category == 'error' %}bg-red-900/50 border border-red-700{% elif category == 'success' %}bg-green-900/50 border border-green-700{% else %}bg-blue-900/50 border border-blue-700{% endif %}">
+        <div x-data="{ show: true }" x-show="show" x-transition
+             class="rounded-md p-4 mb-4 {% if category == 'error' %}dv-notice-red{% elif category == 'success' %}dv-notice-green{% else %}dv-notice-blue{% endif %}">
             <div class="flex justify-between items-center">
                 <p class="text-sm">{{ message }}</p>
-                <button @click="show = false" class="text-gray-400 hover:text-white">
+                <button @click="show = false" class="ml-4 dv-text-muted hover:opacity-70">
                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
@@ -180,39 +360,37 @@
     </div>
     {% endif %}
 
-    <!-- Main content -->
     <main class="flex-1">
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900/50 border-t border-gray-700/50 mt-16">
+    <footer class="dv-footer mt-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div>
-                    <h3 class="logo-font text-xl font-bold text-yellow-600 mb-4">DramValue</h3>
-                    <p class="text-gray-400 text-sm">
+                    <h3 class="logo-font text-xl font-bold dv-accent-text mb-3">DramValue</h3>
+                    <p class="dv-footer-text text-sm">
                         Secondary market whisky price intelligence. Track bourbon, scotch, and rare spirits.
                     </p>
                 </div>
                 <div>
-                    <h4 class="font-semibold text-white mb-4">Links</h4>
-                    <ul class="space-y-2 text-sm text-gray-400">
-                        <li><a href="/about" class="hover:text-white transition">About</a></li>
-                        <li><a href="/api/v1/health" class="hover:text-white transition">API Status</a></li>
-                        <li><a href="/docs" class="hover:text-white transition">API Docs</a></li>
+                    <h4 class="dv-footer-heading mb-3">Links</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="/about" class="dv-footer-link">About</a></li>
+                        <li><a href="/trending" class="dv-footer-link">Trending</a></li>
+                        <li><a href="/market" class="dv-footer-link">Market</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="font-semibold text-white mb-4">Legal</h4>
-                    <ul class="space-y-2 text-sm text-gray-400">
-                        <li><a href="/privacy" class="hover:text-white transition">Privacy Policy</a></li>
-                        <li><a href="/terms" class="hover:text-white transition">Terms of Service</a></li>
+                    <h4 class="dv-footer-heading mb-3">Legal</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="/privacy" class="dv-footer-link">Privacy Policy</a></li>
+                        <li><a href="/terms" class="dv-footer-link">Terms of Service</a></li>
                     </ul>
                 </div>
             </div>
-            <div class="mt-8 pt-8 border-t border-gray-700/50 text-center text-sm text-gray-500">
-                <p>&copy; 2026 DramValue. Educational project.</p>
+            <div class="mt-8 pt-6 border-t dv-divider text-center text-sm dv-footer-text">
+                <p>&copy; 2026 DramValue. All rights reserved.</p>
             </div>
         </div>
     </footer>

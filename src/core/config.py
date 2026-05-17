@@ -43,14 +43,13 @@ class Settings(BaseSettings):
     jwt_refresh_token_expire_days: int = 7
 
     # -------------------------------------------------------------------------
-    # Email (SMTP)
+    # Email (AWS SES)
     # -------------------------------------------------------------------------
-    smtp_host: str = ""
-    smtp_port: int = 587
-    smtp_user: str = ""
-    smtp_password: str = ""
-    smtp_from_email: EmailStr = "noreply@example.com"
-    smtp_from_name: str = "WTracker"
+    aws_access_key_id: str = ""
+    aws_secret_access_key: str = ""
+    aws_region: str = "us-east-1"
+    email_from: EmailStr = "alerts@dramvalue.com"
+    email_from_name: str = "DramValue"
 
     # -------------------------------------------------------------------------
     # Scraping
@@ -65,7 +64,7 @@ class Settings(BaseSettings):
     # -------------------------------------------------------------------------
     # Admin
     # -------------------------------------------------------------------------
-    admin_email: EmailStr = "admin@example.com"
+    admin_email: EmailStr = "ted@theorubin.com"
 
     # -------------------------------------------------------------------------
     # Trust & Fraud Detection

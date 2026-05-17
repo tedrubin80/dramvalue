@@ -193,4 +193,11 @@ celery_app.conf.beat_schedule = {
         "schedule": crontab(hour="2", minute="30"),
         "options": {"queue": "maintenance"},
     },
+
+    # Check price alerts hourly at :30
+    "check-price-alerts": {
+        "task": "src.tasks.maintenance.check_price_alerts",
+        "schedule": crontab(minute="30"),
+        "options": {"queue": "maintenance"},
+    },
 }

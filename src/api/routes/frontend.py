@@ -132,7 +132,7 @@ async def home(request: Request, db: AsyncSession = Depends(get_db)):
         for row in trending_rows
     ]
 
-    return templates.TemplateResponse("home.html", context)
+    return templates.TemplateResponse(request, name="home.html", context=context)
 
 
 # =============================================================================
@@ -153,7 +153,7 @@ async def login_page(request: Request, db: AsyncSession = Depends(get_db)):
     if request.query_params.get("registered"):
         context["messages"] = [("success", "Account created successfully! Please sign in.")]
 
-    return templates.TemplateResponse("auth/login.html", context)
+    return templates.TemplateResponse(request, name="auth/login.html", context=context)
 
 
 @router.get("/auth/register", response_class=HTMLResponse, name="register")
@@ -166,7 +166,22 @@ async def register_page(request: Request, db: AsyncSession = Depends(get_db)):
         from fastapi.responses import RedirectResponse
         return RedirectResponse(url="/", status_code=302)
 
-    return templates.TemplateResponse("auth/register.html", context)
+    return templates.TemplateResponse(request, name="auth/register.html", context=context)
+
+
+@router.get("/auth/forgot-password", response_class=HTMLResponse, name="forgot_password")
+async def forgot_password_page(request: Request):
+    """Forgot password page."""
+    context = await get_template_context(request)
+    return templates.TemplateResponse(request, name="auth/forgot_password.html", context=context)
+
+
+@router.get("/auth/reset-password", response_class=HTMLResponse, name="reset_password")
+async def reset_password_page(request: Request, token: str = ""):
+    """Password reset page (token from email link)."""
+    context = await get_template_context(request)
+    context["token"] = token
+    return templates.TemplateResponse(request, name="auth/reset_password.html", context=context)
 
 
 # =============================================================================
@@ -273,7 +288,7 @@ async def market_page(request: Request, db: AsyncSession = Depends(get_db)):
         for r in houses_result
     ]
 
-    return templates.TemplateResponse("market.html", context)
+    return templates.TemplateResponse(request, name="market.html", context=context)
 
 
 @router.get("/brands", response_class=HTMLResponse, name="brands")
@@ -360,7 +375,7 @@ async def brands_page(
     context["per_page"] = per_page
     context["total_pages"] = (total + per_page - 1) // per_page
 
-    return templates.TemplateResponse("brands.html", context)
+    return templates.TemplateResponse(request, name="brands.html", context=context)
 
 
 # =============================================================================
@@ -407,7 +422,7 @@ async def trending_page(request: Request, db: AsyncSession = Depends(get_db)):
 
     context["trending_bottles"] = trending
 
-    return templates.TemplateResponse("trending.html", context)
+    return templates.TemplateResponse(request, name="trending.html", context=context)
 
 
 @router.get("/profile", response_class=HTMLResponse, name="profile")
@@ -435,7 +450,7 @@ async def profile_page(request: Request, db: AsyncSession = Depends(get_db)):
     context["collections_count"] = collections_count or 0
     context["alerts_count"] = alerts_count or 0
 
-    return templates.TemplateResponse("profile.html", context)
+    return templates.TemplateResponse(request, name="profile.html", context=context)
 
 
 @router.get("/search", response_class=HTMLResponse, name="search_results")
@@ -451,7 +466,7 @@ async def search_results(
     if not q or len(q) < 2:
         context["bottles"] = []
         context["error"] = "Please enter at least 2 characters to search"
-        return templates.TemplateResponse("search.html", context)
+        return templates.TemplateResponse(request, name="search.html", context=context)
 
     # Search bottles
     search_term = f"%{q.lower()}%"
@@ -490,7 +505,7 @@ async def search_results(
     context["bottles"] = bottles
     context["result_count"] = len(bottles)
 
-    return templates.TemplateResponse("search.html", context)
+    return templates.TemplateResponse(request, name="search.html", context=context)
 
 
 @router.get("/bottles", response_class=HTMLResponse, name="bottles_list")
@@ -545,7 +560,7 @@ async def bottles_list(
     context["total"] = total
     context["total_pages"] = (total + per_page - 1) // per_page
 
-    return templates.TemplateResponse("bottles/list.html", context)
+    return templates.TemplateResponse(request, name="bottles/list.html", context=context)
 
 
 @router.get("/bottles/{bottle_id}", response_class=HTMLResponse, name="bottle_detail")
@@ -604,7 +619,7 @@ async def bottle_detail(request: Request, bottle_id: int, db: AsyncSession = Dep
     context["similar_bottles"] = similar_bottles
     context["chart_data"] = chart_data
 
-    return templates.TemplateResponse("bottles/detail.html", context)
+    return templates.TemplateResponse(request, name="bottles/detail.html", context=context)
 
 
 # =============================================================================
@@ -649,7 +664,7 @@ async def alerts_list(request: Request, db: AsyncSession = Depends(get_db)):
     context["alerts"] = alerts
     context["alert_count"] = len(alerts)
 
-    return templates.TemplateResponse("alerts/list.html", context)
+    return templates.TemplateResponse(request, name="alerts/list.html", context=context)
 
 
 @router.get("/collections", response_class=HTMLResponse, name="collections_list")
@@ -676,7 +691,7 @@ async def collections_list(request: Request, db: AsyncSession = Depends(get_db))
 
     context["collections"] = collections
 
-    return templates.TemplateResponse("collections/list.html", context)
+    return templates.TemplateResponse(request, name="collections/list.html", context=context)
 
 
 @router.get("/collections/{collection_id}", response_class=HTMLResponse, name="collection_detail")
@@ -737,7 +752,7 @@ async def collection_detail(request: Request, collection_id: int, db: AsyncSessi
     context["total_current"] = total_current
     context["gain_loss"] = total_current - total_purchase if total_purchase > 0 else 0
 
-    return templates.TemplateResponse("collections/detail.html", context)
+    return templates.TemplateResponse(request, name="collections/detail.html", context=context)
 
 
 # =============================================================================
@@ -766,7 +781,7 @@ async def about_page(request: Request, db: AsyncSession = Depends(get_db)):
         "source_count": "14",
     }
 
-    return templates.TemplateResponse("about.html", context)
+    return templates.TemplateResponse(request, name="about.html", context=context)
 
 
 @router.get("/auth/reddit/callback", response_class=HTMLResponse, name="reddit_callback")
@@ -842,13 +857,11 @@ async def reddit_callback(
 async def terms_page(request: Request):
     """Terms of service page."""
     context = await get_template_context(request)
-    # TODO: Implement terms template
-    return {"message": "Terms page - coming soon"}
+    return templates.TemplateResponse(request, name="terms.html", context=context)
 
 
 @router.get("/privacy", response_class=HTMLResponse, name="privacy")
 async def privacy_page(request: Request):
     """Privacy policy page."""
     context = await get_template_context(request)
-    # TODO: Implement privacy template
-    return {"message": "Privacy page - coming soon"}
+    return templates.TemplateResponse(request, name="privacy.html", context=context)

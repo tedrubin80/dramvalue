@@ -5,6 +5,7 @@ Handles:
 - Bottle statistics refresh
 - Scrape run cleanup
 - Data quality checks
+- Price alert evaluation
 """
 
 import logging
@@ -258,6 +259,115 @@ def check_data_quality() -> dict:
 
         logger.info(f"Data quality check complete: {metrics}")
         return metrics
+
+    finally:
+        session.close()
+        engine.dispose()
+
+
+@celery_app.task
+def check_price_alerts() -> dict:
+    """
+    Evaluate all active price alerts and send email notifications.
+
+    Runs hourly. Skips alerts triggered within the last 24 hours to prevent spam.
+
+    Returns:
+        dict with evaluation statistics
+    """
+    from decimal import Decimal
+    from sqlalchemy import create_engine
+    from sqlalchemy.orm import sessionmaker, joinedload
+    from src.scrapers.settings import DATABASE_URL
+    from src.models.alert import PriceAlert, AlertStatus
+    from src.services.email_service import send_price_alert_email
+
+    logger.info("Starting price alert check")
+
+    db_url = DATABASE_URL
+    if "asyncpg" in db_url:
+        db_url = db_url.replace("postgresql+asyncpg", "postgresql+psycopg2")
+
+    engine = create_engine(db_url)
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    triggered = 0
+    skipped = 0
+    expired_count = 0
+    errors = 0
+
+    try:
+        now = datetime.utcnow()
+        cooldown_cutoff = now - timedelta(hours=24)
+
+        alerts = (
+            session.query(PriceAlert)
+            .options(joinedload(PriceAlert.bottle), joinedload(PriceAlert.user))
+            .filter(PriceAlert.status == AlertStatus.ACTIVE)
+            .all()
+        )
+
+        for alert in alerts:
+            try:
+                if alert.expires_at and alert.expires_at < now:
+                    alert.status = AlertStatus.EXPIRED
+                    expired_count += 1
+                    continue
+
+                bottle = alert.bottle
+                user = alert.user
+
+                if not bottle or bottle.avg_price is None:
+                    skipped += 1
+                    continue
+
+                if alert.last_triggered_at and alert.last_triggered_at > cooldown_cutoff:
+                    skipped += 1
+                    continue
+
+                current_price = Decimal(str(bottle.avg_price))
+                previous_price = Decimal(str(bottle.last_price)) if bottle.last_price else None
+
+                if not alert.is_triggered(current_price, previous_price):
+                    continue
+
+                if alert.notify_email and user and user.email:
+                    send_price_alert_email(
+                        to_email=user.email,
+                        display_name=user.display_name,
+                        bottle_name=bottle.name,
+                        alert_type=alert.alert_type.value,
+                        target_price=float(alert.target_price) if alert.target_price else None,
+                        current_price=float(current_price),
+                        bottle_url=f"https://dramvalue.com/bottles/{bottle.id}",
+                    )
+
+                alert.times_triggered += 1
+                alert.last_triggered_at = now
+                alert.last_triggered_price = current_price
+                triggered += 1
+
+            except Exception as e:
+                logger.error(f"Error processing alert {alert.id}: {e}")
+                errors += 1
+
+        session.commit()
+
+        result = {
+            "triggered": triggered,
+            "skipped": skipped,
+            "expired": expired_count,
+            "errors": errors,
+            "timestamp": now.isoformat(),
+        }
+        logger.info(f"Price alert check complete: {result}")
+        return result
+
+    except Exception as e:
+        session.rollback()
+        logger.error(f"Price alert check failed: {e}")
+        raise
 
     finally:
         session.close()

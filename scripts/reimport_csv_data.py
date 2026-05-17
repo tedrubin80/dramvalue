@@ -74,8 +74,16 @@ async def import_bottles(csv_path: str, session, dry_run: bool = False) -> int:
     df = pd.read_csv(csv_path)
     print(f"\nLoading bottles from {csv_path}: {len(df)} rows")
 
+    # Deduplicate by normalized_name within the CSV itself
+    if "normalized_name" in df.columns:
+        before = len(df)
+        df = df.drop_duplicates(subset=["normalized_name"], keep="first")
+        if len(df) < before:
+            print(f"  Deduplicated CSV: {before} -> {len(df)} rows")
+
     created = 0
     skipped = 0
+    seen_norms = set()
 
     for _, row in df.iterrows():
         name = str(row.get("name", "")).strip()
@@ -87,7 +95,13 @@ async def import_bottles(csv_path: str, session, dry_run: bool = False) -> int:
         if not norm_name:
             norm_name = name.lower().replace(" ", "_")
 
-        # Check for existing
+        # Skip in-batch duplicates
+        if norm_name in seen_norms:
+            skipped += 1
+            continue
+        seen_norms.add(norm_name)
+
+        # Check for existing in DB
         result = await session.execute(
             select(Bottle).where(Bottle.normalized_name == norm_name)
         )
@@ -99,36 +113,38 @@ async def import_bottles(csv_path: str, session, dry_run: bool = False) -> int:
             str(row.get("category", "OTHER")), SpiritCategory.OTHER
         )
 
-        bottle = Bottle(
-            name=name,
-            normalized_name=norm_name,
-            distillery=str(row["distillery"]) if pd.notna(row.get("distillery")) else None,
-            brand=str(row["brand"]) if pd.notna(row.get("brand")) else None,
-            category=category,
-            age_statement=int(row["age_statement"]) if pd.notna(row.get("age_statement")) else None,
-            proof=float(row["proof"]) if pd.notna(row.get("proof")) else None,
-            size_ml=int(row["size_ml"]) if pd.notna(row.get("size_ml")) else None,
-            release_year=int(row["release_year"]) if pd.notna(row.get("release_year")) else None,
-            is_limited_release=bool(row.get("is_limited_release", False)) if pd.notna(row.get("is_limited_release")) else False,
-            is_allocated=bool(row.get("is_allocated", False)) if pd.notna(row.get("is_allocated")) else False,
-            msrp=float(row["msrp"]) if pd.notna(row.get("msrp")) else None,
-            avg_price=float(row["avg_price"]) if pd.notna(row.get("avg_price")) else None,
-            min_price=float(row["min_price"]) if pd.notna(row.get("min_price")) else None,
-            max_price=float(row["max_price"]) if pd.notna(row.get("max_price")) else None,
-            last_price=float(row["last_price"]) if pd.notna(row.get("last_price")) else None,
-            last_price_date=parse_datetime(row.get("last_price_date")),
-            price_count=int(row["price_count"]) if pd.notna(row.get("price_count")) else 0,
-            price_trend=float(row["price_trend"]) if pd.notna(row.get("price_trend")) else None,
-        )
-        session.add(bottle)
-        created += 1
-
-        if created % 500 == 0:
+        try:
+            bottle = Bottle(
+                name=name,
+                normalized_name=norm_name,
+                distillery=str(row["distillery"]) if pd.notna(row.get("distillery")) else None,
+                brand=str(row["brand"]) if pd.notna(row.get("brand")) else None,
+                category=category,
+                age_statement=int(row["age_statement"]) if pd.notna(row.get("age_statement")) else None,
+                proof=float(row["proof"]) if pd.notna(row.get("proof")) else None,
+                size_ml=int(row["size_ml"]) if pd.notna(row.get("size_ml")) else None,
+                release_year=int(row["release_year"]) if pd.notna(row.get("release_year")) else None,
+                is_limited_release=bool(row.get("is_limited_release", False)) if pd.notna(row.get("is_limited_release")) else False,
+                is_allocated=bool(row.get("is_allocated", False)) if pd.notna(row.get("is_allocated")) else False,
+                msrp=float(row["msrp"]) if pd.notna(row.get("msrp")) else None,
+                avg_price=float(row["avg_price"]) if pd.notna(row.get("avg_price")) else None,
+                min_price=float(row["min_price"]) if pd.notna(row.get("min_price")) else None,
+                max_price=float(row["max_price"]) if pd.notna(row.get("max_price")) else None,
+                last_price=float(row["last_price"]) if pd.notna(row.get("last_price")) else None,
+                last_price_date=parse_datetime(row.get("last_price_date")),
+                price_count=int(row["price_count"]) if pd.notna(row.get("price_count")) else 0,
+                price_trend=float(row["price_trend"]) if pd.notna(row.get("price_trend")) else None,
+            )
+            session.add(bottle)
             await session.flush()
-            print(f"  ... {created} bottles created so far")
+            created += 1
 
-    if not dry_run:
-        await session.flush()
+            if created % 500 == 0:
+                print(f"  ... {created} bottles created so far")
+        except Exception as e:
+            await session.rollback()
+            skipped += 1
+            continue
 
     print(f"  Bottles: {created} created, {skipped} skipped")
     return created
@@ -160,7 +176,7 @@ async def import_prices(csv_path: str, session, dry_run: bool = False) -> int:
         if not bottle:
             # Try exact name match
             result = await session.execute(
-                select(Bottle).where(Bottle.name == bottle_name)
+                select(Bottle).where(Bottle.name == bottle_name).limit(1)
             )
             bottle = result.scalar_one_or_none()
 
@@ -292,12 +308,14 @@ async def main():
 
         # Import bottles first (prices depend on them)
         if import_all or args.bottles_only:
-            # Try dramvalue_bottles.csv first (more fields), fall back to whisky_bottles.csv
+            # Import dramvalue_bottles.csv first (more fields)
             bottles_csv = csv_dir / "dramvalue_bottles.csv"
-            if not bottles_csv.exists():
-                bottles_csv = csv_dir / "whisky_bottles.csv"
             if bottles_csv.exists():
                 total += await import_bottles(str(bottles_csv), session, args.dry_run)
+            # Also import whisky_bottles.csv (has additional bottles)
+            whisky_bottles_csv = csv_dir / "whisky_bottles.csv"
+            if whisky_bottles_csv.exists():
+                total += await import_bottles(str(whisky_bottles_csv), session, args.dry_run)
 
         # Import prices
         if import_all or args.prices_only:
