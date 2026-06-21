@@ -57,6 +57,9 @@ dependencies = [
     # HTTP Client (for external APIs)
     "httpx>=0.26.0",
 
+    # Rate limiting
+    "slowapi>=0.1.9",
+
     # AI Services
     "perplexityai>=0.23.0",
 

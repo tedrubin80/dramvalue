@@ -2,7 +2,7 @@
 API dependencies for dependency injection.
 """
 
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -11,15 +11,32 @@ from src.core.security import decode_token
 from src.db.session import get_db
 from src.models.user import User
 
-security = HTTPBearer()
+security = HTTPBearer(auto_error=False)
+
+
+def extract_access_token(
+    request: Request,
+    credentials: HTTPAuthorizationCredentials | None,
+) -> str | None:
+    """Read JWT from Authorization header or access_token cookie."""
+    if credentials:
+        return credentials.credentials
+    return request.cookies.get("access_token")
 
 
 async def get_current_user(
-    credentials: HTTPAuthorizationCredentials = Depends(security),
+    request: Request,
+    credentials: HTTPAuthorizationCredentials | None = Depends(security),
     db: AsyncSession = Depends(get_db),
 ) -> User:
-    """Get the current authenticated user from JWT token."""
-    token = credentials.credentials
+    """Get the current authenticated user from Bearer token or cookie."""
+    token = extract_access_token(request, credentials)
+    if not token:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Not authenticated",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
 
     payload = decode_token(token)
     if not payload:

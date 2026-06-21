@@ -4,10 +4,11 @@ AI-powered endpoints using Perplexity.
 Provides intelligent search, bottle research, and market insights.
 """
 
-from fastapi import APIRouter, HTTPException, Query, status
+from fastapi import APIRouter, HTTPException, Query, Request, status
 from pydantic import BaseModel
 
 from src.api.response import success_response
+from src.core.rate_limit import limiter
 from src.services.ai_service import get_ai_service
 
 router = APIRouter()
@@ -26,7 +27,9 @@ class ValueRequest(BaseModel):
 
 
 @router.get("/search")
+@limiter.limit("30/hour")
 async def ai_search(
+    request: Request,
     q: str = Query(..., min_length=2, description="Search query"),
 ):
     """
@@ -46,7 +49,7 @@ async def ai_search(
             )
 
         return success_response(data=result)
-    except ValueError as e:
+    except ValueError:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="AI service not configured",
@@ -54,7 +57,9 @@ async def ai_search(
 
 
 @router.get("/bottle-info")
+@limiter.limit("30/hour")
 async def get_bottle_info(
+    request: Request,
     name: str = Query(..., min_length=2, description="Bottle name"),
 ):
     """
@@ -74,7 +79,7 @@ async def get_bottle_info(
             )
 
         return success_response(data=result)
-    except ValueError as e:
+    except ValueError:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="AI service not configured",
@@ -82,7 +87,9 @@ async def get_bottle_info(
 
 
 @router.get("/market-analysis")
+@limiter.limit("30/hour")
 async def get_market_analysis(
+    request: Request,
     category: str = Query("scotch whisky", description="Category to analyze"),
 ):
     """
@@ -102,7 +109,7 @@ async def get_market_analysis(
             )
 
         return success_response(data=result)
-    except ValueError as e:
+    except ValueError:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="AI service not configured",
@@ -110,7 +117,8 @@ async def get_market_analysis(
 
 
 @router.post("/estimate-value")
-async def estimate_value(request: ValueRequest):
+@limiter.limit("30/hour")
+async def estimate_value(request: Request, value_request: ValueRequest):
     """
     Get AI-assisted value estimation for a bottle.
 
@@ -119,9 +127,9 @@ async def estimate_value(request: ValueRequest):
     try:
         service = get_ai_service()
         result = await service.estimate_value(
-            bottle_name=request.bottle_name,
-            condition=request.condition,
-            has_box=request.has_box,
+            bottle_name=value_request.bottle_name,
+            condition=value_request.condition,
+            has_box=value_request.has_box,
         )
 
         if not result["success"]:
@@ -131,7 +139,7 @@ async def estimate_value(request: ValueRequest):
             )
 
         return success_response(data=result)
-    except ValueError as e:
+    except ValueError:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="AI service not configured",
@@ -139,7 +147,9 @@ async def estimate_value(request: ValueRequest):
 
 
 @router.get("/research")
+@limiter.limit("30/hour")
 async def research_topic(
+    request: Request,
     topic: str = Query(..., min_length=5, description="Topic to research"),
 ):
     """
@@ -159,7 +169,7 @@ async def research_topic(
             )
 
         return success_response(data=result)
-    except ValueError as e:
+    except ValueError:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="AI service not configured",
@@ -167,20 +177,21 @@ async def research_topic(
 
 
 @router.post("/compare")
-async def compare_bottles(request: CompareRequest):
+@limiter.limit("30/hour")
+async def compare_bottles(request: Request, compare_request: CompareRequest):
     """
     Compare multiple bottles using AI.
 
     Provides side-by-side comparison of value, investment potential,
     and drinking quality.
     """
-    if len(request.bottles) < 2:
+    if len(compare_request.bottles) < 2:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="At least 2 bottles required for comparison",
         )
 
-    if len(request.bottles) > 5:
+    if len(compare_request.bottles) > 5:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Maximum 5 bottles can be compared at once",
@@ -188,7 +199,7 @@ async def compare_bottles(request: CompareRequest):
 
     try:
         service = get_ai_service()
-        result = await service.compare_bottles(request.bottles)
+        result = await service.compare_bottles(compare_request.bottles)
 
         if not result["success"]:
             raise HTTPException(
@@ -197,7 +208,7 @@ async def compare_bottles(request: CompareRequest):
             )
 
         return success_response(data=result)
-    except ValueError as e:
+    except ValueError:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="AI service not configured",

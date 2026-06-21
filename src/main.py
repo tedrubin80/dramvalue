@@ -10,10 +10,14 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
 
+from src.api.middleware.security_headers import SecurityHeadersMiddleware
 from src.api.routes import router as api_router
 from src.api.routes.frontend import router as frontend_router
 from src.core.config import get_settings
+from src.core.rate_limit import limiter
 
 
 @asynccontextmanager
@@ -47,6 +51,11 @@ def create_app() -> FastAPI:
         redoc_url="/redoc" if settings.debug else None,
         lifespan=lifespan,
     )
+
+    app.state.limiter = limiter
+    app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+    app.add_middleware(SecurityHeadersMiddleware)
 
     # CORS Middleware
     allowed_origins = ["*"] if settings.is_development else [

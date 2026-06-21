@@ -8,29 +8,33 @@ import csv
 import io
 import json
 from datetime import datetime
-from typing import Literal
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from fastapi.responses import StreamingResponse
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.api.response import success_response
+from src.api.deps import get_current_user
+from src.core.rate_limit import limiter
 from src.db.session import get_db
 from src.models.bottle import Bottle, SpiritCategory
 from src.models.price import Price
+from src.models.user import User
 
 router = APIRouter()
 
 
 @router.get("/prices/csv")
+@limiter.limit("20/hour")
 async def export_prices_csv(
+    request: Request,
     bottle_id: int | None = Query(None, description="Filter by bottle ID"),
     category: SpiritCategory | None = Query(None, description="Filter by category"),
     min_price: float | None = Query(None, ge=0, description="Minimum price USD"),
     max_price: float | None = Query(None, ge=0, description="Maximum price USD"),
     days: int = Query(365, ge=1, le=1825, description="Days of history"),
     db: AsyncSession = Depends(get_db),
+    _current_user: User = Depends(get_current_user),
 ):
     """
     Export price data as CSV.
@@ -132,13 +136,16 @@ async def export_prices_csv(
 
 
 @router.get("/prices/json")
+@limiter.limit("20/hour")
 async def export_prices_json(
+    request: Request,
     bottle_id: int | None = Query(None, description="Filter by bottle ID"),
     category: SpiritCategory | None = Query(None, description="Filter by category"),
     min_price: float | None = Query(None, ge=0, description="Minimum price USD"),
     max_price: float | None = Query(None, ge=0, description="Maximum price USD"),
     days: int = Query(365, ge=1, le=1825, description="Days of history"),
     db: AsyncSession = Depends(get_db),
+    _current_user: User = Depends(get_current_user),
 ):
     """
     Export price data as JSON.
@@ -231,10 +238,13 @@ async def export_prices_json(
 
 
 @router.get("/bottles/csv")
+@limiter.limit("20/hour")
 async def export_bottles_csv(
+    request: Request,
     category: SpiritCategory | None = Query(None, description="Filter by category"),
     has_prices: bool = Query(True, description="Only bottles with prices"),
     db: AsyncSession = Depends(get_db),
+    _current_user: User = Depends(get_current_user),
 ):
     """
     Export bottle catalog as CSV with price statistics.
@@ -312,18 +322,20 @@ async def export_bottles_csv(
 
 
 @router.get("/collection/{collection_id}/csv")
+@limiter.limit("20/hour")
 async def export_collection_csv(
+    request: Request,
     collection_id: int,
     db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     """
     Export a user's collection with current valuations.
     """
     from src.models.collection import Collection, CollectionItem
 
-    # Get collection
     collection = await db.get(Collection, collection_id)
-    if not collection:
+    if not collection or collection.user_id != current_user.id:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Collection not found",

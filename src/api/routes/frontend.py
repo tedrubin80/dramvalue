@@ -13,6 +13,7 @@ from pathlib import Path
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from src.api.deps import extract_access_token
 from src.core.security import decode_token
 from src.db.session import get_db
 from src.models.bottle import Bottle
@@ -34,7 +35,7 @@ async def get_current_user_from_cookie(request: Request, db: AsyncSession) -> Us
     """
     Get current user from JWT cookie if present and valid.
     """
-    token = request.cookies.get("access_token")
+    token = extract_access_token(request, None)
     if not token:
         return None
 

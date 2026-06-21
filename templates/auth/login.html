@@ -26,14 +26,14 @@
                     try {
                         const r = await fetch('/api/v1/auth/login', {
                             method: 'POST',
+                            credentials: 'include',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ email: this.email, password: this.password })
                         });
                         const data = await r.json();
                         if (r.ok) {
-                            localStorage.setItem('access_token', data.access_token);
-                            localStorage.setItem('refresh_token', data.refresh_token);
-                            const redirect = new URLSearchParams(window.location.search).get('redirect') || '/';
+                            const raw = new URLSearchParams(window.location.search).get('redirect') || '/';
+                            const redirect = (raw.startsWith('/') && !raw.startsWith('//')) ? raw : '/';
                             window.location.href = redirect;
                         } else {
                             this.errors.general = r.status === 401 ? 'Invalid email or password'
