@@ -49,6 +49,9 @@ class FineDramsSpider(scrapy.Spider):
         "CONCURRENT_REQUESTS": 1,
         "ROBOTSTXT_OBEY": True,
         "USER_AGENT": "WTracker/1.0 (Educational whisky price tracker)",
+        "DOWNLOAD_TIMEOUT": 30,
+        "CLOSESPIDER_PAGECOUNT": 40,
+        "CLOSESPIDER_TIMEOUT": 1800,
     }
 
     # EUR to USD conversion rate (update periodically)

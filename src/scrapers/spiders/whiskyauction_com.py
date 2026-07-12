@@ -47,7 +47,7 @@ class WhiskyAuctionComSpider(BaseAuctionSpider):
 
     DEFAULT_BUYERS_PREMIUM = 15.0
 
-    def start_requests(self):
+    async def start(self):
         """Generate initial requests."""
         for url in self.start_urls:
             yield scrapy.Request(

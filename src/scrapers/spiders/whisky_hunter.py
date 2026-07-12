@@ -21,6 +21,7 @@ from scrapy.http import Response, JsonRequest
 
 from src.scrapers.spiders.base import BaseAuctionSpider
 from src.scrapers.items import AuctionLotItem
+from src.scrapers.spider_settings import HTTP_ONLY_SETTINGS
 
 logger = logging.getLogger(__name__)
 
@@ -46,21 +47,24 @@ class WhiskyHunterSpider(BaseAuctionSpider):
     API_BASE = "https://whiskyhunter.net/api"
 
     custom_settings = {
+        **HTTP_ONLY_SETTINGS,
         "DOWNLOAD_DELAY": 2.0,
         "CONCURRENT_REQUESTS": 1,
         "ROBOTSTXT_OBEY": False,  # Using API
+        "CLOSESPIDER_ITEMCOUNT": 100,
     }
 
-    def start_requests(self):
+    # Distillery endpoint returns 159 slugs — limit to avoid runaway API calls
+    MAX_DISTILLERIES = 20
+
+    async def start(self):
         """Start by fetching auctions info and distilleries."""
-        # Get list of all auctions
         yield JsonRequest(
             url=f"{self.API_BASE}/auctions_info",
             callback=self.parse_auctions_info,
             errback=self.handle_error,
         )
 
-        # Get list of all distilleries
         yield JsonRequest(
             url=f"{self.API_BASE}/distilleries_info/",
             callback=self.parse_distilleries_info,
@@ -107,9 +111,9 @@ class WhiskyHunterSpider(BaseAuctionSpider):
             logger.warning(f"Expected list, got {type(distilleries)}")
             return
 
-        logger.info(f"Found {len(distilleries)} distilleries")
+        logger.info(f"Found {len(distilleries)} distilleries, fetching top {self.MAX_DISTILLERIES}")
 
-        for distillery in distilleries:
+        for distillery in distilleries[: self.MAX_DISTILLERIES]:
             slug = distillery.get("slug")
             if slug:
                 yield JsonRequest(

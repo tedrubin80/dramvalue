@@ -63,7 +63,7 @@ class BottleBlueBookSpider(BaseAuctionSpider):
         },
     }
 
-    def start_requests(self):
+    async def start(self):
         """Generate initial requests with Playwright for AngularJS rendering."""
         for url in self.start_urls:
             yield scrapy.Request(

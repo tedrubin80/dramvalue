@@ -36,95 +36,79 @@ class WhiskyAuctioneerSpider(BaseAuctionSpider):
 
     name = "whisky_auctioneer"
     auction_house = "WHISKY_AUCTIONEER"
-    allowed_domains = ["whiskyauctioneer.com", "www.whiskyauctioneer.com"]
+    allowed_domains = ["whiskyauctioneer.com"]
 
-    # Start with auction results page
-    start_urls = ["https://www.whiskyauctioneer.com/auction-results"]
+    # Discover lot URLs via sitemap (main site returns 406 to bots)
+    start_urls = ["https://whiskyauctioneer.com/sitemap.xml?page=1"]
 
-    # Spider-specific settings (increased timeouts for Tor proxy)
     custom_settings = {
-        "DOWNLOAD_DELAY": 5.0,  # Increased for Tor
+        "DOWNLOAD_DELAY": 5.0,
         "CONCURRENT_REQUESTS": 1,
         "PLAYWRIGHT_BROWSER_TYPE": "chromium",
-        "PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT": 90000,  # 90s for Tor
+        "PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT": 90000,
+        "CLOSESPIDER_ITEMCOUNT": 50,
     }
 
-    # Default buyer's premium for Whisky Auctioneer
-    DEFAULT_BUYERS_PREMIUM = 20.0  # 20%
+    DEFAULT_BUYERS_PREMIUM = 20.0
 
-    def start_requests(self):
-        """Generate initial requests with Playwright enabled."""
+    PLAYWRIGHT_META = {
+        "playwright": True,
+        "playwright_include_page": False,
+        "playwright_page_goto_kwargs": {
+            "wait_until": "domcontentloaded",
+            "timeout": 90000,
+        },
+    }
+
+    async def start(self):
+        """Fetch sitemap via HTTP, then lot pages via Playwright+Tor."""
         for url in self.start_urls:
             yield scrapy.Request(
                 url,
-                callback=self.parse,
+                callback=self.parse_sitemap,
+                errback=self.handle_error,
+            )
+
+    def parse_sitemap(self, response: Response) -> Generator[Any, None, None]:
+        """Extract individual lot URLs from sitemap XML."""
+        logger.info(f"Parsing sitemap: {response.url}")
+
+        lot_urls = re.findall(
+            r"<loc>(https://whiskyauctioneer\.com/auction/(\d+))</loc>",
+            response.text,
+        )
+
+        # Prefer highest lot IDs (most recent)
+        lot_urls = sorted(lot_urls, key=lambda x: int(x[1]), reverse=True)
+
+        logger.info(f"Found {len(lot_urls)} lot URLs in sitemap")
+
+        for full_url, lot_id in lot_urls[:50]:
+            yield scrapy.Request(
+                full_url,
+                callback=self.parse_lot,
                 meta={
-                    "playwright": True,
-                    "playwright_include_page": False,
-                    "playwright_page_goto_kwargs": {
-                        "wait_until": "networkidle",
-                        "timeout": 90000,
-                    },
+                    **self.PLAYWRIGHT_META,
+                    "auction_name": "Whisky Auctioneer",
                 },
                 errback=self.handle_error,
             )
 
     def parse(self, response: Response) -> Generator[Any, None, None]:
-        """
-        Parse auctions listing page.
-
-        Extracts links to individual auctions and follows pagination.
-        """
+        """Parse whisky-auctions listing page (fallback)."""
         logger.info(f"Parsing auctions page: {response.url}")
 
-        # Extract auction links
-        # Selectors need to be validated against live site
-        auction_links = response.css("a[href*='/auction/']::attr(href)").getall()
+        lot_links = response.css("a[href*='/auction/']::attr(href)").getall()
+        auction_links = [u for u in lot_links if re.search(r"/auction/\d+$", u)]
 
-        if not auction_links:
-            # Try alternative selectors
-            auction_links = response.css(".auction-card a::attr(href)").getall()
-            auction_links += response.css(".auction-item a::attr(href)").getall()
+        logger.info(f"Found {len(auction_links)} lot links")
 
-        logger.info(f"Found {len(auction_links)} auction links")
-
-        # Follow each auction to get lot listings
-        for auction_url in set(auction_links):
-            full_url = urljoin(response.url, auction_url)
+        for lot_url in set(auction_links):
+            full_url = urljoin(response.url, lot_url)
             yield scrapy.Request(
                 full_url,
-                callback=self.parse_auction,
-                meta={
-                    "playwright": True,
-                    "playwright_include_page": False,
-                    "playwright_page_goto_kwargs": {
-                        "wait_until": "networkidle",
-                        "timeout": 90000,
-                    },
-                },
-                errback=self.handle_error,
-            )
-
-        # Handle pagination
-        next_page = response.css("a.pagination-next::attr(href)").get()
-        if not next_page:
-            next_page = response.css("a[rel='next']::attr(href)").get()
-        if not next_page:
-            next_page = response.css("li.next a::attr(href)").get()
-
-        if next_page:
-            logger.info(f"Following pagination: {next_page}")
-            yield scrapy.Request(
-                urljoin(response.url, next_page),
-                callback=self.parse,
-                meta={
-                    "playwright": True,
-                    "playwright_include_page": False,
-                    "playwright_page_goto_kwargs": {
-                        "wait_until": "networkidle",
-                        "timeout": 90000,
-                    },
-                },
+                callback=self.parse_lot,
+                meta={**self.PLAYWRIGHT_META, "auction_name": "Whisky Auctioneer"},
                 errback=self.handle_error,
             )
 
@@ -157,6 +141,7 @@ class WhiskyAuctioneerSpider(BaseAuctionSpider):
                 full_url,
                 callback=self.parse_lot,
                 meta={
+                    **self.PLAYWRIGHT_META,
                     "auction_name": auction_name,
                     "auction_date": auction_date,
                 },
@@ -261,10 +246,15 @@ class WhiskyAuctioneerSpider(BaseAuctionSpider):
 
     def _extract_lot_id(self, url: str) -> str | None:
         """Extract lot ID from URL."""
-        # Pattern: /lot/123456 or /lot/123456/whisky-name
+        # Current pattern: /auction/1150655
+        match = re.search(r"/auction/(\d+)", url)
+        if match:
+            return f"wae-{match.group(1)}"
+
+        # Legacy pattern: /lot/123456
         match = re.search(r"/lot/(\d+)", url)
         if match:
-            return match.group(1)
+            return f"wae-{match.group(1)}"
 
         # Try query parameter
         parsed = urlparse(url)

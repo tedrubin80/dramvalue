@@ -58,6 +58,9 @@ class WhiskyHammerSpider(BaseAuctionSpider):
         "DOWNLOAD_DELAY": 3.0,
         "CONCURRENT_REQUESTS": 1,
         "ROBOTSTXT_OBEY": True,
+        "PLAYWRIGHT_BROWSER_TYPE": "chromium",
+        "PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT": 60000,
+        "CLOSESPIDER_ITEMCOUNT": 50,
     }
 
     DEFAULT_BUYERS_PREMIUM = 15.0  # 15%
