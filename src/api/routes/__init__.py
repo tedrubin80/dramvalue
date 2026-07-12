@@ -12,6 +12,7 @@ from src.api.routes.bottles import router as bottles_router
 from src.api.routes.collections import router as collections_router
 from src.api.routes.dashboard import router as dashboard_router
 from src.api.routes.export import router as export_router
+from src.api.routes.feed import router as feed_router
 from src.api.routes.health import router as health_router
 from src.api.routes.portfolio import router as portfolio_router
 from src.api.routes.prices import router as prices_router
@@ -33,6 +34,7 @@ router.include_router(submissions_router, prefix="/submissions", tags=["Submissi
 router.include_router(collections_router, prefix="/collections", tags=["Collections"])
 router.include_router(dashboard_router, prefix="/dashboard", tags=["Dashboard"])
 router.include_router(export_router, prefix="/export", tags=["Export"])
+router.include_router(feed_router, prefix="/feed", tags=["Feed"])
 router.include_router(portfolio_router, prefix="/portfolio", tags=["Portfolio"])
 router.include_router(recommendations_router, prefix="/recommendations", tags=["Recommendations"])
 

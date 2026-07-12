@@ -67,6 +67,11 @@ class Settings(BaseSettings):
     admin_email: EmailStr = "ted@theorubin.com"
 
     # -------------------------------------------------------------------------
+    # Private JSON Feed API (key-authenticated, for personal integrations)
+    # -------------------------------------------------------------------------
+    feed_api_key: str = Field(default="", description="API key for /api/v1/feed/* endpoints")
+
+    # -------------------------------------------------------------------------
     # Trust & Fraud Detection
     # -------------------------------------------------------------------------
     trust_base_score: int = 50

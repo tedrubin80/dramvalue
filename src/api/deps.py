@@ -2,16 +2,20 @@
 API dependencies for dependency injection.
 """
 
-from fastapi import Depends, HTTPException, Request, status
-from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+import secrets
+
+from fastapi import Depends, Header, HTTPException, Request, status
+from fastapi.security import APIKeyHeader, HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from src.core.config import get_settings
 from src.core.security import decode_token
 from src.db.session import get_db
 from src.models.user import User
 
 security = HTTPBearer(auto_error=False)
+api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
 
 
 def extract_access_token(
@@ -120,3 +124,35 @@ async def get_current_admin(
             detail="Admin privileges required",
         )
     return current_user
+
+
+async def verify_feed_api_key(
+    x_api_key: str | None = Depends(api_key_header),
+    authorization: str | None = Header(None),
+) -> None:
+    """
+    Verify private feed API key.
+
+    Accepts:
+      - X-API-Key: <key>
+      - Authorization: Bearer <key>
+    """
+    settings = get_settings()
+    expected = settings.feed_api_key
+
+    if not expected:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Feed API is not configured",
+        )
+
+    provided = x_api_key
+    if not provided and authorization and authorization.lower().startswith("bearer "):
+        provided = authorization[7:].strip()
+
+    if not provided or not secrets.compare_digest(provided, expected):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or missing API key",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
