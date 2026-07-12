@@ -38,7 +38,7 @@ class WhiskyAuctionUKSpider(BaseAuctionSpider):
     allowed_domains = ["whisky.auction", "www.whisky.auction"]
 
     start_urls = [
-        "https://www.whisky.auction/auctions",
+        "https://www.whisky.auction/past-auctions",
     ]
 
     custom_settings = {
@@ -46,9 +46,15 @@ class WhiskyAuctionUKSpider(BaseAuctionSpider):
         "CONCURRENT_REQUESTS": 1,
         "PLAYWRIGHT_BROWSER_TYPE": "chromium",
         "PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT": 90000,
+        "CLOSESPIDER_ITEMCOUNT": 200,
     }
 
     DEFAULT_BUYERS_PREMIUM = 20.0
+
+    def __init__(self, *args, scrape_run_id: int = None, max_auctions: int = None, **kwargs):
+        super().__init__(*args, scrape_run_id=scrape_run_id, **kwargs)
+        self.max_auctions = int(max_auctions) if max_auctions else 8
+        self._auctions_processed = 0
 
     def start_requests(self):
         """Generate initial requests with Playwright."""
@@ -56,7 +62,7 @@ class WhiskyAuctionUKSpider(BaseAuctionSpider):
             yield scrapy.Request(
                 url,
                 callback=self.parse,
-                meta={},
+                meta={"playwright": True},
                 errback=self.handle_error,
             )
 
@@ -75,23 +81,29 @@ class WhiskyAuctionUKSpider(BaseAuctionSpider):
         logger.info(f"Found {len(auction_links)} auction links")
 
         for auction_url in set(auction_links):
+            if self._auctions_processed >= self.max_auctions:
+                logger.info(f"Reached max_auctions limit ({self.max_auctions}), stopping")
+                return
+
+            self._auctions_processed += 1
             full_url = urljoin(response.url, auction_url)
             yield scrapy.Request(
                 full_url,
                 callback=self.parse_auction,
-                meta={},
+                meta={"playwright": True},
                 errback=self.handle_error,
             )
 
-        # Handle pagination
-        next_page = response.css("a[rel='next']::attr(href), .pagination .next a::attr(href)").get()
-        if next_page:
-            yield scrapy.Request(
-                urljoin(response.url, next_page),
-                callback=self.parse,
-                meta={},
-                errback=self.handle_error,
-            )
+        # Handle pagination only if under auction limit
+        if self._auctions_processed < self.max_auctions:
+            next_page = response.css("a[rel='next']::attr(href), .pagination .next a::attr(href)").get()
+            if next_page:
+                yield scrapy.Request(
+                    urljoin(response.url, next_page),
+                    callback=self.parse,
+                    meta={"playwright": True},
+                    errback=self.handle_error,
+                )
 
     def parse_auction(self, response: Response) -> Generator[Any, None, None]:
         """Parse individual auction to get lot listings."""
@@ -115,6 +127,7 @@ class WhiskyAuctionUKSpider(BaseAuctionSpider):
                 full_url,
                 callback=self.parse_lot,
                 meta={
+                    "playwright": True,
                     "auction_name": auction_name,
                     "auction_date": auction_date,
                 },
@@ -127,7 +140,7 @@ class WhiskyAuctionUKSpider(BaseAuctionSpider):
             yield scrapy.Request(
                 urljoin(response.url, next_page),
                 callback=self.parse_auction,
-                meta={},
+                meta={"playwright": True},
                 errback=self.handle_error,
             )
 

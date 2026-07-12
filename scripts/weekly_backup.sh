@@ -18,8 +18,8 @@ if git diff --quiet && git diff --cached --quiet && [ -z "$(git ls-files --other
     exit 0
 fi
 
-# Stage all tracked file changes and new files (exclude data/ and logs/)
-git add -A -- ':!data/' ':!logs/' ':!*.log' ':!*.pyc' ':!__pycache__/' ':!.env'
+# Stage all tracked file changes and new files (exclude data, logs, backups, secrets)
+git add -A -- ':!data/' ':!logs/' ':!backups/' ':!*.log' ':!*.pyc' ':!__pycache__/' ':!.env'
 
 # Check if staging resulted in anything
 if git diff --cached --quiet; then

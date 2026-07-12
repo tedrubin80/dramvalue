@@ -17,6 +17,7 @@ import scrapy
 from scrapy.http import Response
 
 from src.scrapers.items import RetailPriceItem
+from src.scrapers.spider_settings import HTTP_ONLY_SETTINGS
 from src.scrapers.utils.text import (
     clean_title,
     extract_age,
@@ -47,6 +48,7 @@ class DekantaSpider(scrapy.Spider):
     start_urls = ["https://www.dekanta.com/products.json?limit=250&page=1"]
 
     custom_settings = {
+        **HTTP_ONLY_SETTINGS,
         "DOWNLOAD_DELAY": 2.5,
         "CONCURRENT_REQUESTS": 1,
         "ROBOTSTXT_OBEY": True,

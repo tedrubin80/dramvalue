@@ -9,7 +9,7 @@ Handles:
 """
 
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from src.tasks.celery_app import celery_app
 
@@ -142,7 +142,7 @@ def cleanup_old_scrape_runs(days_to_keep: int = 30) -> dict:
     from sqlalchemy import create_engine, delete
     from sqlalchemy.orm import sessionmaker
     from src.scrapers.settings import DATABASE_URL
-    from src.models.scrape_run import ScrapeRun
+    from src.models.scrape_run import ScrapeRun, ScrapeStatus
 
     logger.info(f"Cleaning up scrape runs older than {days_to_keep} days")
 
@@ -155,7 +155,26 @@ def cleanup_old_scrape_runs(days_to_keep: int = 30) -> dict:
     session = Session()
 
     try:
-        cutoff_date = datetime.utcnow() - timedelta(days=days_to_keep)
+        cutoff_date = datetime.now(timezone.utc) - timedelta(days=days_to_keep)
+        stale_cutoff = datetime.now(timezone.utc) - timedelta(hours=2)
+
+        # Mark zombie runs stuck in RUNNING/PENDING as failed
+        stale_runs = (
+            session.query(ScrapeRun)
+            .filter(
+                ScrapeRun.status.in_([ScrapeStatus.PENDING, ScrapeStatus.RUNNING]),
+                ScrapeRun.started_at < stale_cutoff,
+            )
+            .all()
+        )
+        stale_count = 0
+        for run in stale_runs:
+            run.status = ScrapeStatus.FAILED
+            run.completed_at = datetime.now(timezone.utc)
+            run.errors = (run.errors or []) + [
+                {"error": "Marked failed: exceeded 2-hour running limit", "timestamp": datetime.now(timezone.utc).isoformat()}
+            ]
+            stale_count += 1
 
         # Delete old records
         stmt = delete(ScrapeRun).where(ScrapeRun.started_at < cutoff_date)
@@ -164,9 +183,13 @@ def cleanup_old_scrape_runs(days_to_keep: int = 30) -> dict:
 
         session.commit()
 
-        logger.info(f"Deleted {deleted_count} old scrape run records")
+        logger.info(
+            f"Scrape run cleanup: {stale_count} stale runs marked failed, "
+            f"{deleted_count} old records deleted"
+        )
         return {
             "deleted_count": deleted_count,
+            "stale_runs_fixed": stale_count,
             "cutoff_date": cutoff_date.isoformat(),
         }
 

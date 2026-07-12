@@ -5,7 +5,7 @@ Handles spider execution, error handling, and run tracking.
 """
 
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 from src.tasks.celery_app import celery_app
@@ -34,10 +34,17 @@ SPIDER_REGISTRY = {
     "bottle_blue_book": "src.scrapers.spiders.bottle_blue_book.BottleBlueBookSpider",
     "whisky_hammer": "src.scrapers.spiders.whisky_hammer.WhiskyHammerSpider",
     "cask_cartel": "src.scrapers.spiders.cask_cartel.CaskCartelSpider",
+    "fine_drams": "src.scrapers.spiders.fine_drams.FineDramsSpider",
 }
 
 
-@celery_app.task(bind=True, max_retries=3, default_retry_delay=600)
+@celery_app.task(
+    bind=True,
+    max_retries=3,
+    default_retry_delay=600,
+    soft_time_limit=5400,  # 90 minutes for large auction crawls
+    time_limit=7200,
+)
 def scrape_source(
     self,
     source_name: str,
@@ -209,7 +216,7 @@ def _create_scrape_run(
         run = ScrapeRun(
             source_name=source_name,
             spider_name=source_name,
-            started_at=datetime.utcnow(),
+            started_at=datetime.now(timezone.utc),
             status=ScrapeStatus.PENDING,
             triggered_by=triggered_by,
             celery_task_id=task_id,
@@ -226,11 +233,11 @@ def _create_scrape_run(
 def _update_scrape_run(
     run_id: int,
     status: Optional[ScrapeStatus] = None,
-    items_scraped: int = 0,
-    items_new: int = 0,
-    items_updated: int = 0,
-    items_skipped: int = 0,
-    items_errored: int = 0,
+    items_scraped: Optional[int] = None,
+    items_new: Optional[int] = None,
+    items_updated: Optional[int] = None,
+    items_skipped: Optional[int] = None,
+    items_errored: Optional[int] = None,
     errors: Optional[list] = None,
 ):
     """Update scrape run record."""
@@ -252,12 +259,17 @@ def _update_scrape_run(
             if status:
                 run.status = status
             if status in (ScrapeStatus.COMPLETED, ScrapeStatus.FAILED, ScrapeStatus.CANCELLED):
-                run.completed_at = datetime.utcnow()
-            run.items_scraped = items_scraped
-            run.items_new = items_new
-            run.items_updated = items_updated
-            run.items_skipped = items_skipped
-            run.items_errored = items_errored
+                run.completed_at = datetime.now(timezone.utc)
+            if items_scraped is not None:
+                run.items_scraped = items_scraped
+            if items_new is not None:
+                run.items_new = items_new
+            if items_updated is not None:
+                run.items_updated = items_updated
+            if items_skipped is not None:
+                run.items_skipped = items_skipped
+            if items_errored is not None:
+                run.items_errored = items_errored
             if errors:
                 run.errors = errors
             session.commit()

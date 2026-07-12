@@ -15,6 +15,7 @@ import scrapy
 from scrapy.http import Response
 
 from src.scrapers.items import RetailPriceItem
+from src.scrapers.spider_settings import HTTP_ONLY_SETTINGS
 from src.scrapers.utils.text import (
     clean_title,
     extract_age,
@@ -43,6 +44,7 @@ class FineDramsSpider(scrapy.Spider):
     start_urls = ["https://www.finedrams.com/whisky?page=1"]
 
     custom_settings = {
+        **HTTP_ONLY_SETTINGS,
         "DOWNLOAD_DELAY": 2.0,
         "CONCURRENT_REQUESTS": 1,
         "ROBOTSTXT_OBEY": True,

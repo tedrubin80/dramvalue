@@ -18,6 +18,26 @@ from src.scrapers.utils.currency import convert_to_usd
 logger = logging.getLogger(__name__)
 
 
+def _resolve_auction_house(auction_house_str: str):
+    """Map spider auction_house strings to AuctionHouse enum members."""
+    from src.models.price import AuctionHouse
+
+    if not auction_house_str:
+        return AuctionHouse.OTHER, "Other Auction"
+
+    # Spiders use member names like SCOTCH_WHISKY_AUCTIONS
+    if auction_house_str in AuctionHouse.__members__:
+        house = AuctionHouse[auction_house_str]
+        return house, house.value.replace("_", " ").title()
+
+    # Fall back to value lookup (lowercase slug)
+    try:
+        house = AuctionHouse(auction_house_str.lower())
+        return house, house.value.replace("_", " ").title()
+    except ValueError:
+        return AuctionHouse.OTHER, "Other Auction"
+
+
 class DatabasePipeline:
     """
     Persists scraped auction data to PostgreSQL.
@@ -81,12 +101,50 @@ class DatabasePipeline:
 
     def close_spider(self, spider):
         """
-        Close database connection and log stats.
+        Close database connection, log stats, and persist to scrape_run record.
         """
+        if hasattr(spider, "scrape_run_id") and spider.scrape_run_id and self.Session:
+            self._update_scrape_run_stats(spider)
+
         if self.engine:
             self.engine.dispose()
 
         logger.info(f"Database pipeline stats: {self._stats}")
+
+    def _update_scrape_run_stats(self, spider):
+        """Write pipeline stats back to the scrape_runs table."""
+        from src.models.scrape_run import ScrapeRun, ScrapeStatus
+
+        session = self.Session()
+        try:
+            run = session.get(ScrapeRun, spider.scrape_run_id)
+            if not run:
+                return
+
+            spider_stats = getattr(spider, "get_stats", lambda: {})()
+            run.items_scraped = max(
+                spider_stats.get("items_scraped", 0),
+                self._stats["processed"],
+            )
+            run.items_new = self._stats["new_prices"]
+            run.items_skipped = self._stats["duplicates"]
+            run.items_errored = self._stats["errors"] + spider_stats.get("items_errored", 0)
+            if spider_stats.get("errors"):
+                run.errors = spider_stats["errors"][:50]
+            if run.status == ScrapeStatus.RUNNING:
+                run.status = ScrapeStatus.COMPLETED
+                run.completed_at = datetime.utcnow()
+            session.commit()
+            logger.info(
+                f"Updated scrape_run {spider.scrape_run_id}: "
+                f"scraped={run.items_scraped}, new={run.items_new}, "
+                f"skipped={run.items_skipped}, errors={run.items_errored}"
+            )
+        except Exception as e:
+            session.rollback()
+            logger.error(f"Failed to update scrape_run stats: {e}")
+        finally:
+            session.close()
 
     def process_item(self, item, spider):
         """
@@ -261,14 +319,8 @@ class DatabasePipeline:
             price_value = hammer_price
             currency = item.get("currency", "GBP")
             source = PriceSource.AUCTION
-            # Determine auction house enum
             auction_house_str = item.get("auction_house", "OTHER")
-            try:
-                auction_house = AuctionHouse(auction_house_str)
-                source_name = auction_house.value.replace("_", " ").title()
-            except ValueError:
-                auction_house = AuctionHouse.OTHER
-                source_name = "Other Auction"
+            auction_house, source_name = _resolve_auction_house(auction_house_str)
 
         if not price_value:
             raise ValueError("No price available")

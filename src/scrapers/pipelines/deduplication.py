@@ -9,7 +9,7 @@ from typing import Set
 
 from scrapy.exceptions import DropItem
 
-from src.scrapers.items import AuctionLotItem
+from src.scrapers.items import AuctionLotItem, RetailPriceItem
 
 logger = logging.getLogger(__name__)
 
@@ -58,14 +58,18 @@ class DeduplicationPipeline:
             DropItem: If duplicate detected
         """
         # Create composite deduplication key
-        auction_house = item.get("auction_house", "UNKNOWN")
         source_id = item.get("source_id", "")
 
         if not source_id:
             logger.warning("Item missing source_id, cannot deduplicate")
             return item
 
-        dedup_key = f"{auction_house}:{source_id}"
+        if isinstance(item, RetailPriceItem):
+            source_key = item.get("source_name", spider.name)
+        else:
+            source_key = item.get("auction_house", "UNKNOWN")
+
+        dedup_key = f"{source_key}:{source_id}"
 
         # Check in-memory cache (current scrape run)
         if dedup_key in self._seen_ids:

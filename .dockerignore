@@ -41,6 +41,15 @@ docker-compose.override.yml
 *.log
 logs/
 
+# Database backups (large, sensitive)
+backups/
+
+# Local tool caches
+.cursor/
+.impeccable/
+.remember/
+.git.broken/
+
 # Local database files
 *.db
 *.sqlite3
