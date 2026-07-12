@@ -95,7 +95,7 @@ PLAYWRIGHT_BROWSER_TYPE = "chromium"
 
 # Tor SOCKS5 proxy configuration (docker-compose service name is `tor`)
 TOR_PROXY_HOST = os.getenv("TOR_PROXY_HOST", "tor")
-TOR_PROXY_PORT = os.getenv("TOR_PROXY_PORT", "9050")
+TOR_PROXY_PORT = os.getenv("TOR_PROXY_PORT", "9150")
 USE_TOR_PROXY = os.getenv("USE_TOR_PROXY", "true").lower() == "true"
 
 PLAYWRIGHT_LAUNCH_OPTIONS = {
