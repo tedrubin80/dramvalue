@@ -1,14 +1,15 @@
 """
-Private JSON feed API for personal integrations.
+Private JSON feed API for personal integrations (OpenClaw, promo automation).
 
 All endpoints require FEED_API_KEY via X-API-Key or Authorization: Bearer headers.
-Designed for polling new price data into external systems.
+Designed for polling price data, looking up specific bottles, and spotting trends.
 """
 
 from datetime import datetime, timedelta, timezone
+from typing import Literal
 
-from fastapi import APIRouter, Depends, Query, Request
-from sqlalchemy import func, select
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
+from sqlalchemy import func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.api.deps import verify_feed_api_key
@@ -20,6 +21,12 @@ from src.models.market_stat import MarketStat
 from src.models.price import Price, PriceSource
 
 router = APIRouter(dependencies=[Depends(verify_feed_api_key)])
+
+SITE_BASE = "https://dramvalue.com"
+
+
+def _bottle_url(bottle_id: int) -> str:
+    return f"{SITE_BASE}/bottles/{bottle_id}"
 
 
 def _serialize_price(row) -> dict:
@@ -39,7 +46,32 @@ def _serialize_price(row) -> dict:
         "transaction_date": row.transaction_date.isoformat() if row.transaction_date else None,
         "source_url": row.source_url,
         "created_at": row.created_at.isoformat() if row.created_at else None,
+        "page_url": _bottle_url(row.bottle_id) if row.bottle_id else None,
     }
+
+
+def _serialize_bottle_promo(bottle: Bottle, *, recent_count: int | None = None) -> dict:
+    """Compact bottle payload with pricing, trend, and shareable page URL."""
+    data = {
+        "id": bottle.id,
+        "name": bottle.name,
+        "distillery": bottle.distillery,
+        "brand": bottle.brand,
+        "category": bottle.category.value if bottle.category else None,
+        "age_statement": bottle.age_statement,
+        "size_ml": bottle.size_ml,
+        "price_count": bottle.price_count or 0,
+        "avg_price_usd": round(float(bottle.avg_price), 2) if bottle.avg_price is not None else None,
+        "min_price_usd": round(float(bottle.min_price), 2) if bottle.min_price is not None else None,
+        "max_price_usd": round(float(bottle.max_price), 2) if bottle.max_price is not None else None,
+        "last_price_usd": round(float(bottle.last_price), 2) if bottle.last_price is not None else None,
+        "last_price_date": bottle.last_price_date.isoformat() if bottle.last_price_date else None,
+        "price_trend_90d_pct": round(float(bottle.price_trend), 2) if bottle.price_trend is not None else None,
+        "page_url": _bottle_url(bottle.id),
+    }
+    if recent_count is not None:
+        data["recent_price_count"] = recent_count
+    return data
 
 
 @router.get("")
@@ -49,13 +81,19 @@ async def feed_info(request: Request):
     return success_response(
         data={
             "name": "DramValue Private Feed API",
-            "version": "1",
+            "version": "1.1",
+            "purpose": "Private bottle pricing & trends for site promotion (OpenClaw)",
             "endpoints": {
+                "stats": "/api/v1/feed/stats",
+                "search": "/api/v1/feed/search?q=",
+                "bottle": "/api/v1/feed/bottles/{id}",
+                "bottle_prices": "/api/v1/feed/bottles/{id}/prices",
+                "bottles": "/api/v1/feed/bottles",
+                "trending": "/api/v1/feed/trending",
+                "movers": "/api/v1/feed/movers",
                 "prices": "/api/v1/feed/prices",
                 "prices_recent": "/api/v1/feed/prices/recent",
-                "bottles": "/api/v1/feed/bottles",
                 "market": "/api/v1/feed/market",
-                "stats": "/api/v1/feed/stats",
             },
         }
     )
@@ -82,6 +120,150 @@ async def feed_stats(request: Request, db: AsyncSession = Depends(get_db)):
             "new_prices_7d": new_prices_7d or 0,
             "generated_at": datetime.now(timezone.utc).isoformat(),
         }
+    )
+
+
+@router.get("/search")
+@limiter.limit("120/hour")
+async def feed_search(
+    request: Request,
+    q: str = Query(..., min_length=2, max_length=200, description="Bottle / distillery / brand search"),
+    limit: int = Query(20, ge=1, le=50),
+    category: SpiritCategory | None = Query(None),
+    db: AsyncSession = Depends(get_db),
+):
+    """Search bottles by name, distillery, or brand — for promo lookups."""
+    pattern = f"%{q.strip()}%"
+    query = (
+        select(Bottle)
+        .where(
+            Bottle.is_active == True,  # noqa: E712
+            or_(
+                Bottle.name.ilike(pattern),
+                Bottle.distillery.ilike(pattern),
+                Bottle.brand.ilike(pattern),
+                Bottle.normalized_name.ilike(pattern),
+            ),
+        )
+        .order_by(Bottle.price_count.desc().nullslast(), Bottle.name)
+        .limit(limit)
+    )
+    if category:
+        query = query.where(Bottle.category == category)
+
+    result = await db.execute(query)
+    bottles = list(result.scalars().all())
+
+    return success_response(
+        data=[_serialize_bottle_promo(b) for b in bottles],
+        meta={"q": q, "count": len(bottles), "limit": limit},
+    )
+
+
+@router.get("/trending")
+@limiter.limit("120/hour")
+async def feed_trending(
+    request: Request,
+    days: int = Query(30, ge=7, le=90),
+    limit: int = Query(15, ge=1, le=50),
+    category: SpiritCategory | None = Query(None),
+    db: AsyncSession = Depends(get_db),
+):
+    """
+    Trending bottles by recent price activity + 90d trend.
+
+    Ideal for OpenClaw promo posts: hottest bottles with shareable page_url.
+    """
+    cutoff = datetime.now(timezone.utc) - timedelta(days=days)
+
+    activity = (
+        select(
+            Price.bottle_id,
+            func.count(Price.id).label("recent_count"),
+        )
+        .where(
+            Price.transaction_date >= cutoff,
+            Price.is_excluded == False,  # noqa: E712
+        )
+        .group_by(Price.bottle_id)
+        .subquery()
+    )
+
+    query = (
+        select(Bottle, activity.c.recent_count)
+        .join(activity, Bottle.id == activity.c.bottle_id)
+        .where(
+            Bottle.is_active == True,  # noqa: E712
+            Bottle.price_count >= 3,
+        )
+        .order_by(
+            activity.c.recent_count.desc(),
+            Bottle.price_trend.desc().nullslast(),
+        )
+        .limit(limit)
+    )
+    if category:
+        query = query.where(Bottle.category == category)
+
+    result = await db.execute(query)
+    rows = result.all()
+
+    return success_response(
+        data=[
+            _serialize_bottle_promo(bottle, recent_count=recent_count)
+            for bottle, recent_count in rows
+        ],
+        meta={"days": days, "count": len(rows), "limit": limit},
+    )
+
+
+@router.get("/movers")
+@limiter.limit("120/hour")
+async def feed_movers(
+    request: Request,
+    direction: Literal["up", "down", "both"] = Query("both"),
+    limit: int = Query(10, ge=1, le=30),
+    min_prices: int = Query(5, ge=2, le=50, description="Minimum price points required"),
+    category: SpiritCategory | None = Query(None),
+    db: AsyncSession = Depends(get_db),
+):
+    """Biggest 90-day price movers — gainers and/or losers for promo headlines."""
+    base = (
+        select(Bottle)
+        .where(
+            Bottle.is_active == True,  # noqa: E712
+            Bottle.price_count >= min_prices,
+            Bottle.price_trend.isnot(None),
+        )
+    )
+    if category:
+        base = base.where(Bottle.category == category)
+
+    movers: dict = {}
+
+    if direction in ("up", "both"):
+        up_result = await db.execute(
+            base.where(Bottle.price_trend > 0)
+            .order_by(Bottle.price_trend.desc())
+            .limit(limit)
+        )
+        movers["gainers"] = [
+            _serialize_bottle_promo(b) for b in up_result.scalars().all()
+        ]
+
+    if direction in ("down", "both"):
+        down_result = await db.execute(
+            base.where(Bottle.price_trend < 0)
+            .order_by(Bottle.price_trend.asc())
+            .limit(limit)
+        )
+        movers["losers"] = [
+            _serialize_bottle_promo(b) for b in down_result.scalars().all()
+        ]
+
+    return success_response(
+        data=movers,
+        meta={"direction": direction, "limit": limit, "min_prices": min_prices},
     )
 
 
@@ -264,6 +446,7 @@ async def feed_bottles(
             "price_count": row.price_count or 0,
             "avg_price_usd": round(float(row.avg_price_usd), 2) if row.avg_price_usd else None,
             "last_sale": row.last_sale.isoformat() if row.last_sale else None,
+            "page_url": _bottle_url(row.id),
         }
         for row in rows
     ]
@@ -274,6 +457,152 @@ async def feed_bottles(
         page=page,
         page_size=page_size,
         item_key="bottles",
+    )
+
+
+@router.get("/bottles/{bottle_id}")
+@limiter.limit("120/hour")
+async def feed_bottle_detail(
+    request: Request,
+    bottle_id: int,
+    recent_limit: int = Query(10, ge=1, le=50, description="Recent prices to include"),
+    db: AsyncSession = Depends(get_db),
+):
+    """
+    Single bottle with pricing summary, 90d trend, and recent sales.
+
+    Primary endpoint for OpenClaw when promoting a specific bottle.
+    """
+    result = await db.execute(
+        select(Bottle).where(Bottle.id == bottle_id, Bottle.is_active == True)  # noqa: E712
+    )
+    bottle = result.scalar_one_or_none()
+    if not bottle:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Bottle not found")
+
+    prices_result = await db.execute(
+        select(
+            Price.id,
+            Price.bottle_id,
+            Price.price,
+            Price.currency,
+            Price.price_usd,
+            Price.source,
+            Price.source_name,
+            Price.auction_house,
+            Price.is_sold,
+            Price.transaction_date,
+            Price.source_url,
+            Price.created_at,
+            Bottle.name.label("bottle_name"),
+            Bottle.distillery,
+            Bottle.category,
+        )
+        .join(Bottle, Price.bottle_id == Bottle.id)
+        .where(
+            Price.bottle_id == bottle_id,
+            Price.is_excluded == False,  # noqa: E712
+        )
+        .order_by(Price.transaction_date.desc().nullslast(), Price.id.desc())
+        .limit(recent_limit)
+    )
+    recent_prices = [_serialize_price(row) for row in prices_result.fetchall()]
+
+    trend_label = None
+    if bottle.price_trend is not None:
+        if bottle.price_trend >= 5:
+            trend_label = "rising"
+        elif bottle.price_trend <= -5:
+            trend_label = "falling"
+        else:
+            trend_label = "stable"
+
+    data = _serialize_bottle_promo(bottle)
+    data.update(
+        {
+            "confidence_score": (
+                round(float(bottle.confidence_score), 3)
+                if bottle.confidence_score is not None
+                else None
+            ),
+            "trend_label": trend_label,
+            "stats_updated_at": (
+                bottle.stats_updated_at.isoformat() if bottle.stats_updated_at else None
+            ),
+            "recent_prices": recent_prices,
+            "promo": {
+                "headline_hint": (
+                    f"{bottle.name} — avg ${bottle.avg_price:,.0f}"
+                    if bottle.avg_price
+                    else bottle.name
+                ),
+                "trend_hint": (
+                    f"{bottle.price_trend:+.1f}% over 90 days"
+                    if bottle.price_trend is not None
+                    else None
+                ),
+                "cta_url": _bottle_url(bottle.id),
+            },
+        }
+    )
+
+    return success_response(data=data)
+
+
+@router.get("/bottles/{bottle_id}/prices")
+@limiter.limit("120/hour")
+async def feed_bottle_prices(
+    request: Request,
+    bottle_id: int,
+    days: int = Query(365, ge=1, le=1825),
+    page: int = Query(1, ge=1),
+    page_size: int = Query(50, ge=1, le=200),
+    db: AsyncSession = Depends(get_db),
+):
+    """Full price history for one bottle."""
+    exists = await db.scalar(select(Bottle.id).where(Bottle.id == bottle_id))
+    if not exists:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Bottle not found")
+
+    cutoff = datetime.now(timezone.utc) - timedelta(days=days)
+    query = (
+        select(
+            Price.id,
+            Price.bottle_id,
+            Price.price,
+            Price.currency,
+            Price.price_usd,
+            Price.source,
+            Price.source_name,
+            Price.auction_house,
+            Price.is_sold,
+            Price.transaction_date,
+            Price.source_url,
+            Price.created_at,
+            Bottle.name.label("bottle_name"),
+            Bottle.distillery,
+            Bottle.category,
+        )
+        .join(Bottle, Price.bottle_id == Bottle.id)
+        .where(
+            Price.bottle_id == bottle_id,
+            Price.transaction_date >= cutoff,
+            Price.is_excluded == False,  # noqa: E712
+        )
+        .order_by(Price.transaction_date.desc(), Price.id.desc())
+    )
+
+    total = await db.scalar(select(func.count()).select_from(query.subquery())) or 0
+    offset = (page - 1) * page_size
+    result = await db.execute(query.offset(offset).limit(page_size))
+    rows = result.fetchall()
+
+    return paginated_response(
+        items=[_serialize_price(row) for row in rows],
+        total=total,
+        page=page,
+        page_size=page_size,
+        item_key="prices",
     )
 
 

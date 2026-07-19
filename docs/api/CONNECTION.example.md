@@ -1,6 +1,6 @@
 # DramValue Private Feed API
 
-> Copy of the template. Run `./scripts/setup_feed_api.sh` to generate `CONNECTION.md` with your live key.
+> Copy of the template. Run `./scripts/setup_feed_api.sh` to generate `CONNECTION.md` and `docs/secure/keychain.md` with your live key.
 
 ## Base URL
 
@@ -15,8 +15,6 @@ http://localhost:8002/api/v1/feed
 ```
 
 ## Authentication
-
-Pass your API key using either header:
 
 ```
 X-API-Key: YOUR_KEY_HERE
@@ -34,31 +32,37 @@ Authorization: Bearer YOUR_KEY_HERE
 |--------|------|-------------|
 | GET | `/` | Feed index |
 | GET | `/stats` | Database summary counts |
-| GET | `/prices` | Paginated price history (`?days=30&page=1&page_size=100`) |
-| GET | `/prices/recent` | New prices since timestamp (`?since=2026-07-12T00:00:00Z`) |
+| GET | `/search?q=` | Search bottles by name / brand |
+| GET | `/bottles/{id}` | Bottle detail + trends + promo hints |
+| GET | `/bottles/{id}/prices` | Bottle price history |
 | GET | `/bottles` | Bottle catalog with aggregates |
+| GET | `/trending` | Hot bottles for promo content |
+| GET | `/movers` | Biggest 90d price gainers / losers |
+| GET | `/prices` | Paginated price history |
+| GET | `/prices/recent` | New prices since timestamp |
 | GET | `/market` | Monthly auction market stats |
 
-## Example — poll new prices
+Full reference: [`API.md`](./API.md)
+
+## Example — trending for promo
 
 ```bash
 KEY="YOUR_KEY_HERE"
 curl -s -H "X-API-Key: $KEY" \
-  "https://dramvalue.com/api/v1/feed/prices/recent?limit=50"
+  "https://dramvalue.com/api/v1/feed/trending?limit=10"
 ```
 
-## Example — incremental sync
+## Example — specific bottle
 
 ```bash
 KEY="YOUR_KEY_HERE"
-SINCE="2026-07-12T03:00:00Z"
 curl -s -H "X-API-Key: $KEY" \
-  "https://dramvalue.com/api/v1/feed/prices/recent?since=${SINCE}&limit=500"
+  --get --data-urlencode "q=Macallan 18" \
+  "https://dramvalue.com/api/v1/feed/search"
 ```
-
-Save `meta.generated_at` from the response and use it as `since` on the next poll.
 
 ## Rate limits
 
 - Most endpoints: 120 requests/hour
 - `/prices/recent`: 300 requests/hour
+- Catalog / market: 60 requests/hour

@@ -91,9 +91,10 @@ credentials.json
 # Database backups (contain sensitive data)
 backups/
 
-# Private feed API credentials (FTP-only — see docs/api/README.md)
+# Private feed API credentials (FTP/SFTP only — never commit)
 docs/api/API_KEY.txt
 docs/api/CONNECTION.md
+docs/secure/
 
 # Stale/broken git copy
 .git.broken/
