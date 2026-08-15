@@ -222,12 +222,12 @@ See [RISK_REGISTER.md](./RISK_REGISTER.md) for full details.
 
 | Service | Container | Port | Status |
 |---------|-----------|------|--------|
-| FastAPI API | wtracker-api | 8001 | Running |
+| FastAPI API | wtracker-api | 8002 | Running |
 | PostgreSQL 16 | wtracker-db | 5434 | Healthy |
 | Redis 7 | wtracker-redis | internal | Healthy |
 | Celery Worker | wtracker-worker | - | Running |
 | Celery Beat | wtracker-beat | - | Running |
-| OpenAPI Docs | - | 8001/docs | Available |
+| OpenAPI Docs | - | 8002/docs | Available (dev only) |
 
 ---
 

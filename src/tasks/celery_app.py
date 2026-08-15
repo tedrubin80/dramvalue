@@ -194,6 +194,13 @@ celery_app.conf.beat_schedule = {
         "options": {"queue": "maintenance"},
     },
 
+    # Mark zombie scrape runs hourly
+    "cleanup-stale-scrape-runs": {
+        "task": "src.tasks.maintenance.cleanup_stale_scrape_runs",
+        "schedule": crontab(minute="15"),
+        "options": {"queue": "maintenance"},
+    },
+
     # Check price alerts hourly at :30
     "check-price-alerts": {
         "task": "src.tasks.maintenance.check_price_alerts",

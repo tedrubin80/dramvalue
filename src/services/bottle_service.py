@@ -176,6 +176,57 @@ class BottleService(BaseService[Bottle]):
 
         return bottle
 
+    async def get_site_stats(self) -> dict:
+        """
+        Fast site-wide stats using cached bottle columns.
+
+        Avoids full-table scans on the prices table.
+        """
+        result = await self.db.execute(
+            select(
+                func.count(Bottle.id).label("bottle_count"),
+                func.coalesce(func.sum(Bottle.price_count), 0).label("price_count"),
+                func.count(Bottle.id)
+                .filter(Bottle.price_count > 0)
+                .label("bottles_with_prices"),
+            ).where(Bottle.is_active == True)
+        )
+        row = result.one()
+        return {
+            "bottle_count": row.bottle_count,
+            "price_count": int(row.price_count),
+            "bottles_with_prices": row.bottles_with_prices,
+        }
+
+    async def get_homepage_trending(self, days: int = 30, limit: int = 6) -> list[dict]:
+        """
+        Trending bottles for the homepage using cached bottle stats.
+
+        Uses bottles with recent price activity, ordered by data volume.
+        """
+        cutoff = datetime.utcnow() - timedelta(days=days)
+        result = await self.db.execute(
+            select(Bottle)
+            .where(
+                Bottle.is_active == True,
+                Bottle.last_price_date >= cutoff,
+                Bottle.price_count >= 1,
+            )
+            .order_by(Bottle.price_count.desc(), Bottle.last_price_date.desc())
+            .limit(limit)
+        )
+
+        return [
+            {
+                "id": bottle.id,
+                "name": bottle.name,
+                "category": bottle.category.value if bottle.category else "spirits",
+                "recent_sales": bottle.price_count,
+                "avg_price": round(float(bottle.avg_price), 2) if bottle.avg_price else None,
+            }
+            for bottle in result.scalars().all()
+        ]
+
     async def get_trending(
         self,
         days: int = 30,

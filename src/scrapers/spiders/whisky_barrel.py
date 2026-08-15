@@ -61,7 +61,7 @@ class WhiskyBarrelSpider(scrapy.Spider):
 
     def __init__(self, *args, max_pages: int = None, **kwargs):
         super().__init__(*args, **kwargs)
-        self.max_pages = int(max_pages) if max_pages else 20
+        self.max_pages = int(max_pages) if max_pages else 5
         self.current_page = 1
         self.items_scraped = 0
         self.started_at = datetime.utcnow()

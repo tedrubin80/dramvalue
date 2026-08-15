@@ -37,6 +37,18 @@ SPIDER_REGISTRY = {
     "fine_drams": "src.scrapers.spiders.fine_drams.FineDramsSpider",
 }
 
+# Incremental crawl limits — keeps scheduled runs under the 1-hour subprocess cap
+SPIDER_CRAWL_LIMITS: dict[str, dict[str, int]] = {
+    "dekanta": {"max_pages": 5},
+    "whisky_barrel": {"max_pages": 5},
+    "cask_cartel": {"max_pages": 3},
+    "fine_drams": {"max_pages": 10},
+    "bottle_blue_book": {"max_bottles": 150},
+    "whisky_hunter": {"max_pages": 5},
+}
+
+STALE_RUN_HOURS = 2
+
 
 @celery_app.task(
     bind=True,
@@ -70,6 +82,16 @@ def scrape_source(
     if source_name not in SPIDER_REGISTRY:
         raise ValueError(f"Unknown spider: {source_name}. Available: {list(SPIDER_REGISTRY.keys())}")
 
+    # Clear zombie runs and avoid overlapping scrapes for the same source
+    _cleanup_stale_runs(source_name)
+    if _has_active_run(source_name):
+        logger.warning(f"Skipping {source_name}: scrape already running")
+        return {"skipped": True, "reason": "already_running", "source_name": source_name}
+
+    crawl_limits = SPIDER_CRAWL_LIMITS.get(source_name, {})
+    if full_scrape:
+        crawl_limits = {k: v * 4 for k, v in crawl_limits.items()} or {"max_pages": 20}
+
     # Create scrape run record
     scrape_run_id = _create_scrape_run(source_name, triggered_by, self.request.id)
 
@@ -79,10 +101,13 @@ def scrape_source(
 
         # Run Scrapy in subprocess to avoid Twisted reactor issues
         spider_module = SPIDER_REGISTRY[source_name]
+        crawl_kwargs = {"scrape_run_id": scrape_run_id, **crawl_limits}
 
-        # Create a Python script to run the spider
-        # This avoids needing scrapy.cfg and allows us to run in subprocess
+        import json
+        crawl_kwargs_json = json.dumps(crawl_kwargs)
+
         script = f"""
+import json
 import sys
 sys.path.insert(0, '/app')
 
@@ -90,24 +115,23 @@ from scrapy.crawler import CrawlerProcess
 from scrapy.settings import Settings
 from importlib import import_module
 
-# Import our custom settings module
 settings_module = import_module('src.scrapers.settings')
 settings = Settings()
 settings.setmodule(settings_module)
 settings.set('LOG_LEVEL', 'INFO')
 
-# Import spider class
 module_path, class_name = '{spider_module}'.rsplit('.', 1)
 module = import_module(module_path)
 spider_class = getattr(module, class_name)
 
-# Run crawler
+crawl_kwargs = json.loads({crawl_kwargs_json!r})
+
 process = CrawlerProcess(settings)
-process.crawl(spider_class, scrape_run_id={scrape_run_id})
+process.crawl(spider_class, **crawl_kwargs)
 process.start()
 """
 
-        logger.info(f"Running spider {source_name} in subprocess")
+        logger.info(f"Running spider {source_name} in subprocess with limits {crawl_limits}")
 
         result = subprocess.run(
             ["python3", "-c", script],
@@ -137,7 +161,7 @@ process.start()
             status=ScrapeStatus.FAILED,
             errors=[{"error": "Scrape timed out after 1 hour", "timestamp": datetime.utcnow().isoformat()}],
         )
-        raise self.retry(exc=Exception("Timeout"))
+        return {"failed": True, "reason": "timeout", "source_name": source_name}
 
     except Exception as e:
         logger.error(f"Scrape failed for {source_name}: {e}")
@@ -191,6 +215,79 @@ def _import_spider(source_name: str):
     import importlib
     module = importlib.import_module(module_name)
     return getattr(module, class_name)
+
+
+def _get_db_session():
+    """Create a sync SQLAlchemy session for Celery helpers."""
+    from sqlalchemy import create_engine
+    from sqlalchemy.orm import sessionmaker
+    from src.scrapers.settings import DATABASE_URL
+
+    db_url = DATABASE_URL.replace("postgresql+asyncpg", "postgresql+psycopg2")
+    engine = create_engine(db_url)
+    Session = sessionmaker(bind=engine)
+    return Session, engine
+
+
+def _cleanup_stale_runs(source_name: str | None = None) -> int:
+    """Mark scrape runs stuck in RUNNING/PENDING as failed."""
+    from datetime import timedelta
+    from src.scrapers.settings import DATABASE_URL
+    from sqlalchemy import create_engine, text
+
+    db_url = DATABASE_URL.replace("postgresql+asyncpg", "postgresql+psycopg2")
+    engine = create_engine(db_url)
+    cutoff = datetime.now(timezone.utc) - timedelta(hours=STALE_RUN_HOURS)
+
+    sql = """
+        UPDATE scrape_runs
+        SET status = 'FAILED',
+            completed_at = NOW(),
+            errors = COALESCE(errors, '[]'::jsonb) || CAST(:error AS jsonb)
+        WHERE status IN ('RUNNING', 'PENDING')
+          AND started_at < :cutoff
+    """
+    params = {
+        "cutoff": cutoff,
+        "error": '[{"error": "Marked failed: exceeded running time limit", "timestamp": "'
+        + datetime.utcnow().isoformat()
+        + '"}]',
+    }
+    if source_name:
+        sql += " AND source_name = :source_name"
+        params["source_name"] = source_name
+
+    with engine.begin() as conn:
+        result = conn.execute(text(sql), params)
+        count = result.rowcount
+
+    engine.dispose()
+    if count:
+        logger.warning(f"Marked {count} stale scrape run(s) as failed")
+    return count
+
+
+def _has_active_run(source_name: str) -> bool:
+    """Return True if a non-stale scrape is already running for this source."""
+    from sqlalchemy import select
+    from datetime import timedelta
+
+    Session, engine = _get_db_session()
+    cutoff = datetime.now(timezone.utc) - timedelta(hours=STALE_RUN_HOURS)
+    try:
+        with Session() as session:
+            run = session.execute(
+                select(ScrapeRun.id)
+                .where(
+                    ScrapeRun.source_name == source_name,
+                    ScrapeRun.status.in_([ScrapeStatus.PENDING, ScrapeStatus.RUNNING]),
+                    ScrapeRun.started_at >= cutoff,
+                )
+                .limit(1)
+            ).scalar_one_or_none()
+            return run is not None
+    finally:
+        engine.dispose()
 
 
 def _create_scrape_run(

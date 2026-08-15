@@ -15,10 +15,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.api.deps import extract_access_token
 from src.core.security import decode_token
-from src.db.session import get_db
+from src.db.session import get_async_session_maker, get_db
 from src.models.bottle import Bottle
 from src.models.price import Price
 from src.models.user import User
+from src.services.bottle_service import BottleService
 
 # Configure templates
 templates_dir = Path(__file__).parent.parent.parent.parent / "templates"
@@ -73,6 +74,24 @@ async def get_template_context(request: Request, db: AsyncSession = None) -> dic
     }
 
 
+async def get_auth_page_context(request: Request) -> tuple[dict, bool]:
+    """
+    Build auth page context without holding a DB pool slot for anonymous visitors.
+    """
+    context = await get_template_context(request)
+    token = extract_access_token(request, None)
+    if not token:
+        return context, False
+
+    async with get_async_session_maker()() as db:
+        user = await get_current_user_from_cookie(request, db)
+        if user:
+            context["current_user"] = user
+            return context, True
+
+    return context, False
+
+
 # =============================================================================
 # Homepage Routes
 # =============================================================================
@@ -81,57 +100,10 @@ async def get_template_context(request: Request, db: AsyncSession = None) -> dic
 async def home(request: Request, db: AsyncSession = Depends(get_db)):
     """Homepage with search and trending bottles."""
     context = await get_template_context(request, db)
+    bottle_service = BottleService(db)
 
-    # Get real stats from database
-    stats_result = await db.execute(
-        select(
-            func.count(Bottle.id).label("bottle_count"),
-        )
-    )
-    bottle_count = stats_result.scalar() or 0
-
-    price_stats = await db.execute(
-        select(
-            func.count(Price.id).label("price_count"),
-            func.count(func.distinct(Price.bottle_id)).label("bottles_with_prices"),
-        )
-    )
-    price_row = price_stats.fetchone()
-
-    context["stats"] = {
-        "bottle_count": bottle_count,
-        "price_count": price_row.price_count if price_row else 0,
-        "bottles_with_prices": price_row.bottles_with_prices if price_row else 0,
-    }
-
-    # Get trending bottles (most price data in last 30 days)
-    cutoff = datetime.utcnow() - timedelta(days=30)
-    trending_result = await db.execute(
-        select(
-            Bottle.id,
-            Bottle.name,
-            Bottle.category,
-            func.count(Price.id).label("recent_sales"),
-            func.avg(Price.price_usd).label("avg_price"),
-        )
-        .join(Price, Price.bottle_id == Bottle.id)
-        .where(Price.transaction_date >= cutoff)
-        .group_by(Bottle.id)
-        .order_by(func.count(Price.id).desc())
-        .limit(6)
-    )
-    trending_rows = trending_result.fetchall()
-
-    context["trending_bottles"] = [
-        {
-            "id": row.id,
-            "name": row.name,
-            "category": row.category.value if row.category else "spirits",
-            "recent_sales": row.recent_sales,
-            "avg_price": round(float(row.avg_price), 2) if row.avg_price else None,
-        }
-        for row in trending_rows
-    ]
+    context["stats"] = await bottle_service.get_site_stats()
+    context["trending_bottles"] = await bottle_service.get_homepage_trending(limit=6)
 
     return templates.TemplateResponse(request, name="home.html", context=context)
 
@@ -141,12 +113,11 @@ async def home(request: Request, db: AsyncSession = Depends(get_db)):
 # =============================================================================
 
 @router.get("/auth/login", response_class=HTMLResponse, name="login")
-async def login_page(request: Request, db: AsyncSession = Depends(get_db)):
+async def login_page(request: Request):
     """Login page."""
-    context = await get_template_context(request, db)
+    context, is_logged_in = await get_auth_page_context(request)
 
-    # Redirect if already logged in
-    if context.get("current_user"):
+    if is_logged_in:
         from fastapi.responses import RedirectResponse
         return RedirectResponse(url="/", status_code=302)
 
@@ -158,12 +129,11 @@ async def login_page(request: Request, db: AsyncSession = Depends(get_db)):
 
 
 @router.get("/auth/register", response_class=HTMLResponse, name="register")
-async def register_page(request: Request, db: AsyncSession = Depends(get_db)):
+async def register_page(request: Request):
     """Registration page."""
-    context = await get_template_context(request, db)
+    context, is_logged_in = await get_auth_page_context(request)
 
-    # Redirect if already logged in
-    if context.get("current_user"):
+    if is_logged_in:
         from fastapi.responses import RedirectResponse
         return RedirectResponse(url="/", status_code=302)
 
@@ -764,21 +734,11 @@ async def collection_detail(request: Request, collection_id: int, db: AsyncSessi
 async def about_page(request: Request, db: AsyncSession = Depends(get_db)):
     """About page."""
     context = await get_template_context(request, db)
-
-    # Get stats for the about page
-    stats_result = await db.execute(
-        select(func.count(Bottle.id).label("bottle_count"))
-    )
-    bottle_count = stats_result.scalar() or 0
-
-    price_stats = await db.execute(
-        select(func.count(Price.id).label("price_count"))
-    )
-    price_count = price_stats.scalar() or 0
+    stats = await BottleService(db).get_site_stats()
 
     context["stats"] = {
-        "bottle_count": f"{bottle_count:,}",
-        "price_count": f"{price_count:,}",
+        "bottle_count": f"{stats['bottle_count']:,}",
+        "price_count": f"{stats['price_count']:,}",
         "source_count": "14",
     }
 

@@ -6,7 +6,7 @@ DramValue is a whisky price intelligence platform. It scrapes auction houses and
 
 **Tech stack**: Python 3.11, FastAPI, SQLAlchemy (async), Scrapy, Celery, PostgreSQL 16, Redis 7, Docker Compose, Jinja2/Tailwind templates.
 
-**Live URL**: http://localhost:8001 (or whatever port `API_PORT` is set to)
+**Live URL**: http://localhost:8002 (or whatever port `API_PORT` is set to)
 
 ---
 
@@ -24,7 +24,7 @@ sudo ./scripts/setup-production.sh
 nano .env
 
 # 4. Verify it's working
-curl http://localhost:8001/
+curl http://localhost:8002/
 ```
 
 The setup script handles: Docker, Docker Compose, git, pip, kagglehub, .env generation, container builds, database creation, Kaggle data imports, cron jobs, and firewall.
@@ -77,7 +77,7 @@ The setup script handles: Docker, Docker Compose, git, pip, kagglehub, .env gene
 
 | Container | Service | Purpose |
 |-----------|---------|---------|
-| `wtracker-api` | FastAPI app | Web frontend + API (port 8001→8000) |
+| `wtracker-api` | FastAPI app | Web frontend + API (port 8002→8000) |
 | `wtracker-worker` | Celery worker | Runs scraper spiders and maintenance tasks |
 | `wtracker-beat` | Celery beat | Schedules all periodic tasks |
 | `wtracker-db` | PostgreSQL 16 | Primary database (port 5434→5432) |
@@ -234,7 +234,7 @@ The setup script handles downloading these datasets and running the imports auto
 ### API not responding
 1. Check: `docker compose ps` — all containers should show "Up"
 2. Logs: `docker compose logs -f api`
-3. Health: `curl http://localhost:8001/health`
+3. Health: `curl http://localhost:8002/health`
 4. Restart: `docker compose restart api`
 
 ### Database connection issues

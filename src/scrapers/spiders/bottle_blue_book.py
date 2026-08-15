@@ -63,6 +63,11 @@ class BottleBlueBookSpider(BaseAuctionSpider):
         },
     }
 
+    def __init__(self, *args, scrape_run_id: int = None, max_bottles: int = None, **kwargs):
+        super().__init__(*args, scrape_run_id=scrape_run_id, **kwargs)
+        self.max_bottles = int(max_bottles) if max_bottles else 150
+        self._bottles_crawled = 0
+
     async def start(self):
         """Generate initial requests with Playwright for AngularJS rendering."""
         for url in self.start_urls:
@@ -83,7 +88,12 @@ class BottleBlueBookSpider(BaseAuctionSpider):
         logger.info(f"Found {len(bottle_links)} bottle links")
 
         for link in set(bottle_links):
+            if self._bottles_crawled >= self.max_bottles:
+                logger.info(f"Reached max_bottles limit ({self.max_bottles}), stopping category crawl")
+                return
+
             full_url = urljoin(response.url, link)
+            self._bottles_crawled += 1
             yield scrapy.Request(
                 full_url,
                 callback=self.parse_bottle,
@@ -93,7 +103,7 @@ class BottleBlueBookSpider(BaseAuctionSpider):
 
         # Pagination
         next_page = response.css("a[rel='next']::attr(href), a.next::attr(href)").get()
-        if next_page:
+        if next_page and self._bottles_crawled < self.max_bottles:
             yield scrapy.Request(
                 urljoin(response.url, next_page),
                 callback=self.parse,

@@ -45,6 +45,16 @@ def refresh_bottle_stats() -> dict:
     session = Session()
 
     try:
+        # Prevent overlapping runs (stuck daily jobs were locking the DB for days)
+        lock_acquired = session.execute(
+            text("SELECT pg_try_advisory_lock(9876543210)")
+        ).scalar()
+        if not lock_acquired:
+            logger.warning("Bottle statistics refresh already running, skipping")
+            return {"skipped": True, "reason": "already_running"}
+
+        session.execute(text("SET statement_timeout = '3600000'"))  # 1 hour
+
         # Update bottle statistics using a single efficient query
         update_query = text("""
             UPDATE bottles b
@@ -58,23 +68,16 @@ def refresh_bottle_stats() -> dict:
                 stats_updated_at = NOW()
             FROM (
                 SELECT
-                    p.bottle_id,
+                    bottle_id,
                     COUNT(*) as price_count,
-                    AVG(p.price_usd) as avg_price,
-                    MIN(p.price_usd) as min_price,
-                    MAX(p.price_usd) as max_price,
-                    (
-                        SELECT price_usd
-                        FROM prices
-                        WHERE bottle_id = p.bottle_id
-                        AND is_excluded = false
-                        ORDER BY transaction_date DESC
-                        LIMIT 1
-                    ) as last_price,
-                    MAX(p.transaction_date) as last_price_date
-                FROM prices p
-                WHERE p.is_excluded = false
-                GROUP BY p.bottle_id
+                    AVG(price_usd) as avg_price,
+                    MIN(price_usd) as min_price,
+                    MAX(price_usd) as max_price,
+                    MAX(transaction_date) as last_price_date,
+                    (ARRAY_AGG(price_usd ORDER BY transaction_date DESC))[1] as last_price
+                FROM prices
+                WHERE is_excluded = false
+                GROUP BY bottle_id
             ) stats
             WHERE b.id = stats.bottle_id
         """)
@@ -122,8 +125,21 @@ def refresh_bottle_stats() -> dict:
         raise
 
     finally:
+        try:
+            session.execute(text("SELECT pg_advisory_unlock(9876543210)"))
+        except Exception:
+            pass
         session.close()
         engine.dispose()
+
+
+@celery_app.task
+def cleanup_stale_scrape_runs(stale_hours: int = 2) -> dict:
+    """Mark scrape runs stuck in RUNNING/PENDING as failed."""
+    from src.tasks.scraping import _cleanup_stale_runs
+
+    count = _cleanup_stale_runs()
+    return {"stale_runs_fixed": count, "stale_hours": stale_hours}
 
 
 @celery_app.task

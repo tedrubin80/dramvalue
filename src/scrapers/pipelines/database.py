@@ -17,6 +17,21 @@ from src.scrapers.utils.currency import convert_to_usd
 
 logger = logging.getLogger(__name__)
 
+# Map spider names to the source_name values stored in prices.source_name
+SPIDER_SOURCE_NAMES = {
+    "dekanta": "Dekanta",
+    "whisky_barrel": "The Whisky Barrel",
+    "cask_cartel": "CaskCartel",
+    "fine_drams": "Fine Drams",
+    "bottle_blue_book": "Bottle Blue Book",
+    "whisky_hunter": "Whisky Hunter",
+    "scotch_whisky_auctions": "Scotch Whisky Auctions",
+    "whisky_auctioneer": "Whisky Auctioneer",
+    "whisky_auction_uk": "Whisky Auction Uk",
+    "whiskyauction_com": "Whiskyauction Com",
+    "whisky_hammer": "Whisky Hammer",
+}
+
 
 def _resolve_auction_house(auction_house_str: str):
     """Map spider auction_house strings to AuctionHouse enum members."""
@@ -56,6 +71,7 @@ class DatabasePipeline:
         """Initialize the pipeline."""
         self.engine = None
         self.Session = None
+        self._known_source_ids: set[str] = set()
         self._stats = {
             "processed": 0,
             "new_prices": 0,
@@ -97,7 +113,33 @@ class DatabasePipeline:
             "errors": 0,
         }
 
-        logger.info(f"DatabasePipeline connected for {spider.name}")
+        self._known_source_ids = self._load_known_source_ids(spider.name)
+
+        logger.info(
+            f"DatabasePipeline connected for {spider.name} "
+            f"({len(self._known_source_ids)} known source IDs cached)"
+        )
+
+    def _load_known_source_ids(self, spider_name: str) -> set[str]:
+        """Preload existing source IDs to avoid a DB lookup per scraped item."""
+        from sqlalchemy import select
+        from src.models.price import Price
+
+        source_name = SPIDER_SOURCE_NAMES.get(spider_name)
+        if not source_name or not self.Session:
+            return set()
+
+        session = self.Session()
+        try:
+            rows = session.execute(
+                select(Price.source_id).where(Price.source_name == source_name)
+            )
+            return {str(row[0]) for row in rows if row[0]}
+        except Exception as e:
+            logger.warning(f"Could not preload source IDs for {spider_name}: {e}")
+            return set()
+        finally:
+            session.close()
 
     def close_spider(self, spider):
         """
@@ -187,6 +229,9 @@ class DatabasePipeline:
             session.commit()
 
             self._stats["new_prices"] += 1
+            source_id = str(item.get("source_id", ""))
+            if source_id:
+                self._known_source_ids.add(source_id)
             logger.info(f"Saved price {price_id} for bottle {bottle_id}: {item.get('source_id')}")
 
             return item
@@ -206,10 +251,13 @@ class DatabasePipeline:
 
     def _price_exists(self, session, item) -> bool:
         """Check if price already exists in database."""
+        source_id = str(item.get("source_id", ""))
+        if source_id and source_id in self._known_source_ids:
+            return True
+
         from sqlalchemy import select
         from src.models.price import Price
 
-        source_id = str(item.get("source_id", ""))
         source_name = item.get("source_name") or item.get("auction_house")
 
         # Query for existing price with same source ID and source name
@@ -222,7 +270,10 @@ class DatabasePipeline:
             query = query.where(Price.source_name == source_name)
 
         result = session.execute(query)
-        return result.scalar_one_or_none() is not None
+        exists = result.scalar_one_or_none() is not None
+        if exists and source_id:
+            self._known_source_ids.add(source_id)
+        return exists
 
     def _get_or_create_bottle(self, session, item) -> Optional[int]:
         """

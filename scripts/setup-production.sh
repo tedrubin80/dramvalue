@@ -27,7 +27,7 @@ set -euo pipefail
 INSTALL_DIR="/var/www/wtracker"
 REPO_URL="https://github.com/tedrubin80/tracker.git"
 BRANCH="main"
-API_PORT="8001"
+API_PORT="8002"
 DB_PORT="5434"
 LOG_DIR="$INSTALL_DIR/logs"
 

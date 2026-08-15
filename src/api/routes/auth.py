@@ -2,7 +2,10 @@
 Authentication endpoints.
 """
 
-from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
+import asyncio
+import logging
+
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Request, Response, status
 from fastapi.responses import RedirectResponse
 from pydantic import BaseModel, EmailStr, Field
 from sqlalchemy import select
@@ -23,6 +26,22 @@ from src.db.session import get_db
 from src.models.user import User
 
 router = APIRouter()
+logger = logging.getLogger(__name__)
+
+
+def _queue_verification_email(
+    email: str,
+    display_name: str,
+    base_url: str,
+) -> None:
+    """Send verification email without blocking the registration response."""
+    try:
+        from src.services.email_service import send_verification_email
+
+        verification_token = create_email_verification_token(email)
+        send_verification_email(email, verification_token, display_name, base_url)
+    except Exception as exc:
+        logger.warning("Verification email failed for %s: %s", email, exc)
 
 
 def _set_auth_cookie(response: Response, access_token: str) -> None:
@@ -95,7 +114,12 @@ class MessageResponse(BaseModel):
 
 @router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 @limiter.limit("5/minute")
-async def register(request: Request, data: UserRegister, db: AsyncSession = Depends(get_db)):
+async def register(
+    request: Request,
+    data: UserRegister,
+    background_tasks: BackgroundTasks,
+    db: AsyncSession = Depends(get_db),
+):
     """
     Register a new pseudonymous account.
 
@@ -119,27 +143,29 @@ async def register(request: Request, data: UserRegister, db: AsyncSession = Depe
             detail="Display name already taken",
         )
 
-    # Create user
+    # Create user (hash off the event loop so other requests stay responsive)
+    hashed_password = await asyncio.to_thread(get_password_hash, data.password)
     user = User(
         display_name=data.display_name,
         email=data.email,
-        hashed_password=get_password_hash(data.password),
+        hashed_password=hashed_password,
     )
     db.add(user)
     await db.commit()
     await db.refresh(user)
 
-    # Send verification email (non-blocking — failure doesn't block registration)
-    try:
-        from src.services.email_service import send_verification_email
-        import asyncio
-        settings = get_settings()
-        verification_token = create_email_verification_token(data.email)
-        base_url = str(settings.cors_origins.split(",")[0]).rstrip("/") if settings.cors_origins else "https://dramvalue.com"
-        loop = asyncio.get_event_loop()
-        loop.run_in_executor(None, send_verification_email, data.email, verification_token, user.display_name, base_url)
-    except Exception:
-        pass  # Registration succeeds even if email fails
+    settings = get_settings()
+    base_url = (
+        str(settings.cors_origins.split(",")[0]).rstrip("/")
+        if settings.cors_origins
+        else "https://dramvalue.com"
+    )
+    background_tasks.add_task(
+        _queue_verification_email,
+        data.email,
+        user.display_name,
+        base_url,
+    )
 
     return user
 
@@ -160,7 +186,7 @@ async def login(
     result = await db.execute(select(User).where(User.email == data.email))
     user = result.scalar_one_or_none()
 
-    if not user or not verify_password(data.password, user.hashed_password):
+    if not user or not await asyncio.to_thread(verify_password, data.password, user.hashed_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid credentials",

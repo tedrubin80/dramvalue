@@ -15,34 +15,43 @@ class Base(DeclarativeBase):
     pass
 
 
+_engine = None
+_async_session_maker = None
+
+
 def get_async_engine():
-    """Create async database engine."""
-    settings = get_settings()
+    """Return the shared async database engine (created once per process)."""
+    global _engine
+    if _engine is None:
+        settings = get_settings()
 
-    # Convert postgresql:// to postgresql+asyncpg://
-    database_url = str(settings.database_url)
-    if database_url.startswith("postgresql://"):
-        database_url = database_url.replace("postgresql://", "postgresql+asyncpg://", 1)
+        # Convert postgresql:// to postgresql+asyncpg://
+        database_url = str(settings.database_url)
+        if database_url.startswith("postgresql://"):
+            database_url = database_url.replace("postgresql://", "postgresql+asyncpg://", 1)
 
-    return create_async_engine(
-        database_url,
-        echo=settings.debug,
-        pool_pre_ping=True,
-        pool_size=5,
-        max_overflow=10,
-    )
+        _engine = create_async_engine(
+            database_url,
+            echo=settings.debug,
+            pool_pre_ping=True,
+            pool_size=5,
+            max_overflow=10,
+        )
+    return _engine
 
 
 def get_async_session_maker():
-    """Create async session maker."""
-    engine = get_async_engine()
-    return async_sessionmaker(
-        engine,
-        class_=AsyncSession,
-        expire_on_commit=False,
-        autocommit=False,
-        autoflush=False,
-    )
+    """Return the shared async session maker."""
+    global _async_session_maker
+    if _async_session_maker is None:
+        _async_session_maker = async_sessionmaker(
+            get_async_engine(),
+            class_=AsyncSession,
+            expire_on_commit=False,
+            autocommit=False,
+            autoflush=False,
+        )
+    return _async_session_maker
 
 
 async def get_db() -> AsyncGenerator[AsyncSession, None]:
@@ -54,8 +63,7 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
         async def get_items(db: AsyncSession = Depends(get_db)):
             ...
     """
-    async_session = get_async_session_maker()
-    async with async_session() as session:
+    async with get_async_session_maker()() as session:
         try:
             yield session
             await session.commit()

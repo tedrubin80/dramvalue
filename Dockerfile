@@ -70,13 +70,17 @@ CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload
 # -----------------------------------------------------------------------------
 FROM base as production
 
+# Install Playwright browsers for scrapers (requires root)
+ENV PLAYWRIGHT_BROWSERS_PATH=/opt/playwright
+COPY --from=builder /opt/venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+RUN playwright install-deps chromium \
+    && playwright install chromium \
+    && chmod -R 755 /opt/playwright
+
 # Create non-root user for security
 RUN groupadd --gid 1000 wtracker \
     && useradd --uid 1000 --gid wtracker --shell /bin/bash --create-home wtracker
-
-# Copy virtual environment from builder
-COPY --from=builder /opt/venv /opt/venv
-ENV PATH="/opt/venv/bin:$PATH"
 
 # Copy application code
 COPY --chown=wtracker:wtracker . .
