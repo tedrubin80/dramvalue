@@ -13,7 +13,7 @@ set -euo pipefail
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 OUT_DIR="${1:-$REPO_DIR/data/huggingface}"
-HF_REPO="${HF_DATASET_REPO:-tedrubin80/dramvalue-whisky-prices}"
+HF_REPO="${HF_DATASET_REPO:-datamatters24/dramvalue-whisky-prices}"
 LOG_DIR="$REPO_DIR/logs"
 LOG_FILE="$LOG_DIR/hf_install.log"
 

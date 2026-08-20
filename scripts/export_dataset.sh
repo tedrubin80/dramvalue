@@ -67,8 +67,10 @@ export_market
 echo "  $(($(wc -l < "$OUT_DIR/dramvalue_market_stats.csv") - 1)) rows"
 
 python3 << PY
-from datetime import datetime, timezone
 from pathlib import Path
+import sys
+sys.path.insert(0, "$REPO_DIR")
+from scripts.dataset_card import write_kaggle_readme, write_huggingface_readme
 
 out = Path("$OUT_DIR")
 counts = {
@@ -76,14 +78,10 @@ counts = {
     "prices": sum(1 for _ in open(out / "dramvalue_prices.csv")) - 1,
     "market_stats": sum(1 for _ in open(out / "dramvalue_market_stats.csv")) - 1,
 }
-(out / "README.md").write_text(
-    "# DramValue Whisky Price Intelligence Dataset\\n\\n"
-    f"Exported from dramvalue.com on {datetime.now(timezone.utc):%Y-%m-%d %H:%M UTC}.\\n\\n"
-    f"- dramvalue_bottles.csv: {counts['bottles']:,} bottles\\n"
-    f"- dramvalue_prices.csv: {counts['prices']:,} prices\\n"
-    f"- dramvalue_market_stats.csv: {counts['market_stats']:,} market stats\\n",
-    encoding="utf-8",
-)
+if "kaggle" in str(out):
+    write_kaggle_readme(out, counts)
+else:
+    write_huggingface_readme(out, counts)
 print("Export complete:", counts)
 PY
 

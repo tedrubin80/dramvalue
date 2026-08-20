@@ -6,7 +6,7 @@ Usage:
     python scripts/push_huggingface_dataset.py
     python scripts/push_huggingface_dataset.py --from-dir data/huggingface
     python scripts/push_huggingface_dataset.py --export-only
-    python scripts/push_huggingface_dataset.py --repo tedrubin80/dramvalue-whisky-prices
+    python scripts/push_huggingface_dataset.py --repo datamatters24/dramvalue-whisky-prices
 
 Requires HF_TOKEN in .env or environment (https://huggingface.co/settings/tokens).
 """
@@ -23,7 +23,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-DEFAULT_REPO = "tedrubin80/dramvalue-whisky-prices"
+from scripts.dataset_card import write_huggingface_readme
+
+DEFAULT_REPO = "datamatters24/dramvalue-whisky-prices"
 OUTPUT_DIR = ROOT / "data" / "huggingface"
 
 
@@ -73,55 +75,7 @@ def get_counts(data_dir: Path) -> dict[str, int]:
 
 
 def write_dataset_card(data_dir: Path, repo_id: str, counts: dict[str, int]) -> None:
-    exported = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
-    card = f"""---
-license: cc0-1.0
-task_categories:
-- tabular-classification
-language:
-- en
-tags:
-- whisky
-- whiskey
-- auction
-- prices
-- spirits
-size_categories:
-- 1M<n<10M
----
-
-# DramValue Whisky Price Intelligence
-
-Whisky bottle catalog, price history, and auction market statistics exported from [dramvalue.com](https://dramvalue.com).
-
-**Last export:** {exported}
-
-## Files
-
-| File | Rows | Description |
-|------|------|-------------|
-| `dramvalue_bottles.csv` | {counts['bottles']:,} | Bottle catalog with cached price stats |
-| `dramvalue_prices.csv` | {counts['prices']:,} | Individual price records (auction, retail, import) |
-| `dramvalue_market_stats.csv` | {counts['market_stats']:,} | Monthly auction house aggregates |
-
-## Install
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/tedrubin80/dramvalue/main/scripts/install_huggingface_dataset.sh | bash
-```
-
-Or manually:
-
-```bash
-pip install huggingface_hub
-huggingface-cli download {repo_id} --repo-type dataset --local-dir ./data/huggingface
-```
-
-## License
-
-CC0 1.0 Universal (public domain dedication).
-"""
-    (data_dir / "README.md").write_text(card, encoding="utf-8")
+    write_huggingface_readme(data_dir, counts, hf_repo=repo_id)
 
 
 def run_export(output_dir: Path) -> None:

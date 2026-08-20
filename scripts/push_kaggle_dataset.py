@@ -29,7 +29,9 @@ from sqlalchemy import create_engine, text
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-DEFAULT_DATASET_ID = os.getenv("KAGGLE_DATASET_ID", "tedrubin80/dramvalue-whisky-prices")
+from scripts.dataset_card import write_kaggle_metadata, write_kaggle_readme
+
+DEFAULT_DATASET_ID = os.getenv("KAGGLE_DATASET_ID", "theodorerubin/dramvalue-whisky-prices")
 OUTPUT_DIR = ROOT / "data" / "kaggle"
 
 
@@ -150,43 +152,32 @@ def export_dataset(output_dir: Path) -> dict[str, int]:
 
 
 def write_dataset_metadata(output_dir: Path, dataset_id: str, counts: dict[str, int]) -> None:
-    metadata = {
-        "title": "DramValue Whisky Price Intelligence",
-        "id": dataset_id,
-        "subtitle": "Whisky auction and retail prices from dramvalue.com",
-        "description": (
-            "Bottle catalog, price history, and auction market statistics from dramvalue.com. "
-            f"Contains {counts['bottles']:,} bottles and {counts['prices']:,} price records."
-        ),
-        "isPrivate": False,
-        "licenses": [{"name": "CC0-1.0"}],
-        "keywords": ["whisky", "whiskey", "auction", "prices", "spirits"],
-    }
-    (output_dir / "dataset-metadata.json").write_text(
-        json.dumps(metadata, indent=2),
-        encoding="utf-8",
-    )
+    hf_repo = os.getenv("HF_DATASET_REPO", "datamatters24/dramvalue-whisky-prices")
+    write_kaggle_readme(output_dir, counts, hf_repo=hf_repo, kaggle_dataset=dataset_id)
+    write_kaggle_metadata(output_dir, counts, dataset_id=dataset_id)
 
 
 def _load_kaggle_token() -> None:
-    if os.getenv("KAGGLE_API_TOKEN"):
-        return
-    env_path = ROOT / ".env"
-    if env_path.exists():
-        for line in env_path.read_text(encoding="utf-8").splitlines():
-            if line.startswith("KAGGLE_API_TOKEN="):
-                os.environ["KAGGLE_API_TOKEN"] = line.split("=", 1)[1].strip()
-                return
-    kaggle_json = Path.home() / ".kaggle" / "kaggle.json"
-    if kaggle_json.exists():
-        data = json.loads(kaggle_json.read_text(encoding="utf-8"))
-        token = data.get("token")
-        if token:
-            os.environ["KAGGLE_API_TOKEN"] = token
-            access_token = Path.home() / ".kaggle" / "access_token"
-            access_token.parent.mkdir(parents=True, exist_ok=True)
-            access_token.write_text(token, encoding="utf-8")
-            access_token.chmod(0o600)
+    token = os.getenv("KAGGLE_API_TOKEN")
+    if not token:
+        env_path = ROOT / ".env"
+        if env_path.exists():
+            for line in env_path.read_text(encoding="utf-8").splitlines():
+                if line.startswith("KAGGLE_API_TOKEN="):
+                    token = line.split("=", 1)[1].strip()
+                    break
+    if not token:
+        kaggle_json = Path.home() / ".kaggle" / "kaggle.json"
+        if kaggle_json.exists():
+            data = json.loads(kaggle_json.read_text(encoding="utf-8"))
+            token = data.get("token")
+    if token:
+        access_token = Path.home() / ".kaggle" / "access_token"
+        access_token.parent.mkdir(parents=True, exist_ok=True)
+        access_token.write_text(token, encoding="utf-8")
+        access_token.chmod(0o600)
+        # CLI subprocess won't see env if parent already imported kaggle; file is reliable.
+        os.environ["KAGGLE_API_TOKEN"] = token
 
 
 def push_to_kaggle(output_dir: Path, dataset_id: str, message: str) -> None:
@@ -205,8 +196,8 @@ def push_to_kaggle(output_dir: Path, dataset_id: str, message: str) -> None:
         print(result.stdout.strip() or "Dataset version uploaded successfully.")
         return
     combined = result.stderr + result.stdout
-    if "404" in combined or "does not exist" in combined.lower():
-        print("Dataset not found — creating new dataset...")
+    if "404" in combined or "403" in combined or "does not exist" in combined.lower():
+        print("Dataset not found or no version yet — creating new dataset...")
         create_cmd = [
             sys.executable, "-m", "kaggle", "datasets", "create",
             "-p", str(output_dir), "--dir-mode", "zip",
