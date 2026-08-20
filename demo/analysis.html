@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analysis — DramValue Case Study</title>
+  <meta name="description" content="Bottle matching, price stats, market aggregates, and open dataset publishing.">
+  <link rel="stylesheet" href="/assets/css/site.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-nav">
+    <div class="nav-inner">
+      <a class="brand" href="/"><span class="brand-mark">DramValue</span><span class="brand-tag">Case study</span></a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <ul class="nav-links" id="site-nav">
+        <li><a href="/">Overview</a></li>
+        <li><a href="/ingestion">Ingestion</a></li>
+        <li><a href="/analysis" aria-current="page">Analysis</a></li>
+        <li><a href="/platform">Platform</a></li>
+        <li><a href="/data">Open data</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main id="main" class="page">
+    <div class="container">
+      <header class="hero">
+        <p class="hero-eyebrow">Analysis</p>
+        <h1>Turning raw lots into a catalog.</h1>
+        <p class="hero-sub">
+          The hard part isn't scraping a price — it's deciding which bottle it belongs to, keeping stats fresh,
+          and exposing history in a way that's useful on a chart and in a CSV download.
+        </p>
+      </header>
+
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-value">30,324</div><div class="stat-label">Active bottles</div></div>
+        <div class="stat-card"><div class="stat-value">1,351,454</div><div class="stat-label">Price rows</div></div>
+        <div class="stat-card"><div class="stat-value">1,719</div><div class="stat-label">Market stat periods</div></div>
+        <div class="stat-card"><div class="stat-value">3</div><div class="stat-label">Export CSV files</div></div>
+      </div>
+
+      <section class="section">
+        <h2 class="section-title">Bottle normalization</h2>
+        <p class="section-lead">
+          The normalization pipeline matches incoming titles to existing bottles via normalized names and aliases,
+          or creates new bottle records when no match exists. Categories (bourbon, scotch, Irish, etc.) are inferred from title patterns.
+        </p>
+        <div class="card-grid">
+          <div class="card">
+            <h3><code>bottles</code> table</h3>
+            <p>Canonical catalog with cached aggregates: <code>price_count</code>, <code>avg_price</code>, min/max, last sale, trend direction.</p>
+          </div>
+          <div class="card">
+            <h3><code>bottle_aliases</code></h3>
+            <p>Alternate spellings and retailer-specific titles mapped to one bottle ID — critical when the same expression appears across six auction houses.</p>
+          </div>
+          <div class="card">
+            <h3>USD normalization</h3>
+            <p>Every price stored in original currency plus <code>price_usd</code> for cross-source comparison and charting.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Price intelligence on the site</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Feature</th><th>Implementation</th><th>User-facing page</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Price history charts</td><td><code>PriceService</code> — daily / weekly / monthly aggregation</td><td><code>/bottles/{id}</code></td></tr>
+              <tr><td>Trending bottles</td><td>Recent activity scoring on price inserts</td><td><code>/trending</code></td></tr>
+              <tr><td>Market overview</td><td><code>market_stats</code> monthly auction volumes</td><td><code>/market</code></td></tr>
+              <tr><td>Brand browse</td><td>Distinct brands with category filters</td><td><code>/brands</code></td></tr>
+              <tr><td>Search</td><td>PostgreSQL full-text + autocomplete API</td><td><code>/search</code></td></tr>
+              <tr><td>CSV / JSON export</td><td>Authenticated export routes</td><td><code>/api/export</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Market statistics</h2>
+        <p class="section-lead">
+          Monthly aggregates per auction house — mean winning bid, lot counts, trading volume — imported from Kaggle seed data
+          and extended as live scrapers add new hammer prices.
+        </p>
+        <pre><code>market_stats
+├── auction_name, auction_slug
+├── period_date
+├── winning_bid_min / max / mean
+├── trading_volume
+└── lots_count</code></pre>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Maintenance tasks</h2>
+        <p class="section-lead">Celery beat runs background jobs beyond scraping:</p>
+        <ul class="muted">
+          <li><strong>refresh_bottle_stats</strong> — recomputes cached min/max/avg on bottles after bulk imports</li>
+          <li><strong>Cleanup tasks</strong> — old scrape run records, stale session data</li>
+          <li><strong>Export scripts</strong> — <code>export_dataset.sh</code> → Hugging Face + Kaggle via shared dataset cards</li>
+        </ul>
+        <p class="muted"><a href="/data">Open dataset page →</a></p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>DramValue portfolio case study</span>
+      <span><a href="/ingestion">← Ingestion</a> · <a href="/platform">Platform →</a></span>
+    </div>
+  </footer>
+  <script src="/assets/js/site.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Ingestion — DramValue Case Study</title>
+  <meta name="description" content="Scrapy spiders, Celery scheduling, and a four-stage pipeline feeding PostgreSQL.">
+  <link rel="stylesheet" href="/assets/css/site.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-nav">
+    <div class="nav-inner">
+      <a class="brand" href="/"><span class="brand-mark">DramValue</span><span class="brand-tag">Case study</span></a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <ul class="nav-links" id="site-nav">
+        <li><a href="/">Overview</a></li>
+        <li><a href="/ingestion" aria-current="page">Ingestion</a></li>
+        <li><a href="/analysis">Analysis</a></li>
+        <li><a href="/platform">Platform</a></li>
+        <li><a href="/data">Open data</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main id="main" class="page">
+    <div class="container">
+      <header class="hero">
+        <p class="hero-eyebrow">Ingestion</p>
+        <h1>From auction pages to rows in Postgres.</h1>
+        <p class="hero-sub">
+          Every price record passes through validation, bottle normalization, in-run deduplication, and a database write —
+          with Celery beat keeping sources on staggered schedules so one slow spider never blocks the rest.
+        </p>
+      </header>
+
+      <section class="section">
+        <h2 class="section-title">Four-stage pipeline</h2>
+        <div class="pipeline">
+          <div class="pipeline-step"><strong>1 · Validate</strong><span>Required fields, type checks, currency bounds</span></div>
+          <span class="pipeline-arrow" aria-hidden="true">→</span>
+          <div class="pipeline-step"><strong>2 · Normalize</strong><span>Match or create bottle, detect category, aliases</span></div>
+          <span class="pipeline-arrow" aria-hidden="true">→</span>
+          <div class="pipeline-step"><strong>3 · Dedupe</strong><span>In-memory keys per scrape run</span></div>
+          <span class="pipeline-arrow" aria-hidden="true">→</span>
+          <div class="pipeline-step"><strong>4 · Persist</strong><span>PostgreSQL prices + bottle stats refresh</span></div>
+        </div>
+        <p class="muted">Implemented in <code>src/scrapers/pipelines/</code> — separate item types for auction lots (<code>AuctionLotItem</code>) and retail listings (<code>RetailPriceItem</code>).</p>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Active sources</h2>
+        <p class="section-lead">Schedules defined in <code>src/tasks/celery_app.py</code>. Auction spiders run every 6–8 hours; retail every 12 hours.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Spider</th><th>Type</th><th>Source</th><th>Schedule</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>whisky_auctioneer</code></td><td><span class="tag tag-auction">Auction</span></td><td>whiskyauctioneer.com</td><td>Every 6h</td></tr>
+              <tr><td><code>scotch_whisky_auctions</code></td><td><span class="tag tag-auction">Auction</span></td><td>scotchwhiskyauctions.com</td><td>Every 6h</td></tr>
+              <tr><td><code>whisky_auction_uk</code></td><td><span class="tag tag-auction">Auction</span></td><td>whisky.auction</td><td>Every 8h</td></tr>
+              <tr><td><code>whiskyauction_com</code></td><td><span class="tag tag-auction">Auction</span></td><td>whiskyauction.com</td><td>Every 8h</td></tr>
+              <tr><td><code>whisky_hunter</code></td><td><span class="tag tag-auction">API</span></td><td>whiskyhunter.net</td><td>Daily</td></tr>
+              <tr><td><code>whisky_hammer</code></td><td><span class="tag tag-auction">Auction</span></td><td>whiskyhammer.com</td><td>Every 12h</td></tr>
+              <tr><td><code>dekanta</code></td><td><span class="tag tag-retail">Retail</span></td><td>dekanta.com (Shopify JSON)</td><td>Every 12h</td></tr>
+              <tr><td><code>whisky_barrel</code></td><td><span class="tag tag-retail">Retail</span></td><td>thewhiskybarrel.com</td><td>Every 12h</td></tr>
+              <tr><td><code>fine_drams</code></td><td><span class="tag tag-retail">Retail</span></td><td>finedrams.com</td><td>Every 12h</td></tr>
+              <tr><td><code>cask_cartel</code></td><td><span class="tag tag-retail">Retail</span></td><td>caskcartel.com</td><td>Every 12h</td></tr>
+              <tr><td><code>bottle_blue_book</code></td><td><span class="tag tag-retail">Valuation</span></td><td>bottlebluebook.com</td><td>Daily</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="muted" style="margin-top:1rem">Several sources (Whiskybase, Wine-Searcher, Whiskystats, RW101) were built but disabled when site structures changed — the spider registry makes toggling them straightforward.</p>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Reliability work</h2>
+        <div class="card-grid">
+          <div class="card">
+            <h3>Stale-run guards</h3>
+            <p>Celery tasks mark scrape runs in Postgres; zombie runs are cleaned up before new jobs start so workers never double-write.</p>
+          </div>
+          <div class="card">
+            <h3>Source ID index</h3>
+            <p>Database-level dedup on <code>source_id</code> plus an in-memory cache during high-volume runs reduced duplicate inserts.</p>
+          </div>
+          <div class="card">
+            <h3>Memory-safe exports</h3>
+            <p>Pandas OOM'd on 1.3M rows — switched to <code>psql COPY</code> via <code>scripts/export_dataset.sh</code> for publishing.</p>
+          </div>
+          <div class="card">
+            <h3>Crawl scope limits</h3>
+            <p>Retail and valuation spiders cap page depth so long-tail catalog crawls don't starve the worker queue.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Seed data</h2>
+        <p class="section-lead">Three Kaggle datasets bootstrapped the catalog before live scrapers took over:</p>
+        <ul class="muted">
+          <li>Brand catalog (~4,800 brands) → <code>bottles</code></li>
+          <li>Cask auction CSV (~562 records) → bottles + prices</li>
+          <li>Market aggregates (~1,719 monthly rows) → <code>market_stats</code></li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>DramValue portfolio case study</span>
+      <span><a href="/">Overview</a> · <a href="/analysis">Analysis →</a></span>
+    </div>
+  </footer>
+  <script src="/assets/js/site.js" defer></script>
+</body>
+</html>

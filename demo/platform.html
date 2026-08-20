@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Platform — DramValue Case Study</title>
+  <meta name="description" content="FastAPI, Docker, nginx, SSR frontend, auth, and SEO — how dramvalue.com went to production.">
+  <link rel="stylesheet" href="/assets/css/site.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-nav">
+    <div class="nav-inner">
+      <a class="brand" href="/"><span class="brand-mark">DramValue</span><span class="brand-tag">Case study</span></a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <ul class="nav-links" id="site-nav">
+        <li><a href="/">Overview</a></li>
+        <li><a href="/ingestion">Ingestion</a></li>
+        <li><a href="/analysis">Analysis</a></li>
+        <li><a href="/platform" aria-current="page">Platform</a></li>
+        <li><a href="/data">Open data</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main id="main" class="page">
+    <div class="container">
+      <header class="hero">
+        <p class="hero-eyebrow">Platform</p>
+        <h1>Shipping a data product as a website.</h1>
+        <p class="hero-sub">
+          DramValue ran as six Docker containers on a VPS — API, worker, beat, Postgres, Redis, and Tor —
+          fronted by nginx with Let's Encrypt. This page covers the decisions that made it work in production.
+        </p>
+      </header>
+
+      <section class="section">
+        <h2 class="section-title">Docker services</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Container</th><th>Role</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>wtracker-api</code></td><td>FastAPI — HTML pages + REST API (port 8000)</td></tr>
+              <tr><td><code>wtracker-worker</code></td><td>Celery worker — runs Scrapy spiders and maintenance</td></tr>
+              <tr><td><code>wtracker-beat</code></td><td>Celery beat — cron-style scrape schedules</td></tr>
+              <tr><td><code>wtracker-db</code></td><td>PostgreSQL 16 — bottles, prices, users, collections</td></tr>
+              <tr><td><code>wtracker-redis</code></td><td>Redis 7 — Celery broker + cache</td></tr>
+              <tr><td><code>wtracker-tor</code></td><td>SOCKS5 proxy for anonymous scraper egress</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">API &amp; service layer</h2>
+        <p class="section-lead">
+          Business logic lives in services (<code>BottleService</code>, <code>PriceService</code>), not route handlers.
+          Responses use a consistent envelope: <code>success_response</code>, <code>paginated_response</code>, <code>error_response</code>.
+        </p>
+        <div class="card-grid">
+          <div class="card">
+            <h3>Server-side rendering</h3>
+            <p>Jinja2 templates + Tailwind — no separate SPA build step. Fast first paint, simple deployment, SEO-friendly HTML.</p>
+          </div>
+          <div class="card">
+            <h3>Auth</h3>
+            <p>JWT + bcrypt (passlib). Login/register forms rebuilt with vanilla JS timeouts after Alpine.js spinner bugs in production.</p>
+          </div>
+          <div class="card">
+            <h3>User features</h3>
+            <p>Collections, price alerts, profile — all backed by async SQLAlchemy sessions.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Public pages</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Route</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr><td><code>/</code></td><td>Home — search, stats, trending preview</td></tr>
+              <tr><td><code>/bottles</code></td><td>Paginated catalog</td></tr>
+              <tr><td><code>/bottles/{id}</code></td><td>Detail + Chart.js price history</td></tr>
+              <tr><td><code>/market</code></td><td>Auction volume charts from market_stats</td></tr>
+              <tr><td><code>/brands</code></td><td>Brand directory with filters</td></tr>
+              <tr><td><code>/search</code></td><td>Full-text bottle search</td></tr>
+              <tr><td><code>/trending</code></td><td>Recently active bottles</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">SEO &amp; discoverability</h2>
+        <div class="card-grid">
+          <div class="card">
+            <h3>Sitemaps</h3>
+            <p>Dynamic XML sitemaps — static pages plus ~25K bottle URLs split across indexed files. Served at <code>/sitemap.xml</code>.</p>
+          </div>
+          <div class="card">
+            <h3>Meta tags</h3>
+            <p>Shared Jinja macro for description, canonical, Open Graph, Twitter cards, and JSON-LD on bottle detail pages.</p>
+          </div>
+          <div class="card">
+            <h3>HEAD support</h3>
+            <p>Middleware fix for crawler HEAD requests — nginx was returning 500s when Content-Length mismatched.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Production ops</h2>
+        <div class="timeline">
+          <div class="timeline-item">
+            <h3>One-command setup</h3>
+            <p><code>scripts/setup-production.sh</code> — Docker, .env, nginx, certbot, Kaggle imports, cron jobs.</p>
+          </div>
+          <div class="timeline-item">
+            <h3>Host crons</h3>
+            <p>Weekly git backup, daily pg_dump, log rotation, API health check with auto-restart.</p>
+          </div>
+          <div class="timeline-item">
+            <h3>Pause / resume</h3>
+            <p><code>pause-scheduling.sh</code> and <code>resume-scheduling.sh</code> to stop beat/worker and crons while keeping the site live.</p>
+          </div>
+          <div class="timeline-item">
+            <h3>Sunset to Vercel</h3>
+            <p>Production stack winds down; this <code>/demo</code> portfolio preserves the story of how it was built.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Architecture diagram</h2>
+        <div class="diagram-box">
+          <pre>
+     Internet
+        │
+   ┌────▼────┐
+   │  nginx  │  SSL (Let's Encrypt), static caching
+   └────┬────┘
+        │
+   ┌────▼────────────┐
+   │  FastAPI (api)  │  Jinja2 templates · REST /docs
+   └───┬────────┬────┘
+       │        │
+  ┌────▼───┐ ┌──▼──────┐
+  │Postgres│ │  Redis  │
+  └────▲───┘ └──┬──────┘
+       │        │
+   ┌───┴────────▼───┐
+   │ Celery worker  │  Scrapy crawlers
+   │ Celery beat    │  Scheduled tasks
+   └────────────────┘</pre>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>DramValue portfolio case study</span>
+      <span><a href="/analysis">← Analysis</a> · <a href="/data">Open data →</a></span>
+    </div>
+  </footer>
+  <script src="/assets/js/site.js" defer></script>
+</body>
+</html>
