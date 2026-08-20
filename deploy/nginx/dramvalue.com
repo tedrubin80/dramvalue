@@ -105,13 +105,6 @@ server {
         proxy_connect_timeout 75s;
     }
 
-    # Site OG/social preview image (project root)
-    location = /og-image.png {
-        alias /var/www/wtracker/og-image.png;
-        expires 30d;
-        add_header Cache-Control "public";
-    }
-
     # Static assets
     location /static/ {
         alias /var/www/wtracker/static/;

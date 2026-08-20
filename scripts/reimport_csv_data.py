@@ -288,7 +288,7 @@ async def import_market_stats(csv_path: str, session, dry_run: bool = False) -> 
 
 async def main():
     parser = argparse.ArgumentParser(description="Reimport CSV data into database")
-    parser.add_argument("--csv-dir", default="/var/www/wtracker", help="Directory containing CSV files")
+    parser.add_argument("--csv-dir", default=str(Path(__file__).parent.parent / "data" / "legacy"), help="Directory containing CSV files")
     parser.add_argument("--dry-run", action="store_true", help="Preview without saving")
     parser.add_argument("--bottles-only", action="store_true", help="Only import bottles")
     parser.add_argument("--prices-only", action="store_true", help="Only import prices")

@@ -22,11 +22,7 @@ services:
       - ./alembic.ini:/app/alembic.ini
       - ./templates:/app/templates
       - ./scripts:/app/scripts
-      - ./dramvalue_bottles.csv:/app/dramvalue_bottles.csv
-      - ./dramvalue_prices.csv:/app/dramvalue_prices.csv
-      - ./whisky_bottles.csv:/app/whisky_bottles.csv
-      - ./whisky_prices.csv:/app/whisky_prices.csv
-      - ./whisky_market_stats.csv:/app/whisky_market_stats.csv
+      - ./data/legacy:/app/data/legacy
     env_file:
       - .env
     environment:

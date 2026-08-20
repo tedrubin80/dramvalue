@@ -95,6 +95,13 @@ backups/
 data/huggingface/
 data/kaggle/
 
+# Legacy sample CSVs live in data/legacy/ (tracked). Do not drop loose CSVs in repo root.
+/*.csv
+/*.ipynb
+/*.pdf
+/*.png
+!static/*.png
+
 # Private feed API credentials (FTP/SFTP only — never commit)
 docs/api/API_KEY.txt
 docs/api/CONNECTION.md
