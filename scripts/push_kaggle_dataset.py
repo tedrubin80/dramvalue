@@ -44,6 +44,25 @@ def get_database_url() -> str:
     )
 
 
+def count_csv_rows(path: Path) -> int:
+    if not path.exists():
+        raise FileNotFoundError(f"Missing export file: {path}")
+    return sum(1 for _ in path.open(encoding="utf-8")) - 1
+
+
+def get_counts(data_dir: Path) -> dict[str, int]:
+    return {
+        "bottles": count_csv_rows(data_dir / "dramvalue_bottles.csv"),
+        "prices": count_csv_rows(data_dir / "dramvalue_prices.csv"),
+        "market_stats": count_csv_rows(data_dir / "dramvalue_market_stats.csv"),
+    }
+
+
+def run_export(output_dir: Path) -> None:
+    script = ROOT / "scripts" / "export_dataset.sh"
+    subprocess.run(["bash", str(script), str(output_dir)], check=True)
+
+
 def export_dataset(output_dir: Path) -> dict[str, int]:
     """Export bottles, prices, and market stats to CSV files."""
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -204,19 +223,29 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Export and push DramValue data to Kaggle")
     parser.add_argument("--dataset", default=DEFAULT_DATASET_ID)
     parser.add_argument("--output-dir", type=Path, default=OUTPUT_DIR)
+    parser.add_argument("--from-dir", type=Path, help="Use existing CSV export directory (skip DB export)")
     parser.add_argument("--export-only", action="store_true")
     parser.add_argument("--message", default="")
     args = parser.parse_args()
 
-    counts = export_dataset(args.output_dir)
-    write_dataset_metadata(args.output_dir, args.dataset, counts)
+    data_dir = args.from_dir or args.output_dir
+
+    if args.from_dir is None and not args.export_only:
+        print("Exporting from database...")
+        run_export(data_dir)
+    elif args.from_dir is None:
+        run_export(data_dir)
+
+    counts = get_counts(data_dir)
+    write_dataset_metadata(data_dir, args.dataset, counts)
+    print(f"Ready: {counts['bottles']:,} bottles, {counts['prices']:,} prices, {counts['market_stats']:,} market stats")
 
     if args.export_only:
-        print(f"\nExport complete in {args.output_dir}")
+        print(f"\nExport complete in {data_dir}")
         return 0
 
     message = args.message or f"DramValue export {datetime.now(timezone.utc):%Y-%m-%d} — {counts['prices']:,} prices"
-    push_to_kaggle(args.output_dir, args.dataset, message)
+    push_to_kaggle(data_dir, args.dataset, message)
     print(f"\nDone. Dataset: https://www.kaggle.com/datasets/{args.dataset}")
     return 0
 
