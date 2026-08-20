@@ -28,6 +28,7 @@ class Settings(BaseSettings):
     debug: bool = False
     secret_key: str = Field(..., min_length=32)
     cors_origins: str = "https://dramvalue.com,https://www.dramvalue.com"
+    site_url: str = ""
 
     # -------------------------------------------------------------------------
     # Database
@@ -97,6 +98,17 @@ class Settings(BaseSettings):
     @property
     def is_development(self) -> bool:
         return self.app_env == "development"
+
+    @property
+    def public_site_url(self) -> str:
+        """Canonical public site URL for SEO (sitemap, canonical tags)."""
+        if self.site_url:
+            return self.site_url.rstrip("/")
+        for origin in self.cors_origins.split(","):
+            origin = origin.strip()
+            if origin:
+                return origin.rstrip("/")
+        return "https://dramvalue.com"
 
 
 @lru_cache

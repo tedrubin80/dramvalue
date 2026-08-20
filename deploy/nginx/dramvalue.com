@@ -94,23 +94,22 @@ server {
     }
 
     # Homepage - proxy to FastAPI app
-    location = / {
+    location / {
         proxy_pass http://127.0.0.1:8002;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 300s;
+        proxy_connect_timeout 75s;
     }
 
-    # Frontend routes - proxy to FastAPI app
-    location ~ ^/(bottles|trending|auth|search|collection|market|brands|profile|alerts|about) {
-        proxy_pass http://127.0.0.1:8002;
-        proxy_http_version 1.1;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
+    # Site OG/social preview image (project root)
+    location = /og-image.png {
+        alias /var/www/wtracker/og-image.png;
+        expires 30d;
+        add_header Cache-Control "public";
     }
 
     # Static assets

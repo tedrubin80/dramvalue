@@ -13,9 +13,11 @@ from fastapi.staticfiles import StaticFiles
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 
+from src.api.middleware.head_requests import HeadRequestMiddleware
 from src.api.middleware.security_headers import SecurityHeadersMiddleware
 from src.api.routes import router as api_router
 from src.api.routes.frontend import router as frontend_router
+from src.api.routes.seo import router as seo_router
 from src.core.config import get_settings
 from src.core.rate_limit import limiter
 
@@ -56,6 +58,7 @@ def create_app() -> FastAPI:
     app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
     app.add_middleware(SecurityHeadersMiddleware)
+    app.add_middleware(HeadRequestMiddleware)
 
     # CORS Middleware
     allowed_origins = ["*"] if settings.is_development else [
@@ -79,6 +82,7 @@ def create_app() -> FastAPI:
 
     # Include frontend template routes
     app.include_router(frontend_router)
+    app.include_router(seo_router)
 
     return app
 

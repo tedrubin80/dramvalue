@@ -1,8 +1,37 @@
 {% extends "base.html" %}
+{% from "macros/seo.html" import tags as seo_tags %}
 
 {% block title %}{{ bottle.name }} - DramValue{% endblock %}
 
 {% block extra_head %}
+{{ seo_tags(
+    bottle.name ~ " - DramValue",
+    "Current prices and auction history for " ~ bottle.name
+    ~ (". Average $" ~ "%.0f"|format(bottle.avg_price) ~ " from " ~ bottle.price_count ~ " sales." if bottle.avg_price and bottle.price_count else ".")
+    ~ " Updated daily on DramValue.",
+    path="/bottles/" ~ bottle.id,
+    og_type="product"
+) }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": {{ bottle.name | tojson }},
+  "brand": {
+    "@type": "Brand",
+    "name": {{ (bottle.brand or bottle.distillery or "Whisky") | tojson }}
+  },
+  "category": {{ (bottle.category.value | replace("_", " ") | title if bottle.category else "Whisky") | tojson }}{% if bottle.avg_price %},
+  "offers": {
+    "@type": "AggregateOffer",
+    "priceCurrency": "USD",
+    "lowPrice": {{ bottle.min_price or bottle.avg_price }},
+    "highPrice": {{ bottle.max_price or bottle.avg_price }},
+    "offerCount": {{ bottle.price_count or 1 }},
+    "price": {{ bottle.avg_price }}
+  }{% endif %}
+}
+</script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 {% endblock %}
 

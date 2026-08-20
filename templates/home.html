@@ -1,6 +1,15 @@
 {% extends "base.html" %}
+{% from "macros/seo.html" import tags as seo_tags %}
 
 {% block title %}DramValue - Whisky Price Intelligence{% endblock %}
+
+{% block extra_head %}
+{{ seo_tags(
+    "DramValue - Whisky Price Intelligence",
+    "Track whisky auction and retail prices across 30,000+ bottles. Real secondary market data for bourbon, scotch, and rare spirits.",
+    path="/"
+) }}
+{% endblock %}
 
 {% block content %}
 <!-- Hero -->

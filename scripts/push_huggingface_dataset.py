@@ -23,24 +23,39 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-DEFAULT_REPO = os.getenv("HF_DATASET_REPO", "tedrubin80/dramvalue-whisky-prices")
+DEFAULT_REPO = "tedrubin80/dramvalue-whisky-prices"
 OUTPUT_DIR = ROOT / "data" / "huggingface"
 
 
-def load_hf_token() -> str:
-    token = os.getenv("HF_TOKEN") or os.getenv("HUGGING_FACE_HUB_TOKEN")
-    if token:
-        return token
+def load_env_value(*keys: str) -> str | None:
+    for key in keys:
+        value = os.getenv(key)
+        if value:
+            return value
 
     env_path = ROOT / ".env"
-    if env_path.exists():
-        for line in env_path.read_text(encoding="utf-8").splitlines():
-            if line.startswith("HF_TOKEN=") or line.startswith("HUGGING_FACE_HUB_TOKEN="):
-                return line.split("=", 1)[1].strip().strip('"').strip("'")
+    if not env_path.exists():
+        return None
 
-    raise RuntimeError(
-        "Hugging Face token not found. Add HF_TOKEN=hf_... to .env or export HF_TOKEN."
-    )
+    prefixes = tuple(f"{key}=" for key in keys)
+    for line in env_path.read_text(encoding="utf-8").splitlines():
+        for prefix in prefixes:
+            if line.startswith(prefix):
+                return line.split("=", 1)[1].strip().strip('"').strip("'")
+    return None
+
+
+def load_hf_token() -> str:
+    token = load_env_value("HF_TOKEN", "HUGGING_FACE_HUB_TOKEN")
+    if not token:
+        raise RuntimeError(
+            "Hugging Face token not found. Add HF_TOKEN=hf_... to .env or export HF_TOKEN."
+        )
+    return token
+
+
+def load_hf_repo() -> str:
+    return load_env_value("HF_DATASET_REPO") or DEFAULT_REPO
 
 
 def count_csv_rows(path: Path) -> int:
@@ -139,7 +154,7 @@ def push_to_huggingface(data_dir: Path, repo_id: str, message: str) -> str:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Export and push DramValue data to Hugging Face")
-    parser.add_argument("--repo", default=DEFAULT_REPO, help=f"HF dataset repo (default: {DEFAULT_REPO})")
+    parser.add_argument("--repo", default=load_hf_repo(), help=f"HF dataset repo (default: from HF_DATASET_REPO or {DEFAULT_REPO})")
     parser.add_argument("--output-dir", type=Path, default=OUTPUT_DIR)
     parser.add_argument("--from-dir", type=Path, help="Use existing CSV export directory (skip DB export)")
     parser.add_argument("--export-only", action="store_true", help="Export CSVs only, do not upload")

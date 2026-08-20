@@ -14,6 +14,7 @@ from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.api.deps import extract_access_token
+from src.core.config import get_settings
 from src.core.security import decode_token
 from src.db.session import get_async_session_maker, get_db
 from src.models.bottle import Bottle
@@ -24,6 +25,12 @@ from src.services.bottle_service import BottleService
 # Configure templates
 templates_dir = Path(__file__).parent.parent.parent.parent / "templates"
 templates = Jinja2Templates(directory=str(templates_dir))
+templates.env.globals["site_url"] = get_settings().public_site_url.rstrip("/")
+templates.env.globals["site_name"] = "DramValue"
+templates.env.globals["default_meta_description"] = (
+    "Track whisky auction and retail prices across 30,000+ bottles. "
+    "Real secondary market data for bourbon, scotch, and rare spirits."
+)
 
 router = APIRouter()
 

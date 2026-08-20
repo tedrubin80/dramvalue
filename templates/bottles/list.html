@@ -1,6 +1,15 @@
 {% extends "base.html" %}
+{% from "macros/seo.html" import tags as seo_tags %}
 
 {% block title %}Browse Bottles - DramValue{% endblock %}
+
+{% block extra_head %}
+{{ seo_tags(
+    "Browse Whisky Bottles - DramValue",
+    "Search and browse thousands of whisky bottles with live auction and retail price data.",
+    path=request.url.path
+) }}
+{% endblock %}
 
 {% block content %}
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

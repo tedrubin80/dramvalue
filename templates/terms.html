@@ -1,6 +1,16 @@
 {% extends "base.html" %}
+{% from "macros/seo.html" import tags as seo_tags %}
 
 {% block title %}Terms of Service - DramValue{% endblock %}
+
+{% block extra_head %}
+{{ seo_tags(
+    "Terms of Service - DramValue",
+    "Terms of service for using DramValue whisky price intelligence platform.",
+    robots="index, follow",
+    path="/terms"
+) }}
+{% endblock %}
 
 {% block content %}
 <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

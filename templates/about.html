@@ -1,6 +1,15 @@
 {% extends "base.html" %}
+{% from "macros/seo.html" import tags as seo_tags %}
 
 {% block title %}About - DramValue{% endblock %}
+
+{% block extra_head %}
+{{ seo_tags(
+    "About DramValue",
+    "DramValue tracks secondary market whisky prices from auctions and retailers. Learn about our data sources and mission.",
+    path="/about"
+) }}
+{% endblock %}
 
 {% block content %}
 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

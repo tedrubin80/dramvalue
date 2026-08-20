@@ -1,8 +1,14 @@
 {% extends "base.html" %}
+{% from "macros/seo.html" import tags as seo_tags %}
 
 {% block title %}Market Overview - DramValue{% endblock %}
 
 {% block extra_head %}
+{{ seo_tags(
+    "Whisky Market Overview - DramValue",
+    "Monthly auction house trading volume, lot counts, and winning bid trends across the secondary whisky market."
+    , path="/market"
+) }}
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 {% endblock %}
 

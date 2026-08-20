@@ -1,6 +1,16 @@
 {% extends "base.html" %}
+{% from "macros/seo.html" import tags as seo_tags %}
 
 {% block title %}Search: {{ search_query }} - DramValue{% endblock %}
+
+{% block extra_head %}
+{{ seo_tags(
+    "Search: " ~ search_query ~ " - DramValue",
+    "Search results for " ~ search_query ~ " on DramValue whisky price intelligence.",
+    robots="noindex, follow",
+    path=request.url.path
+) }}
+{% endblock %}
 
 {% block content %}
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
